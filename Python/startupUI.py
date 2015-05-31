@@ -1,12 +1,15 @@
 from tkinter import *
 from os import listdir
+import Game
 
 class startupUI:
 
+    ai_list = []
+    lb1 = None
+    lb2 = None
+
     def __init__(self, master):
 
-        player1 = None
-        player2 = None
         ai_list = []
 
         self.populate_ai_list(ai_list)
@@ -29,18 +32,25 @@ class startupUI:
         p2_label["text"] = "Player 2"
         p2_label.grid(row=0, column=1)
 
-        lb1 = Listbox(frame)
+        self.lb1 = Listbox(frame)
         for script in ai_list:
-            lb1.insert(END, script)
-        lb1.grid(row=1, column=0)
+            self.lb1.insert(END, script)
+        self.lb1.grid(row=1, column=0)
 
-        lb2 = Listbox(frame)
+        self.lb1.selection_set(0)
+        self.lb1["exportselection"] = 0
+
+        self.lb2 = Listbox(frame)
         for script in ai_list:
-            lb2.insert(END, script)
-        lb2.grid(row=1, column=1)
+            self.lb2.insert(END, script)
+        self.lb2.grid(row=1, column=1)
+
+        self.lb2.selection_set(0)
+        self.lb2["exportselection"] = 0
 
         start_game_button = Button(frame)
         start_game_button["text"] = "Start Game"
+        start_game_button["command"] = self.start_game
         start_game_button.grid(row=2, column=0, columnspan=2)
 
         frame.pack()
@@ -59,6 +69,12 @@ class startupUI:
 
                 list.append(filename[:-3])
 
+    def start_game(self):
+
+        player1 = self.lb1.get(ACTIVE)
+        player2 = self.lb2.get(ACTIVE)
+
+        Game.Game(player1, player2)
 
 
 

@@ -6,9 +6,10 @@ BOARD_SIZE = 400
 
 class Game:
 
-    def __init__(self, master):
+    def __init__(self, player1, player2):
 
         #  Initiate frame and canvas for board (and give it a border)
+        master = Tk()
         frame = Frame(master)
 
         frame.columnconfigure(0, pad=3)
@@ -55,7 +56,3 @@ class Game:
         frame.pack()
 
         master.mainloop()
-
-
-master = Tk()
-Game(master)
