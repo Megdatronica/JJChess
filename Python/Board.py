@@ -301,7 +301,7 @@ class Board:
         if king.colour == colour.white:
             y = 7
             friendly_rook = Piece.Rook(colour.white)
-        else if king.colour == colour.black:
+        elif king.colour == colour.black:
             y = 0
             friendly_rook = Piece.Rook(colour.black)
 
