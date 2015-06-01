@@ -21,10 +21,10 @@ class Move:
                  en_passant_posn=None):
         """Initialise a move according to passed parameters."""
 
-        if castle & & en_passant:
+        if castle and en_passant:
             raise ValueError("Castle and en_passant cannot both be true")
 
-        if (en_passant & & en_passant_posn is None):
+        if (en_passant and en_passant_posn is None):
             raise ValueError("Must provide en_passant_posn")
 
         self.start_posn = start_posn

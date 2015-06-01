@@ -4,7 +4,7 @@ import Board
 from Images import Images
 
 # Size of the board canvas to render
-BOARD_SIZE = 400
+BOARD_SIZE = 900
 
 
 class Game:
