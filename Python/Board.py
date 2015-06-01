@@ -38,24 +38,22 @@ class Board:
 
         sq_width = int(canvas["width"])/8
 
-        #white background
-        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill = "yellow")
-
+        # white background
+        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill="yellow")
 
         # black squares
         for i in range(8):
             for j in range(4):
 
-                canvas.create_rectangle(i*sq_width, (2*j+(i+1)%2)*sq_width, 
-                                        (i+1)*sq_width, 
-                                        (2*j+(i+1)%2+1)*sq_width,
+                canvas.create_rectangle(i*sq_width, (2*j+(i+1) % 2)*sq_width,
+                                        (i+1)*sq_width,
+                                        (2*j+(i+1) % 2+1)*sq_width,
                                         fill="brown")
 
         for i in range(8):
             for j in range(8):
 
                 self.piece_array[i][j].draw(canvas, i*sq_width, j*sq_width)
-
 
     def copy(self):
         return copy.deepcopy(self)
@@ -301,7 +299,7 @@ class Board:
         if king.colour == colour.white:
             y = 7
             friendly_rook = Piece.Rook(colour.white)
-        else if king.colour == colour.black:
+        elif king.colour == colour.black:
             y = 0
             friendly_rook = Piece.Rook(colour.black)
 
@@ -368,6 +366,12 @@ class Board:
         """Return true if the passed move is both possible and valid."""
         return (self.is_possible_move(move) and self.is_valid_move(move))
 
+    def is_take_move(self, move):
+        """Returns true if the passed move is a taking move."""
+        piece_at_move = self.get_piece(*move.end_posn)
+
+        return piece_at_move.type == p_type.blank
+
     ###########################################################################
     ############################## MOVE FETCHING ##############################
     ###########################################################################
@@ -399,3 +403,28 @@ class Board:
             return get_pawn_moves(x, y)
 
         return count
+
+    def get_king_moves(self, x, y):
+        pass
+
+    def get_queen_moves(self, x, y):
+        pass
+
+    def get_bishop_moves(self, x, y):
+        pass
+
+    def get_knight_moves(self, x, y):
+        pass
+
+    def get_rook_moves(self, x, y):
+        pass
+
+    def get_pawn_moves(self, x, y):
+        pass
+
+    ###########################################################################
+    ############################ BOARD EVALUATION #############################
+    ###########################################################################
+
+    def is_in_check(self):
+        pass
