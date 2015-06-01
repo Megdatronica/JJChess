@@ -29,7 +29,7 @@ class Board:
            - canvas : Tkinter canvas object to draw the board on
 
         """
-        #Clear the canvas
+        # Clear the canvas
         canvas.delete("all")
 
         self.draw_board(canvas)
@@ -39,17 +39,16 @@ class Board:
         sq_width = int(canvas["width"])/8
         print(sq_width)
 
-        #white background
-        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill = "white")
+        # white background
+        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill="white")
 
-        #black squares
+        # black squares
         for i in range(8):
             for j in range(4):
-                canvas.create_rectangle(i*sq_width, (2*j+(i+1)%2)*sq_width, 
-                                        (i+1)*sq_width, 
-                                        (2*j+(i+1)%2+1)*sq_width,
+                canvas.create_rectangle(i*sq_width, (2*j+(i+1) % 2)*sq_width,
+                                        (i+1)*sq_width,
+                                        (2*j+(i+1) % 2+1)*sq_width,
                                         fill="black")
-
 
     def copy(self):
         return copy.deepcopy(self)
@@ -85,9 +84,31 @@ class Board:
         self.piece_array[3][7] = Piece.Queen(colour.white)
         self.piece_array[4][7] = Piece.King(colour.white)
 
+    def make_move(self, move):
+        """Adjust the state of the board to reflect the passed move.
+
+        Args:
+            - move:  a Move object
+        """
+        if move.castle:
+            self.castle(move)
+
+        if move.en_passant:
+            self.remove_piece(*move.start_posn)
+
+        piece = self.get_piece(*move.start_posn)
+
+        self.remove_piece(*move.start_posn)
+        self.place_piece(move.end_posn[0], move.end_posn[1],
+                         piece.type, piece.colour)
+
     ###########################################################################
     ############################# HELPER FUNCTIONS ############################
     ###########################################################################
+
+    def is_square(self, x, y):
+        """Return true if (x, y) represents a valid square."""
+        return (x < Board.SIZE and y < Board.SIZE and x >= 0 and y >= 0)
 
     def get_piece(self, x, y):
         """Return the piece at position x, y on the board.
@@ -139,7 +160,7 @@ class Board:
         up and to the left.
 
         Returns: a tuple containing three pieces of information:
-            [0] An integer count of the number of empty squares before the 
+            [0] An integer count of the number of empty squares before the
                 function finds another piece. This will be zero if there is
                 a piece right next to (x, y). If the function reaches the end
                 of the board, this will be the number of empty squares
@@ -160,7 +181,10 @@ class Board:
         left_right = left_right/abs(left_right)
 
         if up_down == 0 and left_right == 0:
-            raise valueError
+            raise ValueError
+
+        if not self.is_square(x, y):
+            raise IndexError
 
         num_squares = 0
         found_piece = None
@@ -172,7 +196,7 @@ class Board:
         new_x += left_right
         new_y += up_down
 
-        while(x < Board.SIZE and y < Board.SIZE and x >= 0 and y >= 0):
+        while(self.is_square(new_x, new_y)):
 
             move = Move((x, y), (new_x, new_y))
             piece_at_square = self.get_piece(new_x, new_y)
@@ -191,26 +215,8 @@ class Board:
         return (num_squares, found_piece, move_squares)
 
     ###########################################################################
-    ############################### MOVE LOGIC ################################
+    ############################# MOVE EVALUATION #############################
     ###########################################################################
-
-    def make_move(self, move):
-        """Adjust the state of the board to reflect the passed move.
-
-        Args:
-            - move:  a Move object
-        """
-        if move.castle:
-            self.castle(move)
-
-        if move.en_passant:
-            self.remove_piece(*move.start_posn)
-
-        piece = self.get_piece(*move.start_posn)
-
-        self.remove_piece(*move.start_posn)
-        self.place_piece(move.end_posn[0], move.end_posn[1],
-                         piece.type, piece.colour)
 
     def is_possible_move(self, move):
         """Return True if the passed move is possible.
@@ -262,9 +268,9 @@ class Board:
         new_board.make_move(move)
 
         if newBoard.isInCheck(piece_moving.colour):
-            return false
+            return False
 
-        return true
+        return True
 
     def is_possible_castle_move(self, move):
         """Return true if the passed move is a castle move and is possible.
@@ -273,8 +279,91 @@ class Board:
         correct position and the space between them is empty.
 
         Args:
-            - move:  a Move object which should be verified to be a castling
-                     move.
+            - move:  a Move object
 
         """
+
+        if not move.castle:
+            return False
+
+        king = board.get_piece(*move.start_posn)
+
+        if king.type != p_type.king:
+            return False
+
+        if king.colour == colour.white:
+            y = 7
+            friendly_rook = Piece.Rook(colour.white)
+        else if king.colour == colour.black:
+            y = 0
+            friendly_rook = Piece.Rook(colour.black)
+
+        # If king is not at correct position for castling
+        if move.start_posn != (4, y):
+            return False
+
+        if (move.end_posn[0] > move.start_posn[0]):
+            # Castling King's side
+            search_results = search_direction(
+                move.start_posn[0], move.start_posn[1], 0, 1)
+            if search_results[0] != 2:
+                return False
+            if search_results[1] != friendly_rook:
+                return False
+        else:
+            # Castling Queen's side
+            search_results = search_direction(
+                move.start_posn[0], move.start_posn[1], 0, -1)
+            if search_results[0] != 3:
+                return False
+            if search_results[1] != friendly_rook:
+                return False
+
+        return True
+
+    def is_valid_castle_move(self, move):
+        """Return true if the passed move is a castle move and is valid.
+
+        A castling move is VALID if by making it, the king does not castle into,
+        out of, or through check. Note that this function will return true if a
+        castling move is valid, regardless of whether the king/rook has already 
+        moved.
+
+        Args:
+            - move:  a Move object
+
+        """
+
+        if not move.castle:
+            return False
+
+        king = board.get_piece(*move.start_posn)
+
+        if self.is_in_check(king.colour):
+            return False
+
+        if (move.end_posn[0] > move.start_posn[0]):
+            # Castling King's side
+            search_results = search_direction(
+                move.start_posn[0], move.start_posn[1], 0, 1)
+            if len(search_results[2]) != 2:
+                return False
+        else:
+            # Castling Queen's side
+            search_results = search_direction(
+                move.start_posn[0], move.start_posn[1], 0, -1)
+            if len(search_results[2]) != 3:
+                return False
+
+        return True
+
+    def is_possible_valid_move(self, move):
+        """Return true if the passed move is both possible and valid."""
+        return (self.is_possible_move(move) and self.is_valid_move(move))
+
+    ###########################################################################
+    ############################## MOVE FETCHING ##############################
+    ###########################################################################
+
+    def get_piece_moves(self, move):
         pass

@@ -37,6 +37,13 @@ class Piece:
         self.type = type
         self.colour = colour
 
+    def __eq__(self, other):
+        return (self.type == other.type
+                and self.colour == other.colour)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def draw(canvas):
 
         pass

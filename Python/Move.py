@@ -11,7 +11,7 @@ class Move:
         - start_posn:  an integer tuple containing the x and y values of the
                       piece (king if castling move) making the move
         - end_posn:  an integer tuple containing the x and y values of the
-                    square the piece (king if castling move)is moving to
+                    square the piece (king if castling move) is moving to
         - en_passant_posn:  if en_passant, this is a tuple containing the x and
                             y values of the pawn which will be taken by the move
 
