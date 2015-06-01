@@ -21,6 +21,19 @@ class Board:
         """Create clear board."""
         self.clear()
 
+    def draw(canvas):
+        """Draw the current state of the board. Called by the main instance of Game
+
+        Args:
+           - canvas : Tkinter canvas object to draw the board on
+
+        """
+
+        canvas.create_line(5, 5, BOARD_SIZE - 5, 5)
+        canvas.create_line(5, 5, 5, BOARD_SIZE - 5)
+        canvas.create_line(BOARD_SIZE-5, 5, BOARD_SIZE-5, BOARD_SIZE-5)
+        canvas.create_line(5, BOARD_SIZE-5, BOARD_SIZE-5, BOARD_SIZE-5)
+
     def copy(self):
         return copy.deepcopy(self)
 
@@ -111,7 +124,8 @@ class Board:
         piece = self.get_piece(*move.start_posn)
 
         self.remove_piece(*move.start_posn)
-        self.place_piece(*move.end_posn, piece.type, piece.colour)
+        self.place_piece(move.end_posn[0], move.end_posn[1],
+                         piece.type, piece.colour)
 
     def is_possible_move(self, move):
         """Return True if the passed move is possible.

@@ -4,17 +4,15 @@ import Game
 
 class startupUI:
 
-    ai_list = []
-    lb1 = None
-    lb2 = None
 
-    def __init__(self, master):
+    def __init__(self):
 
-        ai_list = []
+        self.ai_list = []
+        self.master = Tk()
 
-        self.populate_ai_list(ai_list)
+        self.populate_ai_list(self.ai_list)
 
-        frame = Frame(master)
+        frame = Frame(self.master)
 
         frame.columnconfigure(0, pad=20)
         frame.columnconfigure(1, pad=20)
@@ -33,7 +31,7 @@ class startupUI:
         p2_label.grid(row=0, column=1)
 
         self.lb1 = Listbox(frame)
-        for script in ai_list:
+        for script in self.ai_list:
             self.lb1.insert(END, script)
         self.lb1.grid(row=1, column=0)
 
@@ -41,7 +39,7 @@ class startupUI:
         self.lb1["exportselection"] = 0
 
         self.lb2 = Listbox(frame)
-        for script in ai_list:
+        for script in self.ai_list:
             self.lb2.insert(END, script)
         self.lb2.grid(row=1, column=1)
 
@@ -55,7 +53,7 @@ class startupUI:
 
         frame.pack()
 
-        master.mainloop()
+        self.master.mainloop()
 
     # Populate the ai_list with names of python scripts from ../Scripts
     def populate_ai_list(self, list):
@@ -74,9 +72,9 @@ class startupUI:
         player1 = self.lb1.get(ACTIVE)
         player2 = self.lb2.get(ACTIVE)
 
+        self.master.destroy()
+
         Game.Game(player1, player2)
 
 
-
-master = Tk()
-startupUI(master)
+startupUI()
