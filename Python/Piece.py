@@ -37,6 +37,10 @@ class Piece:
         self.type = type
         self.colour = colour
 
+    def draw(canvas):
+
+        pass
+
 
 class King(Piece):
 
