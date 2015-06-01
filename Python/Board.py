@@ -21,18 +21,34 @@ class Board:
         """Create clear board."""
         self.clear()
 
-    def draw(canvas):
+    def draw(self, canvas):
         """Draw the current state of the board. Called by the main instance of Game
 
         Args:
            - canvas : Tkinter canvas object to draw the board on
 
         """
+        #Clear the canvas
+        canvas.delete("all")
 
-        canvas.create_line(5, 5, BOARD_SIZE - 5, 5)
-        canvas.create_line(5, 5, 5, BOARD_SIZE - 5)
-        canvas.create_line(BOARD_SIZE-5, 5, BOARD_SIZE-5, BOARD_SIZE-5)
-        canvas.create_line(5, BOARD_SIZE-5, BOARD_SIZE-5, BOARD_SIZE-5)
+        self.draw_board(canvas)
+
+    def draw_board(self, canvas):
+
+        sq_width = int(canvas["width"])/8
+        print(sq_width)
+
+        #white background
+        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill = "white")
+
+        #black squares
+        for i in range(8):
+            for j in range(4):
+                canvas.create_rectangle(i*sq_width, (2*j+(i+1)%2)*sq_width, 
+                                        (i+1)*sq_width, 
+                                        (2*j+(i+1)%2+1)*sq_width,
+                                        fill="black")
+
 
     def copy(self):
         return copy.deepcopy(self)
