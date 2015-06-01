@@ -1,8 +1,10 @@
 """Contains the Move class"""
 
+
 class Move:
+
     """Contains all information required to make or display a move.
-    
+
     Attributes:
         - castle:  true if the move is a castling move
         - en_passant:  true if the move is an enPassant move
@@ -14,17 +16,17 @@ class Move:
                             y values of the pawn which will be taken by the move
 
     """
-    
+
     def __init__(self, start_posn, end_posn, castle=False, en_passant=False,
-7                en_passant_posn=None):
+                 7                en_passant_posn=None):
         """Initialise a move according to passed parameters."""
-        
-        if castle && en_passant:
+
+        if castle & & en_passant:
             raise ValueError("Castle and en_passant cannot both be true")
-        
-        if (en_passant && en_passant_posn is None):
+
+        if (en_passant & & en_passant_posn is None):
             raise ValueError("Must provide en_passant_posn")
-        
+
         self.start_posn = start_posn
         self.end_posn = end_posn
         self.castle = castle
