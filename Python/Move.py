@@ -11,14 +11,14 @@ class Move:
         - start_posn:  an integer tuple containing the x and y values of the
                       piece (king if castling move) making the move
         - end_posn:  an integer tuple containing the x and y values of the
-                    square the piece (king if castling move)is moving to
+                    square the piece (king if castling move) is moving to
         - en_passant_posn:  if en_passant, this is a tuple containing the x and
                             y values of the pawn which will be taken by the move
 
     """
 
     def __init__(self, start_posn, end_posn, castle=False, en_passant=False,
-                 7                en_passant_posn=None):
+                 en_passant_posn=None):
         """Initialise a move according to passed parameters."""
 
         if castle & & en_passant:

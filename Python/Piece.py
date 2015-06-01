@@ -42,6 +42,14 @@ class Piece:
 
         pass
 
+    def __eq__(self, other):
+        return (self.type == other.type
+                and self.colour == other.colour)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
 
 class King(Piece):
 
