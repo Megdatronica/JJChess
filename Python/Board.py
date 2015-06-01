@@ -208,7 +208,7 @@ class Board:
                 found_piece = piece_at_square
                 break
 
-            num_squares++
+            num_squares += 1
             new_x += left_right
             new_y += up_down
 
@@ -326,7 +326,7 @@ class Board:
 
         A castling move is VALID if by making it, the king does not castle into,
         out of, or through check. Note that this function will return true if a
-        castling move is valid, regardless of whether the king/rook has already 
+        castling move is valid, regardless of whether the king/rook has already
         moved.
 
         Args:
@@ -365,5 +365,30 @@ class Board:
     ############################## MOVE FETCHING ##############################
     ###########################################################################
 
-    def get_piece_moves(self, move):
-        pass
+    def get_piece_moves(self, x, y):
+        """Return a list of tuples representing available moves for (x, y).
+
+        Given a position (x, y), return a list of tuples (to_x, to_y)
+        representing positions on the board which the piece at (x, y) can move
+        to.
+
+        """
+
+        piece_to_move = self.get_piece(x, y)
+
+        if piece_to_move.type == p_type.blank:
+            return []
+        if piece_to_move.type == p_type.king:
+            return get_king_moves(x, y)
+        if piece_to_move.type == p_type.queen:
+            return get_queen_moves(x, y)
+        if piece_to_move.type == p_type.bishop:
+            return get_bishop_moves(x, y)
+        if piece_to_move.type == p_type.knight:
+            return get_knight_moves(x, y)
+        if piece_to_move.type == p_type.rook:
+            return get_rook_moves(x, y)
+        if piece_to_move.type == p_type.pawn:
+            return get_pawn_moves(x, y)
+
+        return count
