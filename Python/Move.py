@@ -18,7 +18,7 @@ class Move:
     """
 
     def __init__(self, start_posn, end_posn, castle=False, en_passant=False,
-                 7                en_passant_posn=None):
+                 en_passant_posn=None):
         """Initialise a move according to passed parameters."""
 
         if castle & & en_passant:

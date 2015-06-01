@@ -2,6 +2,7 @@
 
 import copy
 import Piece
+import Move
 from Piece import PieceType as p_type
 from Piece import PieceColour as colour
 
@@ -104,7 +105,74 @@ class Board:
         self.piece_array[x][y] = Piece.Piece()
 
     def search_direction(self, x, y, up_down, left_right):
-        pass
+        """Move along the board and return information about the squares.
+
+        Given a starting location and a direction, move along the board in
+        that direction and return a tuple with information about the number of
+        empty squares, the piece at the end of the search, and what moves are
+        legal.
+
+        Args:
+            - x, y:  ints specifying the position on the board to start at
+            - up_down:  int, positive if moving upwards (in the negative y
+                        direction), negative if moving downwards
+            - left_right:  int, positive if moving right (in the positive
+                           x direction), negative if moving left
+
+        For instance, up_down = 1 and left_right = -1 would look diagonally
+        up and to the left.
+
+        Returns: a tuple containing three pieces of information:
+            [0] An integer count of the number of empty squares before the 
+                function finds another piece. This will be zero if there is
+                a piece right next to (x, y). If the function reaches the end
+                of the board, this will be the number of empty squares
+                between (x, y) and the edge of the board (zero if (x, y) is at
+                the edge of the board).
+            [1] The piece the function finds at the end of the search, or None
+                if the function reaches the edge of the board without finding a
+                piece
+            [2] A list of (x_val, y_val) tuples which represent the squares
+                that a piece at (x, y) could make valid possible moves to.
+
+        Will raise ValueError if up_down == left_right == 0, or IndexError if
+        x and y do not refer to a physical square on the board.
+
+        """
+
+        up_down = up_down/abs(up_down)
+        left_right = left_right/abs(left_right)
+
+        if up_down == 0 and left_right == 0:
+            raise valueError
+
+        num_squares = 0
+        found_piece = None
+        move_squares = []
+
+        new_x = x
+        new_y = y
+
+        new_x += left_right
+        new_y += up_down
+
+        while(x < Board.SIZE and y < Board.SIZE and x >= 0 and y >= 0):
+
+            move = Move((x, y), (new_x, new_y))
+            piece_at_square = self.get_piece(new_x, new_y)
+
+            if (self.is_possible_valid_move(move)):
+                move_squares.append((new_x, new_y))
+
+            if (piece_at_square.type != p_type.blank):
+                found_piece = piece_at_square
+                break
+
+            num_squares++
+            new_x += left_right
+            new_y += up_down
+
+        return (num_squares, found_piece, move_squares)
 
     ###########################################################################
     ############################### MOVE LOGIC ################################
