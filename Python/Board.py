@@ -37,18 +37,25 @@ class Board:
     def draw_board(self, canvas):
 
         sq_width = int(canvas["width"])/8
-        print(sq_width)
 
-        # white background
-        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill="white")
+        #white background
+        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill = "yellow")
+
 
         # black squares
         for i in range(8):
             for j in range(4):
-                canvas.create_rectangle(i*sq_width, (2*j+(i+1) % 2)*sq_width,
-                                        (i+1)*sq_width,
-                                        (2*j+(i+1) % 2+1)*sq_width,
-                                        fill="black")
+
+                canvas.create_rectangle(i*sq_width, (2*j+(i+1)%2)*sq_width, 
+                                        (i+1)*sq_width, 
+                                        (2*j+(i+1)%2+1)*sq_width,
+                                        fill="brown")
+
+        for i in range(8):
+            for j in range(8):
+
+                self.piece_array[i][j].draw(canvas, i*sq_width, j*sq_width)
+
 
     def copy(self):
         return copy.deepcopy(self)

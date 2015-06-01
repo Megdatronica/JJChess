@@ -1,6 +1,7 @@
 """Contains the Piece class"""
 
 from enum import Enum
+from tkinter import *
 
 
 class PieceType(Enum):
@@ -37,6 +38,10 @@ class Piece:
         self.type = type
         self.colour = colour
 
+    def draw(self, canvas, x, y):
+
+        pass
+
     def __eq__(self, other):
         return (self.type == other.type
                 and self.colour == other.colour)
@@ -44,9 +49,6 @@ class Piece:
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def draw(canvas):
-
-        pass
 
 
 class King(Piece):
@@ -59,8 +61,25 @@ class King(Piece):
         """
 
         self.colour = colour
-        self.type = pieceType.king
+        self.type = PieceType.king
 
+    def draw(self, canvas, x, y):
+
+        """Draw the piece
+
+           Args:
+               -canvas: The canvas element to draw onto
+               -x: The x coordinate of top left corner
+               -y: The y coordinate of top left corner
+        """
+
+        sq_offset = int(canvas["width"])/16
+
+        if(self.colour == PieceColour.white):
+
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_king)
+        else:    
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_king)
 
 class Queen(Piece):
 
@@ -72,7 +91,26 @@ class Queen(Piece):
         """
 
         self.colour = colour
-        self.type = pieceType.queen
+        self.type = PieceType.queen
+
+    def draw(self, canvas, x, y):
+
+        """Draw the piece
+
+           Args:
+               -canvas: The canvas element to draw onto
+               -x: The x coordinate of top left corner
+               -y: The y coordinate of top left corner
+        """
+
+        sq_offset = int(canvas["width"])/16
+
+        if(self.colour == PieceColour.white):
+
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_queen)
+        else:    
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_queen)
+
 
 
 class Bishop(Piece):
@@ -85,7 +123,25 @@ class Bishop(Piece):
         """
 
         self.colour = colour
-        self.type = pieceType.bishop
+        self.type = PieceType.bishop
+
+    def draw(self, canvas, x, y):
+
+        """Draw the piece
+
+           Args:
+               -canvas: The canvas element to draw onto
+               -x: The x coordinate of top left corner
+               -y: The y coordinate of top left corner
+        """
+
+        sq_offset = int(canvas["width"])/16
+
+        if(self.colour == PieceColour.white):
+
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_bish)
+        else:    
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_bish)
 
 
 class Knight(Piece):
@@ -98,7 +154,25 @@ class Knight(Piece):
         """
 
         self.colour = colour
-        self.type = pieceType.knight
+        self.type = PieceType.knight
+
+    def draw(self, canvas, x, y):
+
+        """Draw the piece
+
+           Args:
+               -canvas: The canvas element to draw onto
+               -x: The x coordinate of top left corner
+               -y: The y coordinate of top left corner
+        """
+
+        sq_offset = int(canvas["width"])/16
+
+        if(self.colour == PieceColour.white):
+
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_nght)
+        else:    
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_nght)
 
 
 class Rook(Piece):
@@ -111,7 +185,25 @@ class Rook(Piece):
         """
 
         self.colour = colour
-        self.type = pieceType.rook
+        self.type = PieceType.rook
+
+    def draw(self, canvas, x, y):
+
+        """Draw the piece
+
+           Args:
+               -canvas: The canvas element to draw onto
+               -x: The x coordinate of top left corner
+               -y: The y coordinate of top left corner
+        """
+
+        sq_offset = int(canvas["width"])/16
+
+        if(self.colour == PieceColour.white):
+
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_rook)
+        else:    
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_rook)
 
 
 class Pawn(Piece):
@@ -124,4 +216,22 @@ class Pawn(Piece):
         """
 
         self.colour = colour
-        self.type = pieceType.pawn
+        self.type = PieceType.pawn
+
+    def draw(self, canvas, x, y):
+
+        """Draw the piece
+
+           Args:
+               -canvas: The canvas element to draw onto
+               -x: The x coordinate of top left corner
+               -y: The y coordinate of top left corner
+        """
+
+        sq_offset = int(canvas["width"])/16
+
+        if(self.colour == PieceColour.white):
+
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_pawn)
+        else:    
+            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_pawn)

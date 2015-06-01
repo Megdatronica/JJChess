@@ -1,6 +1,7 @@
 # Tkinter graphics package
 from tkinter import *
 import Board
+from Images import Images
 
 # Size of the board canvas to render
 BOARD_SIZE = 400
@@ -15,7 +16,10 @@ class Game:
         self.board_canvas = Canvas(self.frame, width=BOARD_SIZE,
                                    height=BOARD_SIZE)
 
+        Images.load_images(self.board_canvas)
+
         self.board = Board.Board()
+        self.board.setup()
 
         self.frame.columnconfigure(0, pad=3)
         self.frame.columnconfigure(1, pad=3)
