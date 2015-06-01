@@ -39,33 +39,34 @@ class Board:
 
     def clear(self):
         """Initialise piece_array as an 8 x 8 array of blank pieces."""
-        piece_array = [[Piece() for i in range(SIZE)] for i in range(SIZE)]
+        self.piece_array = [[Piece.Piece() for i in range(Board.SIZE)]
+                            for i in range(Board.SIZE)]
 
     def setup(self):
         """Set the board to the arrangement for the beginning of a game."""
 
         self.clear()
-        for x in range(SIZE):
-            piece_array[x][1] = Pawn(colour.black)
-            piece_array[x][6] = Pawn(colour.white)
+        for x in range(Board.SIZE):
+            self.piece_array[x][1] = Piece.Pawn(colour.black)
+            self.piece_array[x][6] = Piece.Pawn(colour.white)
 
-        piece_array[0][0] = Rook(colour.black)
-        piece_array[7][0] = Rook(colour.black)
-        piece_array[1][0] = Knight(colour.black)
-        piece_array[6][0] = Knight(colour.black)
-        piece_array[2][0] = Bishop(colour.black)
-        piece_array[5][0] = Bishop(colour.black)
-        piece_array[3][0] = Queen(colour.black)
-        piece_array[4][0] = King(colour.black)
+        self.piece_array[0][0] = Piece.Rook(colour.black)
+        self.piece_array[7][0] = Piece.Rook(colour.black)
+        self.piece_array[1][0] = Piece.Knight(colour.black)
+        self.piece_array[6][0] = Piece.Knight(colour.black)
+        self.piece_array[2][0] = Piece.Bishop(colour.black)
+        self.piece_array[5][0] = Piece.Bishop(colour.black)
+        self.piece_array[3][0] = Piece.Queen(colour.black)
+        self.piece_array[4][0] = Piece.King(colour.black)
 
-        piece_array[0][7] = Rook(colour.white)
-        piece_array[7][7] = Rook(colour.white)
-        piece_array[1][7] = Knight(colour.white)
-        piece_array[6][7] = Knight(colour.white)
-        piece_array[2][7] = Bishop(colour.white)
-        piece_array[5][7] = Bishop(colour.white)
-        piece_array[3][7] = Queen(colour.white)
-        piece_array[4][7] = King(colour.white)
+        self.piece_array[0][7] = Piece.Rook(colour.white)
+        self.piece_array[7][7] = Piece.Rook(colour.white)
+        self.piece_array[1][7] = Piece.Knight(colour.white)
+        self.piece_array[6][7] = Piece.Knight(colour.white)
+        self.piece_array[2][7] = Piece.Bishop(colour.white)
+        self.piece_array[5][7] = Piece.Bishop(colour.white)
+        self.piece_array[3][7] = Piece.Queen(colour.white)
+        self.piece_array[4][7] = Piece.King(colour.white)
 
     ###########################################################################
     ############################# HELPER FUNCTIONS ############################
@@ -89,7 +90,7 @@ class Board:
         Will raise IndexError if the indices are not valid.
         """
 
-        self.piece_array[x][y] = Piece(type, colour)
+        self.piece_array[x][y] = Piece.Piece(type, colour)
 
     def remove_piece(self, x, y):
         """Remove the piece at the passed location.
@@ -100,7 +101,7 @@ class Board:
         Will raise IndexError if the indices are not valid.
         """
 
-        self.piece_array[x][y] = Piece()
+        self.piece_array[x][y] = Piece.Piece()
 
     def search_direction(self, x, y, up_down, left_right):
         pass
@@ -192,3 +193,4 @@ class Board:
                      move.
 
         """
+        pass
