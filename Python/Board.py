@@ -32,10 +32,6 @@ class Board:
         # Clear the canvas
         canvas.delete("all")
 
-        self.draw_board(canvas)
-
-    def draw_board(self, canvas):
-
         sq_width = int(canvas["width"])/8
 
         # white background
@@ -50,6 +46,7 @@ class Board:
                                         (2*j+(i+1) % 2+1)*sq_width,
                                         fill="brown")
 
+        #draw all pieces on the board
         for i in range(8):
             for j in range(8):
 
