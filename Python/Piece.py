@@ -57,7 +57,6 @@ class Piece:
         return not self.__eq__(other)
 
 
-
 class King(Piece):
 
     def __init__(self, colour):
@@ -71,7 +70,6 @@ class King(Piece):
         self.type = PieceType.king
 
     def draw(self, canvas, x, y):
-
         """Draw the piece
 
            Args:
@@ -84,9 +82,10 @@ class King(Piece):
 
         if(self.colour == PieceColour.white):
 
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_king)
-        else:    
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_king)
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.w_king)
+        else:
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_king)
+
 
 class Queen(Piece):
 
@@ -101,7 +100,6 @@ class Queen(Piece):
         self.type = PieceType.queen
 
     def draw(self, canvas, x, y):
-
         """Draw the piece
 
            Args:
@@ -114,10 +112,9 @@ class Queen(Piece):
 
         if(self.colour == PieceColour.white):
 
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_queen)
-        else:    
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_queen)
-
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.w_queen)
+        else:
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_queen)
 
 
 class Bishop(Piece):
@@ -133,7 +130,6 @@ class Bishop(Piece):
         self.type = PieceType.bishop
 
     def draw(self, canvas, x, y):
-
         """Draw the piece
 
            Args:
@@ -146,9 +142,9 @@ class Bishop(Piece):
 
         if(self.colour == PieceColour.white):
 
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_bish)
-        else:    
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_bish)
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.w_bish)
+        else:
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_bish)
 
 
 class Knight(Piece):
@@ -164,7 +160,6 @@ class Knight(Piece):
         self.type = PieceType.knight
 
     def draw(self, canvas, x, y):
-
         """Draw the piece
 
            Args:
@@ -177,9 +172,9 @@ class Knight(Piece):
 
         if(self.colour == PieceColour.white):
 
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_nght)
-        else:    
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_nght)
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.w_nght)
+        else:
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_nght)
 
 
 class Rook(Piece):
@@ -195,7 +190,6 @@ class Rook(Piece):
         self.type = PieceType.rook
 
     def draw(self, canvas, x, y):
-
         """Draw the piece
 
            Args:
@@ -208,9 +202,9 @@ class Rook(Piece):
 
         if(self.colour == PieceColour.white):
 
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_rook)
-        else:    
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_rook)
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.w_rook)
+        else:
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_rook)
 
 
 class Pawn(Piece):
@@ -226,7 +220,6 @@ class Pawn(Piece):
         self.type = PieceType.pawn
 
     def draw(self, canvas, x, y):
-
         """Draw the piece
 
            Args:
@@ -239,6 +232,6 @@ class Pawn(Piece):
 
         if(self.colour == PieceColour.white):
 
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.w_pawn)
-        else:    
-            canvas.create_image(x+sq_offset,y+sq_offset, image=canvas.b_pawn)
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.w_pawn)
+        else:
+            canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_pawn)

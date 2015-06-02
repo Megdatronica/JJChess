@@ -122,7 +122,7 @@ class Board:
         """
         return self.piece_array[x][y]
 
-    def place_piece(self, x, y, type, colour):
+    def place_piece(self, x, y, piece_type, colour):
         """Place a piece of the passed type at the passed location.
 
         Args:
@@ -133,7 +133,7 @@ class Board:
         Will raise IndexError if the indices are not valid.
         """
 
-        self.piece_array[x][y] = Piece.Piece(type, colour)
+        self.piece_array[x][y] = Piece.make_piece(piece_type, colour)
 
     def remove_piece(self, x, y):
         """Remove the piece at the passed location.
@@ -611,6 +611,37 @@ class Board:
             piece = self.get_piece(*square)
             if piece.colour != colour:
                 if piece.type == p_type.king:
+                    return True
+
+        return False
+
+    def has_won(self, colour):
+        """Returns true if the team of the passed colour has won.
+
+        Args:
+            colour:  a member of the Piece.PieceColour enum
+
+        """
+
+        if colour == colour.white:
+            enemy = colour.black
+        else:
+            enemy = colour.white
+
+        return (not legal_move_exists(enemy)) and self.is_in_check(enemy)
+
+    def legal_move_exists(self, colour):
+        """Returns true if the team of the passed colour can make a legal move.
+
+        Args:
+            colour:  a member of the Piece.PieceColour enum
+
+        """
+
+        for i, j in itertools.product(range(Board.SIZE), range(Board.SIZE)):
+            piece = self.get_piece(i, j)
+            if piece.colour == colour:
+                if len(self.get_piece_moves(i, j)) > 0:
                     return True
 
         return False
