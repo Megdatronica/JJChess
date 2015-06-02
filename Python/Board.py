@@ -147,7 +147,7 @@ class Board:
         self.piece_array[x][y] = Piece.Piece()
 
     def search_direction(self, x, y, up_down, left_right):
-        """Move along the board and return information about the squares.
+        """Move along the board in a given direction and return information.
 
         Given a starting location and a direction, move along the board in
         that direction and return a tuple with information about the number of
