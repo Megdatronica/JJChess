@@ -1,3 +1,5 @@
+'''Contains the Game class'''
+
 # Tkinter graphics package
 from tkinter import *
 import Board
