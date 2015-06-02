@@ -46,7 +46,7 @@ class Board:
                                         (2*j+(i+1) % 2+1)*sq_width,
                                         fill="brown")
 
-        #draw all pieces on the board
+        # draw all pieces on the board
         for i in range(8):
             for j in range(8):
 
@@ -171,8 +171,8 @@ class Board:
             [1] The piece the function finds at the end of the search, or None
                 if the function reaches the edge of the board without finding a
                 piece
-            [2] A list of (x_val, y_val) tuples which represent the squares
-                that a piece at (x, y) could make valid possible moves to.
+            [2] A list of moves which are valid and possible for a piece at
+                (x, y) in the given direction
 
         Will raise ValueError if up_down == left_right == 0, or IndexError if
         x and y do not refer to a physical square on the board.
@@ -190,7 +190,7 @@ class Board:
 
         num_squares = 0
         found_piece = None
-        move_squares = []
+        move_list = []
 
         new_x = x
         new_y = y
@@ -201,20 +201,20 @@ class Board:
         while(self.is_square(new_x, new_y)):
 
             move = Move((x, y), (new_x, new_y))
-            piece_at_square = self.get_piece(new_x, new_y)
+            piece_at_move = self.get_piece(new_x, new_y)
 
             if (self.is_possible_valid_move(move)):
-                move_squares.append((new_x, new_y))
+                move_list.append(move)
 
-            if (piece_at_square.type != p_type.blank):
-                found_piece = piece_at_square
+            if (piece_at_move.type != p_type.blank):
+                found_piece = piece_at_move
                 break
 
             num_squares += 1
             new_x += left_right
             new_y += up_down
 
-        return (num_squares, found_piece, move_squares)
+        return (num_squares, found_piece, move_list)
 
     ###########################################################################
     ############################# MOVE EVALUATION #############################
@@ -326,10 +326,10 @@ class Board:
     def is_valid_castle_move(self, move):
         """Return true if the passed move is a castle move and is valid.
 
-        A castling move is VALID if by making it, the king does not castle into,
-        out of, or through check. Note that this function will return true if a
-        castling move is valid, regardless of whether the king/rook has already
-        moved.
+        A castling move is VALID if by making it, the king does not castle
+        into, out of, or through check. Note that this function will return
+        true if a castling move is valid, regardless of whether the king/rook
+        has already moved.
 
         Args:
             - move:  a Move object
@@ -374,11 +374,12 @@ class Board:
     ###########################################################################
 
     def get_piece_moves(self, x, y):
-        """Return a list of tuples representing available moves for (x, y).
+        """Return a list of available moves for the piece at (x, y).
 
-        Given a position (x, y), return a list of tuples (to_x, to_y)
-        representing positions on the board which the piece at (x, y) can move
-        to.
+        Given a position (x, y), return a list of moves which it is legal for
+        the piece at (x, y) to make. Note that this list is not completely
+        exhaustive: the function will not return any castle moves or en passant
+        moves.
 
         """
 
@@ -402,22 +403,113 @@ class Board:
         return count
 
     def get_king_moves(self, x, y):
-        pass
+        """Returns a list of available moves for a king at (x, y).
+
+        Given a position (x, y) returns a list of moves which it is legal for
+        a king at (x, y) to make, excluding castling moves. If the piece at
+        (x, y) is not a king or there is more than one king of a given colour
+        on the board, this function will return without error but with 
+        incorrect results.
+
+        """
+
+        move_list = []
+        square_list = [(x+1, y+1), (x+1, y),   (x+1, y-1), (x, y+1),
+                       (x, y-1),   (x-1, y+1), (x-1, y),   (x-1, y-1)]
+
+        for square in square_list:
+            move = Move((x, y), square)
+            if self.is_possible_valid_move(move):
+                move_list.append(move)
+
+        return move_list
 
     def get_queen_moves(self, x, y):
-        pass
+        """Returns a list of available moves for a queen at (x, y).
+
+        Given a position (x, y) returns a list of moves which it is legal for
+        a queen at (x, y) to make.
+
+        """
+
+        move_list = []
+        move_list.extend(self.get_bishop_moves(x, y))
+        move_list.extend(self.get_rook_moves(x, y))
+        return move_list
 
     def get_bishop_moves(self, x, y):
-        pass
+        """Returns a list of available moves for a bishop at (x, y).
+
+        Given a position (x, y) returns a list of moves which it is legal for
+        a bishop at (x, y) to make.
+
+        """
+
+        move_list = []
+        directions = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+        for direction in directions:
+            direction_moves = self.search_direction(
+                x, y, direction[0], direction[1])
+            move_list.extend(search_direction[2])
+
+        return move_list
 
     def get_knight_moves(self, x, y):
-        pass
+        """Returns a list of available moves for a knight at (x, y).
+
+        Given a position (x, y) returns a list of moves which it is legal for
+        a knight at (x, y) to make.
+
+        """
+
+        move_list = []
+        square_list = [(x+1, y+2), (x-1, y+2), (x+2, y+1), (x-2, y+1),
+                       (x+2, y-1), (x-2, y-1), (x+1, y-2), (x-1, y-2)]
+
+        for square in square_list:
+            move = Move((x, y), square)
+            if self.is_possible_valid_move(move):
+                move_list.append(move)
+
+        return move_list
 
     def get_rook_moves(self, x, y):
-        pass
+        """Returns a list of available moves for a rook at (x, y).
+
+        Given a position (x, y) returns a list of moves which it is legal for
+        a rook at (x, y) to make.
+
+        """
+
+        move_list = []
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        for direction in directions:
+            direction_moves = self.search_direction(
+                x, y, direction[0], direction[1])
+            move_list.extend(search_direction[2])
+
+        return move_list
 
     def get_pawn_moves(self, x, y):
-        pass
+        """Returns a list of available moves for a pawn at (x, y).
+
+        Given a position (x, y) returns a list of moves which it is legal for
+        a pawn at (x, y) to make, excluding en passant moves.
+
+        """
+
+        move_list = []
+        square_list = [(x+1, y+2), (x-1, y+2), (x+2, y+1), (x-2, y+1),
+                       (x+2, y-1), (x-2, y-1), (x+1, y-2), (x-1, y-2)]
+
+        for square in square_list:
+            move = Move((x, y), square)
+            if self.is_possible_valid_move(move):
+                move_list.append(move)
+
+        return move_list
 
     ###########################################################################
     ############################ BOARD EVALUATION #############################
