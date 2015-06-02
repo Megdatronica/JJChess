@@ -23,7 +23,7 @@ class Board:
         self.clear()
 
     def draw(self, canvas):
-        """Draw the current state of the board. Called by the main instance of Game
+        """Draw the current state of the board on a canvas.
 
         Args:
            - canvas : Tkinter canvas object to draw the board on
