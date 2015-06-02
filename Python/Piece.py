@@ -86,6 +86,10 @@ class King(Piece):
         else:
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_king)
 
+        def get_san(self):
+
+        return "K"
+
 
 class Queen(Piece):
 
@@ -111,10 +115,13 @@ class Queen(Piece):
         sq_offset = int(canvas["width"])/16
 
         if(self.colour == PieceColour.white):
-
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.w_queen)
         else:
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_queen)
+
+        def get_san(self):
+
+        return "Q"
 
 
 class Bishop(Piece):
@@ -146,6 +153,10 @@ class Bishop(Piece):
         else:
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_bish)
 
+        def get_san(self):
+
+        return "B"
+
 
 class Knight(Piece):
 
@@ -176,6 +187,10 @@ class Knight(Piece):
         else:
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_nght)
 
+    def get_san(self):
+
+        return "N"
+
 
 class Rook(Piece):
 
@@ -205,6 +220,10 @@ class Rook(Piece):
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.w_rook)
         else:
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_rook)
+
+    def get_san(self):
+
+        return "R"
 
 
 class Pawn(Piece):

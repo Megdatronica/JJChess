@@ -18,6 +18,7 @@ class Board:
     """
 
     SIZE = 8
+    FILE_LABELS = [a, b, c, d, e, f, g, h]
 
     def __init__(self):
         """Create clear board."""
@@ -645,3 +646,18 @@ class Board:
                     return True
 
         return False
+
+    ###########################################################################
+    ########################### BOARD REPRESENTATION ##########################
+    ###########################################################################
+
+    def get_san(move):
+
+        san = ""
+
+        piece = self.get_piece(*move.start_posn)
+
+        if(piece.type != PieceType.pawn):
+            san += piece.get_san()
+
+        else:
