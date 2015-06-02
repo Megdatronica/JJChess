@@ -1,4 +1,4 @@
-'''Contains the startupUI class'''
+"""Contains the startupUI class"""
 
 from tkinter import *
 from os import listdir
@@ -6,8 +6,7 @@ import Game
 
 class startupUI:
 
-    '''Creates a startup dialog from which the User can select the type of 
-       players in the game (AI script or Human)
+    """Creates startup dialog for user to create a game.
 
        Attributes:
                  - ai_list: A list containing available UI scripts 
@@ -18,7 +17,7 @@ class startupUI:
 
        UI ELEMENTS:
                   - master: Master instance of tkinter
-                  - self.frame: The main window self.frame configured with grid geometry
+                  - frame: The main window self.frame configured with grid geometry
                   - p1_label: Label for the player one type list
                   - p2_label: Label for the player two type list
                   - lb1: A listbox to be populated with player one 
@@ -28,13 +27,13 @@ class startupUI:
                   -start_game_button: Button to start the game with the 
                                       selected AI types
 
-    '''
+    """
 
 
     def __init__(self):
 
-        '''Populate a list of AIs and build the UI
-        '''
+        """Populate a list of AIs and build the UI.
+        """
 
         self.ai_list = []
         self.master = Tk()
@@ -47,8 +46,8 @@ class startupUI:
 
     def build_ui(self):
 
-        '''Build the startup UI
-        '''
+        """Build the startup UI.
+        """
 
         self.frame.columnconfigure(0, pad=20)
         self.frame.columnconfigure(1, pad=20)
@@ -91,9 +90,8 @@ class startupUI:
 
     def populate_ai_list(self, list):
 
-        '''Populate the ai list with names of python scripts from ../Scripts 
-           (and a Human player)
-        '''
+        """Populate the ai list with names of python scripts from "../Scripts".
+        """
 
         list.append("Human")
 
@@ -106,8 +104,8 @@ class startupUI:
 
     def start_game(self):
 
-        '''Destroy the start up window and start a game with the selected AIs
-        '''
+        """Destroy the start up window and start a game with the selected AIs.
+        """
 
         player1 = self.lb1.get(ACTIVE)
         player2 = self.lb2.get(ACTIVE)
