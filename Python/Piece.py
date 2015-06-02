@@ -39,6 +39,13 @@ class Piece:
         self.colour = colour
 
     def draw(self, canvas, x, y):
+        """Draw the piece
+
+           Args:
+               -canvas: The canvas element to draw onto
+               -x: The x coordinate of top left corner
+               -y: The y coordinate of top left corner
+        """
 
         pass
 

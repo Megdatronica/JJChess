@@ -1,14 +1,24 @@
+'''Contains the Images class'''
+
 from tkinter import *
 import math
 
 
 class Images:
 
-    w_king = None
-    b_king = None
+    '''A class for loading and processing images
+
+    '''
 
     def load_images(canvas):
 
+        '''Load Images from ../Resources/Images for the piece icons
+
+           Args:
+               -canvas: The tkinter canvas element to laod the images to
+        '''
+
+        #The width of one square on the chess board (used for scaling)
         sq_width = int(canvas["width"])/8
 
         canvas.w_king = PhotoImage(file="../Resources/Images/wk.gif")
