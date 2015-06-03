@@ -200,7 +200,7 @@ class Board:
 
         self.piece_array[x][y] = Piece.Piece()
 
-    def search_direction(self, x, y, up_down, left_right):
+    def search_direction(self, x, y, up_down, left_right, no_legal=False):
         """Move along the board in a given direction and return information.
 
         Given a starting location and a direction, move along the board in
@@ -214,6 +214,9 @@ class Board:
                         direction), negative if moving downwards
             - left_right:  int, positive if moving right (in the positive
                            x direction), negative if moving left
+            - no_legal:  If this is set true, the function will skip
+                         calculating a list of valid possible moves (which can
+                         be slow)
 
         For instance, up_down = 1 and left_right = -1 would look diagonally
         up and to the left.
@@ -229,7 +232,8 @@ class Board:
                 if the function reaches the edge of the board without finding a
                 piece
             [2] A list of moves which are valid and possible for a piece at
-                (x, y) in the given direction
+                (x, y) in the given direction (or empty list if no_legal is 
+                true)
 
         Will raise ValueError if up_down == left_right == 0, or IndexError if
         x and y do not refer to a physical square on the board.
@@ -260,10 +264,10 @@ class Board:
             move = Move((x, y), (new_x, new_y))
             piece_at_move = self.get_piece(new_x, new_y)
 
-            if (self.is_possible_valid_move(move)):
+            if (not no_legal) and self.is_possible_valid_move(move):
                 move_list.append(move)
 
-            if (piece_at_move.type != p_type.blank):
+            if piece_at_move.type != p_type.blank:
                 found_piece = piece_at_move
                 break
 
@@ -364,7 +368,7 @@ class Board:
         if (move.end_posn[0] > move.start_posn[0]):
             # Castling King's side
             search_results = search_direction(
-                move.start_posn[0], move.start_posn[1], 0, 1)
+                move.start_posn[0], move.start_posn[1], 0, 1, no_legal=True)
             if search_results[0] != 2:
                 return False
             if search_results[1] != friendly_rook:
@@ -372,7 +376,7 @@ class Board:
         else:
             # Castling Queen's side
             search_results = search_direction(
-                move.start_posn[0], move.start_posn[1], 0, -1)
+                move.start_posn[0], move.start_posn[1], 0, -1, no_legal=True)
             if search_results[0] != 3:
                 return False
             if search_results[1] != friendly_rook:
@@ -622,14 +626,16 @@ class Board:
 
         # Vertically/Horizontally
         for dirn in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
-            piece = self.search_direction(x, y, dirn[0], dirn[1])[1]
+            piece = self.search_direction(
+                x, y, dirn[0], dirn[1], no_legal=True)[1]
             if piece.colour != colour:
                 if piece.type in (p_type.rook, p_type.queen):
                     return True
 
         # Diagonally
         for dirn in [(1, 1), (1, -1), (-1, 1), (-1, -1)]:
-            piece = self.search_direction(x, y, dirn[0], dirn[1])[1]
+            piece = self.search_direction(
+                x, y, dirn[0], dirn[1], no_legal=True)[1]
             if piece.colour != colour:
                 if piece.type in (p_type.bishop, p_type.queen):
                     return True
@@ -771,16 +777,17 @@ class Board:
                 piece = self.get_piece(column, row)
 
                 if piece.type == p_type.blank:
-                    gap = self.search_direction(column, row, 0, 1)[0]
+                    gap = self.search_direction(
+                        column, row, 0, 1, no_legal=True)[0]
                     forsyth += str(gap + 1)
                     column += gap + 1
                 else:
                     forsyth += piece.get_san()
-                    gap = searchDirection(column, row, 0, 1)[0]
+                    gap = searchDirection(
+                        column, row, 0, 1, no_legal=True)[0]
 
                     if gap > 0:
                         forsyth += str(gap)
-
                     column += gap + 1
 
             if row < BOARD_SIZE - 1:
