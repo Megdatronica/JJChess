@@ -8,11 +8,26 @@ class Gamestate:
 
     """ Contains all information required to display current state of game.
 
-        Args:
-            - board: a board corresponding to the current game state
+        Attributes:
+                  - board: a board corresponding to the current game state
+                  - w_castle_K: True if white can castle king-side
+                  - b_castle_K: True if black can castle king-side
+                  - w_castle_Q: True if white can castle queen-side
+                  - b_castle_Q: True if black can castle queen-side
+                  - count: counts which move we are on (Note: this is the 
+                     number of half moves in chess move counting)
+                  - fifty_move_count: counts as above the number of moves 
+                     since last capture
+                  - en_passant_sq: if an en passant move is possible, this
+                     is the square behind the pawn to be captured. If en 
+                     passant is not possible, set to None
+                  - is_white_turn: true if it is white's turn
     """
 
     def __init__(self):
+        
+        """ Constructor for the game state - defaults to start of a game.
+        """
 
         self.board = Board.Board()
         self.board.setup()
@@ -30,15 +45,31 @@ class Gamestate:
         self.is_white_turn = True
 
     def draw(self, canvas):
+        """ Draw the gamestate to a Tkinter canvas element.
+
+            Args:
+                -canvas: the Tkinter canvas element
+        """
 
         self.board.draw(canvas)
 
     def make_move(self, move):
+        """ Make a given move.
+
+            Args:
+                - move: move to be made
+        """
 
         update_counts(move)
         board.make_move(move)
 
     def update_counts(self, move):
+
+        """ Update counters and set en passant square if appropriate.
+
+            Args:
+                - move: move that is GOING (called before move made) to be made
+        """
 
         piece = self.board.get_piece(*move.start_posn)
 
@@ -108,6 +139,13 @@ class Gamestate:
 
     def is_legal_move(self, move, colour):
 
+        """ Check if a given move is legal
+
+            Args:
+                - move: move to be checked
+                - colour: colour of player making move
+        """
+
         moves = get_all_moves(colour)
 
         if(move in moves)
@@ -117,6 +155,14 @@ class Gamestate:
             return False
 
     def get_all_moves(self, colour):
+
+        """ Return all the legal moves that the coloured player can make.
+
+            (includes castling and en passant moves)
+
+            Args:
+                - colour: colour of the player
+        """
 
         moves = self.get_player_moves(colour)
 
@@ -153,6 +199,12 @@ class Gamestate:
 
     def get_player_moves(self, colour):
 
+        """ Helper function to get_all_moves - returns all but castling.
+
+            Args:
+                - colour: colour of the player making the move
+        """
+
         b_moves = []
 
         for i ion range(8):
@@ -175,12 +227,30 @@ class Gamestate:
                 else:
                     b_moves.extend(self.board.get_piece_moves(i,j))
 
+    def can_promote_pawn(self, colour):
+
+        """ Check if a pawn can be promoted.
+
+            Args:
+                - colour: colour of player to check for
+        """
+
+        self.board.can_promote_pawn(colour)
 
     def swap_turn(self):
+
+        """ Swap which player has the current turn.
+        """
 
         self.is_white_turn = !is_white_turn
 
     def get_san(move):
+
+        """ Return the SAN string for a given move.
+
+            Args:
+                - move: move to get SAN of
+        """
 
         san = board.get_san(move)
         

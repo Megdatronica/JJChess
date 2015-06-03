@@ -678,7 +678,7 @@ class Board:
         """Return true if the team of the passed colour has won.
 
         Args:
-            colour:  a member of the Piece.PieceColour enum
+            - colour:  a member of the Piece.PieceColour enum
 
         """
 
@@ -693,7 +693,7 @@ class Board:
         """Return true if the team of the passed colour can make a legal move.
 
         Args:
-            colour:  a member of the Piece.PieceColour enum
+            - colour:  a member of the Piece.PieceColour enum
 
         """
 
@@ -735,8 +735,8 @@ class Board:
     def get_san(self, move):
         """Return a SAN representation of move (ignoring checks/promotions).
 
-           -Args:
-                -move: the move to return SAN of
+           Args:
+               -move: the move to return SAN of
         """
         san = ""
 
