@@ -41,7 +41,7 @@ class Board:
 
         # black squares
         for i in range(8):
-            for j in range(4):
+            for j in range(4):   # Joe what are these magic numbers explain
 
                 canvas.create_rectangle(i*sq_width, (2*j+(i+1) % 2)*sq_width,
                                         (i+1)*sq_width,
@@ -107,6 +107,59 @@ class Board:
         self.remove_piece(*move.start_posn)
         self.place_piece(move.end_posn[0], move.end_posn[1],
                          piece.type, piece.colour)
+
+    def castle(self, move):
+        """Adjust the state of the board to reflect the passed castling move.
+
+        The passed move should be a legal castling move.
+
+        Args:
+            - move: a move object which is a castling move.
+        """
+
+        # If king is moving to the right
+        if move.end_posn[0] - move.start_posn[0] > 0:
+            # Castling King's side
+            rook_from_x = 7
+            rook_to_x = 5
+        else:
+            # Castling Queen's side
+            rook_from_x = 0
+            rook_to_x = 3
+
+        rook_y = move.start_posn[1]
+
+        # Move the king
+        self.make_move(Move(move.start_posn, move.end_posn))
+
+        # Move the rook
+        self.remove_piece(rook_from_x, rook_y)
+        self.place_piece(rook_to_x, rook_y)
+
+    def promote_pawn(self, colour, piece_type):
+        """Promote a pawn of a given colour to the given piece type.
+
+        Args:
+            - colour:  a member of the PieceColour enum
+            - piece_type:  a member of the PieceType enum
+
+        Raises:
+            - TypeError if there is no valid pawn to promote.
+
+        """
+
+        if (colour == colour.white):
+            y = 0
+        else:
+            y = 7
+
+        for i in range(Board.SIZE):
+            if self.get_piece(i, y) == Pawn(colour):
+                self.place_piece(i, y, piece_type, colour)
+                break
+        else:
+            raise TypeError(
+                "Promote Pawn called, but no pawn is available for promotion.")
 
     ###########################################################################
     ############################# HELPER FUNCTIONS ############################
@@ -368,7 +421,7 @@ class Board:
         return (self.is_possible_move(move) and self.is_valid_move(move))
 
     def is_take_move(self, move):
-        """Returns true if the passed move is a taking move."""
+        """Return true if the passed move is a taking move."""
         piece_at_move = self.get_piece(*move.end_posn)
 
         return piece_at_move.type == p_type.blank
@@ -407,7 +460,7 @@ class Board:
         return count
 
     def get_king_moves(self, x, y):
-        """Returns a list of available moves for a king at (x, y).
+        """Return a list of available moves for a king at (x, y).
 
         Given a position (x, y) returns a list of moves which it is legal for
         a king at (x, y) to make, excluding castling moves. If the piece at
@@ -429,7 +482,7 @@ class Board:
         return move_list
 
     def get_queen_moves(self, x, y):
-        """Returns a list of available moves for a queen at (x, y).
+        """Return a list of available moves for a queen at (x, y).
 
         Given a position (x, y) returns a list of moves which it is legal for
         a queen at (x, y) to make.
@@ -442,7 +495,7 @@ class Board:
         return move_list
 
     def get_bishop_moves(self, x, y):
-        """Returns a list of available moves for a bishop at (x, y).
+        """Return a list of available moves for a bishop at (x, y).
 
         Given a position (x, y) returns a list of moves which it is legal for
         a bishop at (x, y) to make.
@@ -460,7 +513,7 @@ class Board:
         return move_list
 
     def get_knight_moves(self, x, y):
-        """Returns a list of available moves for a knight at (x, y).
+        """Return a list of available moves for a knight at (x, y).
 
         Given a position (x, y) returns a list of moves which it is legal for
         a knight at (x, y) to make.
@@ -479,7 +532,7 @@ class Board:
         return move_list
 
     def get_rook_moves(self, x, y):
-        """Returns a list of available moves for a rook at (x, y).
+        """Return a list of available moves for a rook at (x, y).
 
         Given a position (x, y) returns a list of moves which it is legal for
         a rook at (x, y) to make.
@@ -497,7 +550,7 @@ class Board:
         return move_list
 
     def get_pawn_moves(self, x, y):
-        """Returns a list of available moves for a pawn at (x, y).
+        """Return a list of available moves for a pawn at (x, y).
 
         Given a position (x, y) returns a list of moves which it is legal for
         a pawn at (x, y) to make, excluding en passant moves.
@@ -545,7 +598,7 @@ class Board:
     ###########################################################################
 
     def is_in_check(self, colour):
-        """Returns true if the king of the passed colour is in check.
+        """Return true if the king of the passed colour is in check.
 
         Note that if no king of the passed colour is found, this function will
         return false.
@@ -604,7 +657,6 @@ class Board:
                     return True
 
         # And finally, the enemy king
-
         square_list = [(x+1, y+1), (x+1, y),   (x+1, y-1), (x, y+1),
                        (x, y-1),   (x-1, y+1), (x-1, y),   (x-1, y-1)]
 
@@ -617,7 +669,7 @@ class Board:
         return False
 
     def has_won(self, colour):
-        """Returns true if the team of the passed colour has won.
+        """Return true if the team of the passed colour has won.
 
         Args:
             colour:  a member of the Piece.PieceColour enum
@@ -632,7 +684,7 @@ class Board:
         return (not legal_move_exists(enemy)) and self.is_in_check(enemy)
 
     def legal_move_exists(self, colour):
-        """Returns true if the team of the passed colour can make a legal move.
+        """Return true if the team of the passed colour can make a legal move.
 
         Args:
             colour:  a member of the Piece.PieceColour enum
@@ -644,6 +696,29 @@ class Board:
             if piece.colour == colour:
                 if len(self.get_piece_moves(i, j)) > 0:
                     return True
+
+        return False
+
+    def is_king_draw(self):
+        """Return true if the Kings are the only pieces left on the board."""
+        for i, j in itertools.product(range(Board.SIZE), range(Board.SIZE)):
+            piece = self.get_piece(i, j)
+            if not piece.type in (p_type.king, p_type.blank):
+                return False
+
+        return True
+
+    def can_promote_pawn(self, colour):
+        """Return true if the player of passed colour can promote a pawn."""
+
+        if (colour == colour.white):
+            y = 0
+        else:
+            y = 7
+
+        for i in range(Board.SIZE):
+            if self.get_piece(i, y) == Pawn(colour):
+                return True
 
         return False
 
@@ -661,3 +736,55 @@ class Board:
             san += piece.get_san()
 
         else:
+            pass
+
+    def get_pictorial():
+        """Return a pictorial string representation of the board."""
+        board_str = "\n"
+        board_str += "------------------\n"
+
+        for i in range(Board.SIZE):
+            board_str += "|"
+
+            for j in range(Board.SIZE):
+                board_str += self.get_piece(j, i).get_san() += " "
+
+            board_str += "|\n"
+
+        board_str += "------------------\n\n"
+
+        return board_str
+
+    def get_forstyh():
+        """Return a string representation of the board in FEN.
+
+        The string will have one space at the end.
+
+        """
+
+        forsyth = ""
+
+        for row in range(Board.SIZE):
+            column = 0
+
+            while column < BOARD_SIZE:
+                piece = self.get_piece(column, row)
+
+                if piece.type == p_type.blank:
+                    gap = self.search_direction(column, row, 0, 1)[0]
+                    forsyth += str(gap + 1)
+                    column += gap + 1
+                else:
+                    forsyth += piece.get_san()
+                    gap = searchDirection(column, row, 0, 1)[0]
+
+                    if gap > 0:
+                        forsyth += str(gap)
+
+                    column += gap + 1
+
+            if row < BOARD_SIZE - 1:
+                forsyth += "/"
+
+        forsyth += " "
+        return forsyth
