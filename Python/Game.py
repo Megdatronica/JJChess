@@ -58,6 +58,9 @@ class Game:
         self.frame = Frame(self.master)
         self.board_canvas = Canvas(self.frame, width=BOARD_SIZE,
                                    height=BOARD_SIZE)
+        #bind mouse event listener to board canvas
+        self.board_canvas.bind("<Button-1>", self.mouse_press)
+
         self.game_state = Gamestate.Gamestate()
 
         Images.load_images(self.board_canvas)
@@ -105,6 +108,15 @@ class Game:
         settings_button = Button(self.frame)
         settings_button["text"] = "Settings"
         settings_button.grid(row=2, column=3)
+
+    def mouse_pressed(self, event):
+
+        square = get_square_from_click(event)
+
+    def get_square_from_click(event):
+
+        print(event.x)
+        print(event.y)
 
     def play(self):
         """Play through a whole game, and return an enum indicating the result.
