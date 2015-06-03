@@ -153,15 +153,18 @@ class Game:
         """
 
         current_player = self.get_current_player()
-        move = current_player.get_move(game_state)
-        moveSAN = state.getSAN(move)
 
-        state.make_move(move)
+        if current_player.is_human:
+            raise NotImplementedError("JOE THIS BIT IS YOURS")
+        else:
+            move = current_player.get_move(game_state)
+            move_SAN = state.get_san(move)
+            state.make_move(move)
 
-        promote_val = promotePawn()
+            promote_piece = promotePawn()
 
         status = state.get_status()
-        self.logMove(moveSAN, status, promote_val)
+        self.logMove(move_SAN, status, promote_piece)
 
         state.swapTurn()
 
@@ -172,6 +175,17 @@ class Game:
 
         Returns:
             - a Piece object, the piece which was chosen by the player to
-              promote their pawn to.
+              promote their pawn to. If no pawn is available for promotion,
+              returns None.
 
         """
+
+        if self.game_state.can_promote_pawn():
+            current_player = self.get_current_player()
+            piece = current_player.get_promotion(game_state)
+            game_state.promote_pawn(piece)
+            return piece
+
+        return None
+
+    def log_move(self, move_SAN, status, promote_val):
