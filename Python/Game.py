@@ -119,3 +119,19 @@ class Game:
             if status not in (
                     status.normal, status.white_check, status.black_check):
                 return status
+
+    def get_current_player(self):
+        """Return the player whose turn it currently is."""
+        if self.game_state.is_white_turn:
+            return self.white_player
+        else:
+            return self.black_player
+
+    def take_turn(self):
+        """Take one turn of the game and change state.is_white_turn.
+
+
+
+        """
+
+        pass
