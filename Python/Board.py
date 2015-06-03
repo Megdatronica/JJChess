@@ -69,9 +69,8 @@ class Board:
 
         self.clear()
         for x in range(Board.SIZE):
-            #self.piece_array[x][1] = Piece.Pawn(Colour.black)
-            #self.piece_array[x][6] = Piece.Pawn(Colour.white)
-            pass
+            self.piece_array[x][1] = Piece.Pawn(Colour.black)
+            self.piece_array[x][6] = Piece.Pawn(Colour.white)
 
         self.piece_array[0][0] = Piece.Rook(Colour.black)
         self.piece_array[7][0] = Piece.Rook(Colour.black)

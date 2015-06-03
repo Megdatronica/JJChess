@@ -116,7 +116,7 @@ class Game:
 
         square = Game.get_square_from_click(event)
 
-        self.game_state.select_piece(square, self.board_canvas)
+        self.game_state.select_square(square, self.board_canvas)
 
     def get_square_from_click(event):
 
@@ -147,34 +147,3 @@ class Game:
             return self.white_player
         else:
             return self.black_player
-
-    def take_turn(self):
-        """Take one turn of the game and change state.is_white_turn.
-
-        Gets a valid move from the current player, changes the state variable 
-        to reflect the move being made (handling any pawn promotion), and
-        finally changes whose turn it is. Returns the result of 
-        game_state.get_status() after making the move.
-
-        """
-
-        Player * currentPlayer = getCurrentPlayer()
-        Move move = current_player.get_move(game_state)
-        moveSAN = state.getSAN(move)
-
-        state.makeMove(move)
-        int promoteVal = promotePawn()
-
-        int statusInt = state.getStatus()
-        logMove(moveSAN, statusInt, promoteVal)
-
-        std:
-            :
-                ofstream outputFile
-        outputFile.open("boards.txt", std: : ios: : app)
-        outputFile << state.board.getPictorial()
-        outputFile.close()
-
-        state.swapTurn()
-
-        return statusInt
