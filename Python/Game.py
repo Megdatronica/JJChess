@@ -61,7 +61,7 @@ class Game:
         self.frame = Frame(self.master)
         self.board_canvas = Canvas(self.frame, width=BOARD_SIZE,
                                    height=BOARD_SIZE)
-        #bind mouse event listener to board canvas
+        # bind mouse event listener to board canvas
         self.board_canvas.bind("<Button-1>", self.mouse_press)
 
         self.game_state = Gamestate.Gamestate()
@@ -145,8 +145,30 @@ class Game:
     def take_turn(self):
         """Take one turn of the game and change state.is_white_turn.
 
-
+        Gets a valid move from the current player, changes the state variable 
+        to reflect the move being made (handling any pawn promotion), and
+        finally changes whose turn it is. Returns the result of 
+        game_state.get_status() after making the move.
 
         """
 
-        pass
+        Player * currentPlayer = getCurrentPlayer()
+        Move move = current_player.get_move(game_state)
+        moveSAN = state.getSAN(move)
+
+        state.makeMove(move)
+        int promoteVal = promotePawn()
+
+        int statusInt = state.getStatus()
+        logMove(moveSAN, statusInt, promoteVal)
+
+        std:
+            :
+                ofstream outputFile
+        outputFile.open("boards.txt", std: : ios: : app)
+        outputFile << state.board.getPictorial()
+        outputFile.close()
+
+        state.swapTurn()
+
+        return statusInt

@@ -4,6 +4,7 @@ from enum import Enum
 import Board
 import Move
 from Piece import *
+from Piece import PieceColour as colour
 
 
 class Status(Enum):
@@ -135,7 +136,7 @@ class Gamestate:
         if(piece.type == PieceType.pawn):
             # check if double move
             if(abs(move.start_posn[1] - move.end_posn[1]) == 2):
-                if(piece.colour==PieceColour.white):
+                if(piece.colour == PieceColour.white):
 
                     self.en_passant_sq = (move.start_posn[0],
                                           move.start_posn[1] - 1)
@@ -180,28 +181,28 @@ class Gamestate:
 
         moves = self.get_player_moves(colour)
 
-        if(self.w_castle_K==True):
+        if(self.w_castle_K == True):
 
             castle = Move((4, 7), (6, 7), castle=True)
             if(self.board.is_possible_legal_move(castle)):
 
                 moves.append(castle)
 
-        if(self.w_castle_Q==True):
+        if(self.w_castle_Q == True):
 
             castle = Move((4, 7), (2, 7), castle=True)
             if(self.board.is_possible_legal_move(castle)):
 
                 moves.append(castle)
 
-        if(self.b_castle_K==True):
+        if(self.b_castle_K == True):
 
             castle = Move((4, 0), (6, 0), castle=True)
             if(self.board.is_possible_legal_move(castle)):
 
                 moves.append(castle)
 
-        if(self.b_castle_Q==True):
+        if(self.b_castle_Q == True):
 
             castle = Move((4, 0), (2, 0), castle=True)
             if(self.board.is_possible_legal_move(castle)):
@@ -253,7 +254,7 @@ class Gamestate:
 
         self.is_white_turn = not is_white_turn
 
-    def get_san(move):
+    def get_san(self, move):
         """ Return the SAN string for a given move.
 
             Args:
@@ -261,3 +262,34 @@ class Gamestate:
         """
 
         san = board.get_san(move)
+
+    def get_status(self):
+        """Return a member of the Status enum."""
+
+        if self.is_white_turn:
+            check = Status.white_check
+            win = Status.white_win
+            enemy_colour = colour.black
+        else:
+            check = Status.black_check
+            win = Status.black_win
+            enemy_colour = colour.white
+
+        # Note that fiftyMoveRuleCount is effectively incremented twice for
+        # each full move(once per player)
+        if fiftyMoveRuleCount == 100:
+            return Status.fifty_move_draw
+        if self.board.is_king_draw():
+            return Status.king_draw
+
+        in_check = self.board.is_in_check(enemy_colour)
+        legal_move_exists = self.legal_move_exists(enemy_colour)
+
+        if (not legal_move_exists) and in_check:
+            return win
+        if not legalMoveExists:
+            return Status.stalemate
+        if in_check:
+            return check
+
+        return Status.normal
