@@ -88,10 +88,25 @@ class Gamestate:
 
             move.draw(canvas)
 
-    def select_piece(self, square, canvas):
+    def select_square(self, square, canvas):
 
-        self.selected_piece = square
-        self.selected_piece_moves = self.board.get_piece_moves(*square)
+        if selected_piece is not None:
+
+            for move in selected_piece_moves:
+
+                if move.end_posn == square:
+
+                    self.make_move(move)
+                    
+
+
+        if self.board.get_piece(*square).type != PieceType.blank:
+            self.selected_piece = square
+            self.selected_piece_moves = self.board.get_piece_moves(*square)
+
+        else:
+            self.selected_piece = None
+            self.selected_piece_moves = []
 
         print(self.selected_piece_moves)
 
@@ -278,6 +293,16 @@ class Gamestate:
         """
 
         self.is_white_turn = not is_white_turn
+
+    def is_piece_selected(self):
+
+        if(selected_piece is not None):
+
+            return True
+
+        else:
+
+            return False
 
     def get_san(self, move):
         """ Return the SAN string for a given move.

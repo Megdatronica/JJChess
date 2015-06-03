@@ -116,6 +116,11 @@ class Game:
 
         square = Game.get_square_from_click(event)
 
+<<<<<<< HEAD
+        self.game_state.select_square(square, self.board_canvas)
+
+=======
+>>>>>>> 64da11d6974bf2f263c1f43bc2496f775e387d3c
     def get_square_from_click(event):
 
         print(event.x)
