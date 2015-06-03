@@ -4,6 +4,10 @@
 from tkinter import *
 import Board
 import Gamestate
+import Player
+import Piece
+from Piece import PieceColour as colour
+from GameState import Status as status
 from Images import Images
 
 # Size of the board canvas to render in pixels
@@ -33,20 +37,28 @@ class Game:
         - resign_button: Button to resign the game
         - draw_button: Button to offer a draw to opponent
         - settings_button: Button to access a settings menu
+
     """
 
     def __init__(self, player1, player2):
         """ Start a game against the two selected types of player and build UI.
         """
 
-        self.player1 = player1
-        self.player2 = player2
+        if (player1 == "human"):
+            self.white_player = Player.HumanPlayer(colour.white)
+        else:
+            self.white_player = Player.AIPlayer(colour.white, player1)
+
+        if (player2 == "human"):
+            self.black_player = Player.HumanPlayer(colour.black)
+        else:
+            self.black_player = Player.AIPlayer(colour.black, player2)
 
         self.master = Tk()
         self.frame = Frame(self.master)
         self.board_canvas = Canvas(self.frame, width=BOARD_SIZE,
                                    height=BOARD_SIZE)
-        self.gamestate = Gamestate.Gamestate()
+        self.game_state = Gamestate.Gamestate()
 
         Images.load_images(self.board_canvas)
 
@@ -93,3 +105,17 @@ class Game:
         settings_button = Button(self.frame)
         settings_button["text"] = "Settings"
         settings_button.grid(row=2, column=3)
+
+    def play(self):
+        """Play through a whole game, and return an enum indicating the result.
+
+        Returns a member of the GameState.Status enum.
+
+        """
+
+        while(true):
+            status = self.take_turn()
+
+            if status not in (
+                    status.normal, status.white_check, status.black_check):
+                return status
