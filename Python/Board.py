@@ -734,7 +734,7 @@ class Board:
 
     def get_san(self, move):
 
-        #TODO
+        # TODO
 
         san = ""
 
@@ -745,18 +745,16 @@ class Board:
             san += get_clar_str(move)
 
         else:
-            #If pawn we only give the file
+            # If pawn we only give the file
             san += FILE_LABELS[move.start_posn[0]]
 
         if(self.is_take_move(move)):
 
             san += "x"
 
-        
-
     def get_clar_str(move):
 
-        #TODO
+        # TODO
         pass
 
     def get_pictorial():

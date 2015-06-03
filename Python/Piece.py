@@ -77,7 +77,7 @@ class Piece:
             return Piece()
 
     def get_san(self):
-        return " "
+        return "_"
 
 
 class King(Piece):

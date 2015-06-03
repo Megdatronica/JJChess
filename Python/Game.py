@@ -12,31 +12,30 @@ BOARD_SIZE = 900
 
 class Game:
 
-    """ Interface between gamestate and AI/human input and manages UI for game.
+    """Interface between gamestate and AI/human input and manages UI for game.
 
-        Attributes:
-                  -master: see ui elements
-                  -frame: see ui elements
-                  -player1: AI type string of player 1 (either filename in 
-                           ../Scripts or "human")
-                  -player2: see above
+    Attributes:
+        -master: see ui elements
+        -frame: see ui elements
+        -player1: AI type string of player 1 (either filename in 
+                  ../Scripts or "human")
+        -player2: see above
 
-        UI elements:
-                   - master: Master instance of tkinter
-                   - frame: The main window self.frame configured with 
-                            grid geometry
-                   - board_canvas: A canvas element on which to draw the board
-                   - cur_player_label: A label to indicate which colour's turn 
-                                       it is
-                   - players_label: A label to indicate what type of players
-                                   are playing
-                   - resign_button: Button to resign the game
-                   - draw_button: Button to offer a draw to opponent
-                   - settings_button: Button to access a settings menu
+    UI elements:
+        - master: Master instance of tkinter
+        - frame: The main window self.frame configured with 
+                 grid geometry
+        - board_canvas: A canvas element on which to draw the board
+        - cur_player_label: A label to indicate which colour's turn 
+                            it is
+        - players_label: A label to indicate what type of players
+                         are playing
+        - resign_button: Button to resign the game
+        - draw_button: Button to offer a draw to opponent
+        - settings_button: Button to access a settings menu
     """
 
     def __init__(self, player1, player2):
-
         """ Start a game against the two selected types of player and build UI.
         """
 
@@ -58,7 +57,6 @@ class Game:
         self.master.mainloop()
 
     def build_ui(self):
-
         """ Build the UI window for the game.
         """
 
@@ -95,5 +93,3 @@ class Game:
         settings_button = Button(self.frame)
         settings_button["text"] = "Settings"
         settings_button.grid(row=2, column=3)
-
-

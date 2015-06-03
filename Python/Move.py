@@ -19,7 +19,13 @@ class Move:
 
     def __init__(self, start_posn, end_posn, castle=False, en_passant=False,
                  en_passant_posn=None):
-        """Initialise a move according to passed parameters."""
+        """Initialise a move according to passed parameters.
+
+        Raises:
+            - ValueError if castle and en_passant are both true, or if
+              en_passant is true but no position has been provided.
+
+        """
 
         if castle and en_passant:
             raise ValueError("Castle and en_passant cannot both be true")
