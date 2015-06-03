@@ -39,9 +39,9 @@ class Board:
         # white background
         canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill="yellow")
 
-        # black squares
-        for i in range(8):
-            for j in range(4):   # Joe what are these magic numbers explain
+        # black squares: for each file draw 4 black squares
+        for i in range(Board.SIZE):
+            for j in range(Board.SIZE/2):
 
                 canvas.create_rectangle(i*sq_width, (2*j+(i+1) % 2)*sq_width,
                                         (i+1)*sq_width,
@@ -733,31 +733,82 @@ class Board:
     ###########################################################################
 
     def get_san(self, move):
+        """Return a SAN representation of move (ignoring checks/promotions).
 
-        # TODO
-
+           -Args:
+                -move: the move to return SAN of
+        """
         san = ""
 
-        piece = self.get_piece(*move.start_posn)
+        if(move.castle):
 
-        if(piece.type != PieceType.pawn):
-            san += piece.get_san()
-            san += get_clar_str(move)
+            san += "O-O"
+
+            # Check if queenside
+            if(move.end_posn == (0, 0) or move.end_posn == (0, 7)):
+
+                san += "-O"
 
         else:
-            # If pawn we only give the file
-            san += FILE_LABELS[move.start_posn[0]]
+            piece = self.get_piece(*move.start_posn)
 
-        if(self.is_take_move(move)):
+            if(piece.type != PieceType.pawn):
+                san += piece.get_san()
+                san += self.get_clar_str(move)
 
-            san += "x"
+            else:
+                # If pawn we only give the file (no clarification needed)
+                san += FILE_LABELS[move.start_posn[0]]
 
-    def get_clar_str(move):
+            if(self.is_take_move(move)):
 
-        # TODO
-        pass
+                san += "x"
 
-    def get_pictorial():
+            san += FILE_LABELS[move.end_posn[0]] + str(move.end_posn[1])
+
+        return san
+
+    def get_clar_str(self, move, piece):
+        """Create a clarification string for SAN if required.
+
+           Used to dissambiguate piece moves where more than one piece of a 
+           a given type can reach the target square
+
+           Args:
+               - move: the move that has been made
+               - piece: the piece being moved
+        """
+
+        clar_str = ""
+        tmp_pieces = []
+        need_file = False
+        need_rank = False
+
+        for i in range(board.SIZE):
+            for j in range(Board.SIZE):
+
+                if(i != move.start_posn[0] and j != move.end_posn[1]):
+
+                    moves_list = self.get_piece_moves(i, j)
+
+                    if(piece_array[i][j].piece_type == piece.piece_type):
+
+                        for m in move_list:
+
+                            if(m.end_posn == move.end_posn):
+
+                                if(i == move.start_posn[0]):
+                                    need_rank = True
+
+                                if(j == move.start_posn[1]):
+                                    need_file = True
+
+        if(need_file):
+            clar_str += FILE_LABELS[move.start_posn[0]]
+        if(need_rank):
+            clar_str += str(move.start_posn[1])
+
+    def get_pictorial(self):
         """Return a pictorial string representation of the board."""
         board_str = "\n"
         board_str += "------------------\n"
@@ -774,7 +825,7 @@ class Board:
 
         return board_str
 
-    def get_forsyth():
+    def get_forsyth(self):
         """Return a string representation of the board in FEN.
 
         The string will have one space at the end.
