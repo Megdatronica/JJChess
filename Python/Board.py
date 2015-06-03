@@ -767,19 +767,19 @@ class Board:
         else:
             piece = self.get_piece(*move.start_posn)
 
-            if(piece.type != PieceType.pawn):
+            if(piece.type != p_type.pawn):
                 san += piece.get_san()
                 san += self.get_clar_str(move)
 
             else:
                 # If pawn we only give the file (no clarification needed)
-                san += FILE_LABELS[move.start_posn[0]]
+                san += Board.FILE_LABELS[move.start_posn[0]]
 
             if(self.is_take_move(move)):
 
                 san += "x"
 
-            san += FILE_LABELS[move.end_posn[0]] + str(move.end_posn[1])
+            san += Board.FILE_LABELS[move.end_posn[0]] + str(move.end_posn[1])
 
         return san
 

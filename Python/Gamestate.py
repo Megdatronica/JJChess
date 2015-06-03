@@ -90,20 +90,16 @@ class Gamestate:
 
     def select_square(self, square, canvas):
 
-        if selected_piece is not None:
 
-            for move in selected_piece_moves:
+        for move in self.selected_piece_moves:
 
-                if move.end_posn == square:
+            if move.end_posn == square:
 
-                    self.make_move(move)
-                    
-
+                return move
 
         if self.board.get_piece(*square).type != PieceType.blank:
             self.selected_piece = square
             self.selected_piece_moves = self.board.get_piece_moves(*square)
-
         else:
             self.selected_piece = None
             self.selected_piece_moves = []
@@ -112,6 +108,8 @@ class Gamestate:
 
         self.draw(canvas)
 
+        return None
+
     def make_move(self, move):
         """ Make a given move.
 
@@ -119,8 +117,8 @@ class Gamestate:
                 - move: move to be made
         """
 
-        update_counts(move)
-        board.make_move(move)
+        self.update_counts(move)
+        self.board.make_move(move)
 
     def update_counts(self, move):
         """ Update counters and set en passant square if appropriate.
@@ -292,7 +290,7 @@ class Gamestate:
         """ Swap which player has the current turn.
         """
 
-        self.is_white_turn = not is_white_turn
+        self.is_white_turn = not self.is_white_turn
 
     def is_piece_selected(self):
 
@@ -311,7 +309,7 @@ class Gamestate:
                 - move: move to get SAN of
         """
 
-        san = board.get_san(move)
+        san = self.board.get_san(move)
 
     def get_status(self):
         """Return a member of the Status enum."""
@@ -327,7 +325,7 @@ class Gamestate:
 
         # Note that fiftyMoveRuleCount is effectively incremented twice for
         # each full move(once per player)
-        if fiftyMoveRuleCount == 100:
+        if self.fifty_move_count == 100:
             return Status.fifty_move_draw
         if self.board.is_king_draw():
             return Status.king_draw
