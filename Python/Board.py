@@ -6,6 +6,8 @@ import Piece
 import Move
 from Piece import PieceType as p_type
 from Piece import PieceColour as colour
+# Tkinter graphics package
+from tkinter import *
 
 
 class Board:
@@ -449,17 +451,17 @@ class Board:
         if piece_to_move.type == p_type.blank:
             return []
         if piece_to_move.type == p_type.king:
-            return get_king_moves(x, y)
+            return self.get_king_moves(x, y)
         if piece_to_move.type == p_type.queen:
-            return get_queen_moves(x, y)
+            return self.get_queen_moves(x, y)
         if piece_to_move.type == p_type.bishop:
-            return get_bishop_moves(x, y)
+            return self.get_bishop_moves(x, y)
         if piece_to_move.type == p_type.knight:
-            return get_knight_moves(x, y)
+            return self.get_knight_moves(x, y)
         if piece_to_move.type == p_type.rook:
-            return get_rook_moves(x, y)
+            return self.get_rook_moves(x, y)
         if piece_to_move.type == p_type.pawn:
-            return get_pawn_moves(x, y)
+            return self.get_pawn_moves(x, y)
 
         return count
 

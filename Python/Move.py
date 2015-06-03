@@ -1,4 +1,6 @@
 """Contains the Move class"""
+# Tkinter graphics package
+from tkinter import *
 
 
 class Move:
@@ -48,3 +50,10 @@ class Move:
         
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def draw(self, canvas):
+
+        sq_width = int(canvas["width"])/8
+        canvas.create_rectangle(self.end_posn[0]*sq_width, 
+                                self.end_posn[1]*sq_width, 
+                                stipple = "gray50", fill="green")

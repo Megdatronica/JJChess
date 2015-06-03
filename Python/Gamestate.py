@@ -4,6 +4,8 @@ from enum import Enum
 import Board
 import Move
 from Piece import *
+# Tkinter graphics package
+from tkinter import *
 
 
 class Status(Enum):
@@ -39,6 +41,9 @@ class Gamestate:
                      is the square behind the pawn to be captured. If en 
                      passant is not possible, set to None
                   - is_white_turn: true if it is white's turn
+                  - selected_piece_moves: list of moves available to the 
+                     selected piece
+                  - selected_piece: position of the selected piece
     """
 
     def __init__(self):
@@ -59,6 +64,8 @@ class Gamestate:
         self.fifty_move_count = 0
 
         self.en_passant_sq = None
+        self.selected_piece = None
+        self.selected_piece_moves = []
 
         self.is_white_turn = True
 
@@ -70,6 +77,22 @@ class Gamestate:
         """
 
         self.board.draw(canvas)
+
+        #Creates a move from the piece to itself to draw
+        if(self.selected_piece != None):
+            Move.Move(self.selected_piece,
+                      self.selected_piece).draw(canvas)
+
+        for move in self.selected_piece_moves:
+
+            move.draw(canvas)
+
+    def select_piece(self, square):
+
+        self.selected_piece = square
+        self.selected_piece_moves = self.board.get_piece_moves(*square)
+
+        print(self.selected_piece_moves)
 
     def make_move(self, move):
         """ Make a given move.
@@ -261,3 +284,4 @@ class Gamestate:
         """
 
         san = board.get_san(move)
+
