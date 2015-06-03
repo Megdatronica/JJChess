@@ -620,7 +620,9 @@ class Board:
     ########################### BOARD REPRESENTATION ##########################
     ###########################################################################
 
-    def get_san(move):
+    def get_san(self, move):
+
+        #TODO
 
         san = ""
 
@@ -628,7 +630,21 @@ class Board:
 
         if(piece.type != PieceType.pawn):
             san += piece.get_san()
+            san += get_clar_str(move)
 
         else:
+            #If pawn we only give the file
+            san += FILE_LABELS[move.start_posn[0]]
+
+        if(self.is_take_move(move)):
+
+            san += "x"
+
+        
+
+    def get_clar_str(move):
+
+        #TODO
+
 
 
