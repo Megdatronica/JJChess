@@ -32,3 +32,13 @@ class Move:
         self.castle = castle
         self.en_passant = en_passant
         self.en_passant_posn = en_passant_posn
+
+    def __eq__(self, other):
+        return (self.start_posn == other.start_posn
+                and self.end_posn == other.colour
+                 and self.castle == other.castle
+                  and self.en_passant == other.en_passant
+                   and self.en_passant_posn == other.en_passant_posn)
+        
+    def __ne__(self, other):
+        return not self.__eq__(other)

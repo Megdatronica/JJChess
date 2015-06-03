@@ -17,17 +17,17 @@ class Gamestate:
         self.board = Board.Board()
         self.board.setup()
 
-        #Set castling to true
         self.w_castle_K = True
         self.w_castle_Q = True
         self.b_castle_K = True
         self.b_castle_Q = True
 
-        #Set moves counts to start of game
         self.count = 0
         self.fifty_move_count = 0;
 
         self.en_passant_sq = None
+
+        self.is_white_turn = True
 
     def draw(self, canvas):
 
@@ -105,3 +105,83 @@ class Gamestate:
         else:
 
             self.fifty_move_count += 1
+
+    def is_legal_move(self, move, colour):
+
+        moves = get_all_moves(colour)
+
+        if(move in moves)
+            return True
+
+        else:
+            return False
+
+    def get_all_moves(self, colour):
+
+        moves = self.get_player_moves(colour)
+
+        if(self.w_castle_K = True):
+
+            castle = Move((4,7), (6,7), castle = True)
+            if(self.board.is_possible_legal_move(castle)):
+
+                moves.append(castle)
+
+        if(self.w_castle_Q = True):
+
+            castle = Move((4,7), (2,7), castle = True)
+            if(self.board.is_possible_legal_move(castle)):
+
+                moves.append(castle)
+
+        if(self.b_castle_K = True):
+
+            castle = Move((4,0), (6,0), castle = True)
+            if(self.board.is_possible_legal_move(castle)):
+
+                moves.append(castle)
+
+        if(self.b_castle_Q = True):
+
+            castle = Move((4,0), (2,0), castle = True)
+            if(self.board.is_possible_legal_move(castle)):
+
+                moves.append(castle)
+
+        return moves
+
+
+    def get_player_moves(self, colour):
+
+        b_moves = []
+
+        for i ion range(8):
+            for j in range(8):
+
+
+                if(self.board.get_piece(i,j).type == PieceType.pawn and 
+                    en_passant_sq != None):
+
+                    b_moves.extend(self.board.get_piece_moves(i,j))
+
+                    if(abs(i - en_passant_sq[0]) == 1 and 
+                        (j - en_passant_sq[1]) == 0):
+
+                        pawn_square = (en_passant_sq[0], j)
+                        b_moves.append(Move((i, j), en_passant_sq, 
+                                       en_passant = True, 
+                                       en_passant_posn = pawn_square))
+
+                else:
+                    b_moves.extend(self.board.get_piece_moves(i,j))
+
+
+    def swap_turn(self):
+
+        self.is_white_turn = !is_white_turn
+
+    def get_san(move):
+
+        san = board.get_san(move)
+        
+
