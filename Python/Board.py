@@ -176,7 +176,7 @@ class Board:
 
         Returns None if indeices out of bounds
         """
-        if(not self.is_square(x,y)):
+        if(not self.is_square(x, y)):
             return None
 
         return self.piece_array[x][y]
@@ -436,7 +436,7 @@ class Board:
         """Return true if the passed move is a taking move."""
         piece_at_move = self.get_piece(*move.end_posn)
 
-        return piece_at_move.type == p_type.blank
+        return piece_at_move.type != p_type.blank
 
     ###########################################################################
     ############################## MOVE FETCHING ##############################

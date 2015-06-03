@@ -116,16 +116,15 @@ class Game:
 
         square = Game.get_square_from_click(event)
 
+<<<<<<< HEAD
         self.game_state.select_square(square, self.board_canvas)
 
+=======
+>>>>>>> 64da11d6974bf2f263c1f43bc2496f775e387d3c
     def get_square_from_click(event):
 
-        i = int(event.x*8/BOARD_SIZE)
-        j = int(event.y*8/BOARD_SIZE)
-
-        print((i,j))
-
-        return (i,j)
+        print(event.x)
+        print(event.y)
 
     def play(self):
         """Play through a whole game, and return an enum indicating the result.
@@ -147,3 +146,37 @@ class Game:
             return self.white_player
         else:
             return self.black_player
+
+    def take_turn(self):
+        """Take one turn of the game and change state.is_white_turn.
+
+        Get a valid move from the current player, changes game_state
+        to reflect the move being made (handling any pawn promotion), and
+        finally changes whose turn it is. Returns the result of 
+        game_state.get_status() after making the move and also calls log_move.
+
+        """
+
+        current_player = self.get_current_player()
+        move = current_player.get_move(game_state)
+        moveSAN = state.getSAN(move)
+
+        state.make_move(move)
+
+        promote_val = promotePawn()
+
+        status = state.get_status()
+        self.logMove(moveSAN, status, promote_val)
+
+        state.swapTurn()
+
+        return statusInt
+
+    def promote_pawn(self):
+        """Handles any pawn promotion and returns the chosen promotion.
+
+        Returns:
+            - a Piece object, the piece which was chosen by the player to
+              promote their pawn to.
+
+        """
