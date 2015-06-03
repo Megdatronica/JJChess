@@ -761,7 +761,7 @@ class Board:
 
         return board_str
 
-    def get_forstyh():
+    def get_forsyth():
         """Return a string representation of the board in FEN.
 
         The string will have one space at the end.
