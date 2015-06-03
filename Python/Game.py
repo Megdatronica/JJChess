@@ -116,12 +116,12 @@ class Game:
 
         square = Game.get_square_from_click(event)
 
-        self.game_state.select_piece(square)
+        self.game_state.select_piece(square, self.board_canvas)
 
     def get_square_from_click(event):
 
-        i = int(event.y*8/BOARD_SIZE)
-        j = int(event.x*8/BOARD_SIZE)
+        i = int(event.x*8/BOARD_SIZE)
+        j = int(event.y*8/BOARD_SIZE)
 
         print((i,j))
 

@@ -87,12 +87,14 @@ class Gamestate:
 
             move.draw(canvas)
 
-    def select_piece(self, square):
+    def select_piece(self, square, canvas):
 
         self.selected_piece = square
         self.selected_piece_moves = self.board.get_piece_moves(*square)
 
         print(self.selected_piece_moves)
+
+        self.draw(canvas)
 
     def make_move(self, move):
         """ Make a given move.
