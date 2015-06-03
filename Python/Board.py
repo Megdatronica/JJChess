@@ -69,9 +69,8 @@ class Board:
 
         self.clear()
         for x in range(Board.SIZE):
-            #self.piece_array[x][1] = Piece.Pawn(Colour.black)
-            #self.piece_array[x][6] = Piece.Pawn(Colour.white)
-            pass
+            self.piece_array[x][1] = Piece.Pawn(Colour.black)
+            self.piece_array[x][6] = Piece.Pawn(Colour.white)
 
         self.piece_array[0][0] = Piece.Rook(Colour.black)
         self.piece_array[7][0] = Piece.Rook(Colour.black)
@@ -177,7 +176,7 @@ class Board:
 
         Returns None if indeices out of bounds
         """
-        if(not self.is_square(x,y)):
+        if(not self.is_square(x, y)):
             return None
 
         return self.piece_array[x][y]
@@ -437,7 +436,7 @@ class Board:
         """Return true if the passed move is a taking move."""
         piece_at_move = self.get_piece(*move.end_posn)
 
-        return piece_at_move.type == p_type.blank
+        return piece_at_move.type != p_type.blank
 
     ###########################################################################
     ############################## MOVE FETCHING ##############################
