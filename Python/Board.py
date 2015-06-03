@@ -18,7 +18,7 @@ class Board:
     """
 
     SIZE = 8
-    FILE_LABELS = [a, b, c, d, e, f, g, h]
+    FILE_LABELS = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
     def __init__(self):
         """Create clear board."""
@@ -41,7 +41,7 @@ class Board:
 
         # black squares: for each file draw 4 black squares
         for i in range(Board.SIZE):
-            for j in range(Board.SIZE/2):
+            for j in range(int(Board.SIZE/2)):
 
                 canvas.create_rectangle(i*sq_width, (2*j+(i+1) % 2)*sq_width,
                                         (i+1)*sq_width,
@@ -571,7 +571,7 @@ class Board:
 
             if y == 6:
                 can_double = True
-        else if pawn.colour == colour.black:
+        elif pawn.colour == colour.black:
             m = 1
 
             if y == 1:
@@ -817,7 +817,7 @@ class Board:
             board_str += "|"
 
             for j in range(Board.SIZE):
-                board_str += self.get_piece(j, i).get_san() += " "
+                board_str += self.get_piece(j, i).get_san() + " "
 
             board_str += "|\n"
 

@@ -63,15 +63,15 @@ class Piece:
 
         if (piece_type == PieceType.king):
             return King(colour)
-        else if (piece_type == PieceType.queen):
+        elif (piece_type == PieceType.queen):
             return Queen(colour)
-        else if (piece_type == PieceType.bishop):
+        elif (piece_type == PieceType.bishop):
             return Bishop(colour)
-        else if (piece_type == PieceType.knight):
+        elif (piece_type == PieceType.knight):
             return Knight(colour)
-        else if (piece_type == PieceType.rook):
+        elif (piece_type == PieceType.rook):
             return Rook(colour)
-        else if (piece_type == PieceType.pawn):
+        elif (piece_type == PieceType.pawn):
             return Pawn(colour)
         else:
             return Piece()
@@ -110,7 +110,7 @@ class King(Piece):
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_king)
 
     def get_san(self):
-        if self.colour = PieceColour.white:
+        if self.colour == PieceColour.white:
             return "K"
         else:
             return "k"
@@ -145,7 +145,7 @@ class Queen(Piece):
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_queen)
 
     def get_san(self):
-        if self.colour = PieceColour.white:
+        if self.colour == PieceColour.white:
             return "Q"
         else:
             return "q"
@@ -181,7 +181,7 @@ class Bishop(Piece):
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_bish)
 
     def get_san(self):
-        if self.colour = PieceColour.white:
+        if self.colour == PieceColour.white:
             return "B"
         else:
             return "b"
@@ -217,7 +217,7 @@ class Knight(Piece):
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_nght)
 
     def get_san(self):
-        if self.colour = PieceColour.white:
+        if self.colour == PieceColour.white:
             return "N"
         else:
             return "n"
@@ -253,7 +253,7 @@ class Rook(Piece):
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_rook)
 
     def get_san(self):
-        if self.colour = PieceColour.white:
+        if self.colour == PieceColour.white:
             return "R"
         else:
             return "r"
@@ -289,7 +289,7 @@ class Pawn(Piece):
             canvas.create_image(x+sq_offset, y+sq_offset, image=canvas.b_pawn)
 
     def get_san(self):
-        if self.colour = PieceColour.white:
+        if self.colour == PieceColour.white:
             return "P"
         else:
             return "p"

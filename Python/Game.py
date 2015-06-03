@@ -7,7 +7,7 @@ import Gamestate
 import Player
 import Piece
 from Piece import PieceColour as colour
-from GameState import Status as status
+from Gamestate import Status as status
 from Images import Images
 
 # Size of the board canvas to render in pixels
@@ -22,7 +22,7 @@ class Game:
         -master: see ui elements
         -frame: see ui elements
         -player1: AI type string of player 1 (either filename in 
-                  ../Scripts or "human")
+                  ../Scripts or "Human")
         -player2: see above
 
     UI elements:
@@ -44,12 +44,15 @@ class Game:
         """ Start a game against the two selected types of player and build UI.
         """
 
-        if (player1 == "human"):
+        self.player1 = player1
+        self.player2 = player2
+
+        if (player1 == "Human"):
             self.white_player = Player.HumanPlayer(colour.white)
         else:
             self.white_player = Player.AIPlayer(colour.white, player1)
 
-        if (player2 == "human"):
+        if (player2 == "Human"):
             self.black_player = Player.HumanPlayer(colour.black)
         else:
             self.black_player = Player.AIPlayer(colour.black, player2)
@@ -85,7 +88,7 @@ class Game:
         self.frame.rowconfigure(2, pad=3)
         self.frame.rowconfigure(3, pad=3)
 
-        self.gamestate.draw(self.board_canvas)
+        self.game_state.draw(self.board_canvas)
         self.board_canvas.grid(row=0, column=0, rowspan=3)
 
         cur_player_label = Label(self.frame)
@@ -109,9 +112,9 @@ class Game:
         settings_button["text"] = "Settings"
         settings_button.grid(row=2, column=3)
 
-    def mouse_pressed(self, event):
+    def mouse_press(self, event):
 
-        square = get_square_from_click(event)
+        square = Game.get_square_from_click(event)
 
     def get_square_from_click(event):
 

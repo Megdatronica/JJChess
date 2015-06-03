@@ -18,7 +18,7 @@ class Player:
 
     """
 
-    def __init__(self, colour, is_human, location=None):
+    def __init__(self, colour, is_human=False, location=None):
         """Initialise a player with the passed parameters."""
         self.colour = colour
         self.is_human = is_human
@@ -41,7 +41,7 @@ class Player:
 
         if (is_human):
             return HumanPlayer(colour)
-        else if location is not None:
+        elif location is not None:
             return AIPlayer(colour, location)
         else:
             raise ValueError(
@@ -116,7 +116,7 @@ class AIPlayer(Player):
 
         super(AIPlayer, self).__init__(colour, location=location)
 
-        AI = importlib.import_module("scripts." + location)
+        AI = importlib.import_module("Scripts." + location)
 
     def get_move(self, game_state):
         """Return the move chosen by the AI module

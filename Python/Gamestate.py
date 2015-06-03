@@ -135,7 +135,7 @@ class Gamestate:
         if(piece.type == PieceType.pawn):
             # check if double move
             if(abs(move.start_posn[1] - move.end_posn[1]) == 2):
-                if(piece.colour=PieceColour.white):
+                if(piece.colour==PieceColour.white):
 
                     self.en_passant_sq = (move.start_posn[0],
                                           move.start_posn[1] - 1)
@@ -180,28 +180,28 @@ class Gamestate:
 
         moves = self.get_player_moves(colour)
 
-        if(self.w_castle_K=True):
+        if(self.w_castle_K==True):
 
             castle = Move((4, 7), (6, 7), castle=True)
             if(self.board.is_possible_legal_move(castle)):
 
                 moves.append(castle)
 
-        if(self.w_castle_Q=True):
+        if(self.w_castle_Q==True):
 
             castle = Move((4, 7), (2, 7), castle=True)
             if(self.board.is_possible_legal_move(castle)):
 
                 moves.append(castle)
 
-        if(self.b_castle_K=True):
+        if(self.b_castle_K==True):
 
             castle = Move((4, 0), (6, 0), castle=True)
             if(self.board.is_possible_legal_move(castle)):
 
                 moves.append(castle)
 
-        if(self.b_castle_Q=True):
+        if(self.b_castle_Q==True):
 
             castle = Move((4, 0), (2, 0), castle=True)
             if(self.board.is_possible_legal_move(castle)):
@@ -219,7 +219,7 @@ class Gamestate:
 
         b_moves = []
 
-        for i ion range(8):
+        for i in range(8):
             for j in range(8):
 
                 if(self.board.get_piece(i, j).type == PieceType.pawn and
@@ -251,7 +251,7 @@ class Gamestate:
         """ Swap which player has the current turn.
         """
 
-        self.is_white_turn = !is_white_turn
+        self.is_white_turn = not is_white_turn
 
     def get_san(move):
         """ Return the SAN string for a given move.
