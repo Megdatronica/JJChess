@@ -116,10 +116,16 @@ class Game:
 
         square = Game.get_square_from_click(event)
 
+        self.game_state.select_piece(square, self.board_canvas)
+
     def get_square_from_click(event):
 
-        print(event.x)
-        print(event.y)
+        i = int(event.x*8/BOARD_SIZE)
+        j = int(event.y*8/BOARD_SIZE)
+
+        print((i,j))
+
+        return (i,j)
 
     def play(self):
         """Play through a whole game, and return an enum indicating the result.

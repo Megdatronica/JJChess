@@ -5,7 +5,9 @@ import itertools
 import Piece
 import Move
 from Piece import PieceType as p_type
-from Piece import PieceColour as colour
+from Piece import PieceColour as Colour
+# Tkinter graphics package
+from tkinter import *
 
 
 class Board:
@@ -67,26 +69,27 @@ class Board:
 
         self.clear()
         for x in range(Board.SIZE):
-            self.piece_array[x][1] = Piece.Pawn(colour.black)
-            self.piece_array[x][6] = Piece.Pawn(colour.white)
+            #self.piece_array[x][1] = Piece.Pawn(Colour.black)
+            #self.piece_array[x][6] = Piece.Pawn(Colour.white)
+            pass
 
-        self.piece_array[0][0] = Piece.Rook(colour.black)
-        self.piece_array[7][0] = Piece.Rook(colour.black)
-        self.piece_array[1][0] = Piece.Knight(colour.black)
-        self.piece_array[6][0] = Piece.Knight(colour.black)
-        self.piece_array[2][0] = Piece.Bishop(colour.black)
-        self.piece_array[5][0] = Piece.Bishop(colour.black)
-        self.piece_array[3][0] = Piece.Queen(colour.black)
-        self.piece_array[4][0] = Piece.King(colour.black)
+        self.piece_array[0][0] = Piece.Rook(Colour.black)
+        self.piece_array[7][0] = Piece.Rook(Colour.black)
+        self.piece_array[1][0] = Piece.Knight(Colour.black)
+        self.piece_array[6][0] = Piece.Knight(Colour.black)
+        self.piece_array[2][0] = Piece.Bishop(Colour.black)
+        self.piece_array[5][0] = Piece.Bishop(Colour.black)
+        self.piece_array[3][0] = Piece.Queen(Colour.black)
+        self.piece_array[4][0] = Piece.King(Colour.black)
 
-        self.piece_array[0][7] = Piece.Rook(colour.white)
-        self.piece_array[7][7] = Piece.Rook(colour.white)
-        self.piece_array[1][7] = Piece.Knight(colour.white)
-        self.piece_array[6][7] = Piece.Knight(colour.white)
-        self.piece_array[2][7] = Piece.Bishop(colour.white)
-        self.piece_array[5][7] = Piece.Bishop(colour.white)
-        self.piece_array[3][7] = Piece.Queen(colour.white)
-        self.piece_array[4][7] = Piece.King(colour.white)
+        self.piece_array[0][7] = Piece.Rook(Colour.white)
+        self.piece_array[7][7] = Piece.Rook(Colour.white)
+        self.piece_array[1][7] = Piece.Knight(Colour.white)
+        self.piece_array[6][7] = Piece.Knight(Colour.white)
+        self.piece_array[2][7] = Piece.Bishop(Colour.white)
+        self.piece_array[5][7] = Piece.Bishop(Colour.white)
+        self.piece_array[3][7] = Piece.Queen(Colour.white)
+        self.piece_array[4][7] = Piece.King(Colour.white)
 
     def make_move(self, move):
         """Adjust the state of the board to reflect the passed move.
@@ -130,17 +133,17 @@ class Board:
         rook_y = move.start_posn[1]
 
         # Move the king
-        self.make_move(Move(move.start_posn, move.end_posn))
+        self.make_move(Move.Move(move.start_posn, move.end_posn))
 
         # Move the rook
         self.remove_piece(rook_from_x, rook_y)
         self.place_piece(rook_to_x, rook_y)
 
-    def promote_pawn(self, colour, piece_type):
+    def promote_pawn(self, piece_colour, piece_type):
         """Promote a pawn of a given colour to the given piece type.
 
         Args:
-            - colour:  a member of the PieceColour enum
+            - piece_colour:  a member of the PieceColour enum
             - piece_type:  a member of the PieceType enum
 
         Raises:
@@ -148,14 +151,14 @@ class Board:
 
         """
 
-        if (colour == colour.white):
+        if (piece_colour == Colour.white):
             y = 0
         else:
             y = 7
 
         for i in range(Board.SIZE):
-            if self.get_piece(i, y) == Pawn(colour):
-                self.place_piece(i, y, piece_type, colour)
+            if self.get_piece(i, y) == Pawn(piece_colour):
+                self.place_piece(i, y, piece_type, piece_colour)
                 break
         else:
             raise TypeError(
@@ -172,22 +175,25 @@ class Board:
     def get_piece(self, x, y):
         """Return the piece at position x, y on the board.
 
-        Will raise IndexError if the indices are not valid.
+        Returns None if indeices out of bounds
         """
+        if(not self.is_square(x,y)):
+            return None
+
         return self.piece_array[x][y]
 
-    def place_piece(self, x, y, piece_type, colour):
+    def place_piece(self, x, y, piece_type, piece_colour):
         """Place a piece of the passed type at the passed location.
 
         Args:
             - x, y:  ints specifying the position on the board to place piece
             - type:  a member of the PieceType enum
-            - colour:  a member of the PieceColour enum
+            - piece_colour:  a member of the PieceColour enum
 
         Will raise IndexError if the indices are not valid.
         """
 
-        self.piece_array[x][y] = Piece.make_piece(piece_type, colour)
+        self.piece_array[x][y] = Piece.make_piece(piece_type, piece_colour)
 
     def remove_piece(self, x, y):
         """Remove the piece at the passed location.
@@ -240,8 +246,11 @@ class Board:
 
         """
 
-        up_down = up_down/abs(up_down)
-        left_right = left_right/abs(left_right)
+        if(up_down != 0):
+            up_down = int(up_down/abs(up_down))
+
+        if(left_right != 0):
+            left_right = int(left_right/abs(left_right))
 
         if up_down == 0 and left_right == 0:
             raise ValueError
@@ -261,7 +270,7 @@ class Board:
 
         while(self.is_square(new_x, new_y)):
 
-            move = Move((x, y), (new_x, new_y))
+            move = Move.Move((x, y), (new_x, new_y))
             piece_at_move = self.get_piece(new_x, new_y)
 
             if (not no_legal) and self.is_possible_valid_move(move):
@@ -301,9 +310,9 @@ class Board:
 
         piece_moving = self.get_piece(*move.start_posn)
 
-        try:
-            piece_at_move = self.get_piece(*move.end_posn)
-        except IndexError:
+        piece_at_move = self.get_piece(*move.end_posn)
+
+        if piece_at_move is None:
             return False
 
         if (piece_at_move.colour == piece_moving.colour):
@@ -330,7 +339,7 @@ class Board:
         new_board = self.copy()
         new_board.make_move(move)
 
-        if newBoard.isInCheck(piece_moving.colour):
+        if new_board.is_in_check(piece_moving.colour):
             return False
 
         return True
@@ -354,12 +363,12 @@ class Board:
         if king.type != p_type.king:
             return False
 
-        if king.colour == colour.white:
+        if king.colour == Colour.white:
             y = 7
-            friendly_rook = Piece.Rook(colour.white)
-        elif king.colour == colour.black:
+            friendly_rook = Piece.Rook(Colour.white)
+        elif king.colour == Colour.black:
             y = 0
-            friendly_rook = Piece.Rook(colour.black)
+            friendly_rook = Piece.Rook(Colour.black)
 
         # If king is not at correct position for castling
         if move.start_posn != (4, y):
@@ -449,17 +458,17 @@ class Board:
         if piece_to_move.type == p_type.blank:
             return []
         if piece_to_move.type == p_type.king:
-            return get_king_moves(x, y)
+            return self.get_king_moves(x, y)
         if piece_to_move.type == p_type.queen:
-            return get_queen_moves(x, y)
+            return self.get_queen_moves(x, y)
         if piece_to_move.type == p_type.bishop:
-            return get_bishop_moves(x, y)
+            return self.get_bishop_moves(x, y)
         if piece_to_move.type == p_type.knight:
-            return get_knight_moves(x, y)
+            return self.get_knight_moves(x, y)
         if piece_to_move.type == p_type.rook:
-            return get_rook_moves(x, y)
+            return self.get_rook_moves(x, y)
         if piece_to_move.type == p_type.pawn:
-            return get_pawn_moves(x, y)
+            return self.get_pawn_moves(x, y)
 
         return count
 
@@ -479,7 +488,7 @@ class Board:
                        (x, y-1),   (x-1, y+1), (x-1, y),   (x-1, y-1)]
 
         for square in square_list:
-            move = Move((x, y), square)
+            move = Move.Move((x, y), square)
             if self.is_possible_valid_move(move):
                 move_list.append(move)
 
@@ -512,7 +521,7 @@ class Board:
         for direction in directions:
             direction_moves = self.search_direction(
                 x, y, direction[0], direction[1])
-            move_list.extend(search_direction[2])
+            move_list.extend(direction_moves[2])
 
         return move_list
 
@@ -529,7 +538,7 @@ class Board:
                        (x+2, y-1), (x-2, y-1), (x+1, y-2), (x-1, y-2)]
 
         for square in square_list:
-            move = Move((x, y), square)
+            move = Move.Move((x, y), square)
             if self.is_possible_valid_move(move):
                 move_list.append(move)
 
@@ -549,7 +558,7 @@ class Board:
         for direction in directions:
             direction_moves = self.search_direction(
                 x, y, direction[0], direction[1])
-            move_list.extend(search_direction[2])
+            move_list.extend(direction_moves[2])
 
         return move_list
 
@@ -565,22 +574,22 @@ class Board:
         can_double = False   # True if the pawn can move two squares forward.
         pawn = self.get_piece(x, y)
 
-        if pawn.colour == colour.white:
+        if pawn.colour == Colour.white:
             m = -1  # m is a multiplier which ensures white pieces move up the
             # board (in the negative y direction) and vice versa
 
             if y == 6:
                 can_double = True
-        elif pawn.colour == colour.black:
+        elif pawn.colour == Colour.black:
             m = 1
 
             if y == 1:
                 can_double == True
 
-        one_forward = Move((x, y), (x, y + 1*m))
-        two_forward = Move((x, y), (x, y + 2*m))
-        left_take = Move((x, y), (x - 1, y + 1*m))
-        right_take = Move((x, y), (x + 1, y + 1*m))
+        one_forward = Move.Move((x, y), (x, y + 1*m))
+        two_forward = Move.Move((x, y), (x, y + 2*m))
+        left_take = Move.Move((x, y), (x - 1, y + 1*m))
+        right_take = Move.Move((x, y), (x + 1, y + 1*m))
 
         if (self.is_possible_valid_move(one_forward)):
             move_list.append(one_forward)
@@ -601,21 +610,21 @@ class Board:
     ############################ BOARD EVALUATION #############################
     ###########################################################################
 
-    def is_in_check(self, colour):
+    def is_in_check(self, piece_colour):
         """Return true if the king of the passed colour is in check.
 
         Note that if no king of the passed colour is found, this function will
         return false.
 
         Args:
-            colour:  a member of the Piece.PieceColour enum
+            piece_colour:  a member of the Piece.PieceColour enum
 
         """
 
         # Find King
         for i, j in itertools.product(range(Board.SIZE), range(Board.SIZE)):
             piece = self.get_piece(i, j)
-            if piece.type == p_type.king and piece.colour == colour:
+            if piece.type == p_type.king and piece.colour == piece_colour:
                 x = i
                 y = j
                 break
@@ -628,17 +637,21 @@ class Board:
         for dirn in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
             piece = self.search_direction(
                 x, y, dirn[0], dirn[1], no_legal=True)[1]
-            if piece.colour != colour:
-                if piece.type in (p_type.rook, p_type.queen):
-                    return True
+
+            if piece is not None:
+                if piece.colour != piece_colour:
+                    if piece.type in (p_type.rook, p_type.queen):
+                        return True
 
         # Diagonally
         for dirn in [(1, 1), (1, -1), (-1, 1), (-1, -1)]:
             piece = self.search_direction(
                 x, y, dirn[0], dirn[1], no_legal=True)[1]
-            if piece.colour != colour:
-                if piece.type in (p_type.bishop, p_type.queen):
-                    return True
+
+            if piece is not None:
+                if piece.colour != piece_colour:
+                    if piece.type in (p_type.bishop, p_type.queen):
+                        return True
 
         # Look for knights
         square_list = [(x+1, y+2), (x-1, y+2), (x+2, y+1), (x-2, y+1),
@@ -646,21 +659,23 @@ class Board:
 
         for square in square_list:
             piece = self.get_piece(*square)
-            if piece.colour != colour:
-                if piece.type == p_type.knight:
-                    return True
+            if piece is not None:
+                if piece.colour != piece_colour:
+                    if piece.type == p_type.knight:
+                        return True
 
         # Look for pawns
-        if colour == colour.white:
+        if piece_colour == Colour.white:
             square_list = [(x+1, y-1), (x-1, y-1)]
         else:
             square_list = [(x+1, y+1), (x-1, y+1)]
 
         for square in square_list:
             piece = self.get_piece(*square)
-            if piece.colour != colour:
-                if piece.type == p_type.pawn:
-                    return True
+            if piece is not None:
+                if piece.colour != piece_colour:
+                    if piece.type == p_type.pawn:
+                        return True
 
         # And finally, the enemy king
         square_list = [(x+1, y+1), (x+1, y),   (x+1, y-1), (x, y+1),
@@ -668,38 +683,39 @@ class Board:
 
         for square in square_list:
             piece = self.get_piece(*square)
-            if piece.colour != colour:
-                if piece.type == p_type.king:
-                    return True
+            if piece is not None:
+                if piece.colour != piece_colour:
+                    if piece.type == p_type.king:
+                        return True
 
         return False
 
-    def has_won(self, colour):
+    def has_won(self, piece_colour):
         """Return true if the team of the passed colour has won.
 
         Args:
-            - colour:  a member of the Piece.PieceColour enum
+            - piece_colour:  a member of the Piece.PieceColour enum
 
         """
 
-        if colour == colour.white:
-            enemy = colour.black
+        if piece_colour == colour.white:
+            enemy = Colour.black
         else:
-            enemy = colour.white
+            enemy = Colour.white
 
         return (not legal_move_exists(enemy)) and self.is_in_check(enemy)
 
-    def legal_move_exists(self, colour):
+    def legal_move_exists(self, piece_colour):
         """Return true if the team of the passed colour can make a legal move.
 
         Args:
-            - colour:  a member of the Piece.PieceColour enum
+            - piece_colour:  a member of the Piece.PieceColour enum
 
         """
 
         for i, j in itertools.product(range(Board.SIZE), range(Board.SIZE)):
             piece = self.get_piece(i, j)
-            if piece.colour == colour:
+            if piece.colour == piece_colour:
                 if len(self.get_piece_moves(i, j)) > 0:
                     return True
 
@@ -714,10 +730,10 @@ class Board:
 
         return True
 
-    def can_promote_pawn(self, colour):
+    def can_promote_pawn(self, piece_colour):
         """Return true if the player of passed colour can promote a pawn."""
 
-        if (colour == colour.white):
+        if (piece_colour == colour.white):
             y = 0
         else:
             y = 7
