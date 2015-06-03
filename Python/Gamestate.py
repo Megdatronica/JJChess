@@ -1,8 +1,24 @@
 """Contains the Gamestate class"""
 
+from enum import Enum
 import Board
 import Move
 from Piece import *
+
+
+class Status(Enum):
+    normal = 0
+
+    white_check = 1
+    black_check = -1
+
+    white_win = 2
+    black_win = -2
+
+    stalemate = 3
+    fifty_move_draw = 4
+    king_draw = 5
+    agreement_draw = 6
 
 
 class Gamestate:
@@ -43,6 +59,8 @@ class Gamestate:
         self.fifty_move_count = 0
 
         self.en_passant_sq = None
+
+        self.is_white_turn = True
 
     def draw(self, canvas):
         """ Draw the gamestate to a Tkinter canvas element.
