@@ -26,20 +26,18 @@ class Board:
         """Create clear board."""
         self.clear()
 
-    def draw(self, canvas):
+    def draw_board(self, canvas):
         """Draw the current state of the board on a canvas.
 
         Args:
            - canvas : Tkinter canvas object to draw the board on
 
         """
-        # Clear the canvas
-        canvas.delete("all")
 
         sq_width = int(canvas["width"])/8
 
         # white background
-        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill="yellow")
+        canvas.create_rectangle(0, 0, sq_width*8, sq_width*8, fill="#FFCC66")
 
         # black squares: for each file draw 4 black squares
         for i in range(Board.SIZE):
@@ -48,7 +46,11 @@ class Board:
                 canvas.create_rectangle(i*sq_width, (2*j+(i+1) % 2)*sq_width,
                                         (i+1)*sq_width,
                                         (2*j+(i+1) % 2+1)*sq_width,
-                                        fill="brown")
+                                        fill="#401E00")
+
+    def draw_pieces(self, canvas):
+
+        sq_width = int(canvas["width"])/8
 
         # draw all pieces on the board
         for i in range(8):
@@ -769,7 +771,7 @@ class Board:
 
             if(piece.type != p_type.pawn):
                 san += piece.get_san()
-                san += self.get_clar_str(move)
+                san += self.get_clar_str(move, piece)
 
             else:
                 # If pawn we only give the file (no clarification needed)
@@ -799,16 +801,16 @@ class Board:
         need_file = False
         need_rank = False
 
-        for i in range(board.SIZE):
+        for i in range(Board.SIZE):
             for j in range(Board.SIZE):
 
                 if(i != move.start_posn[0] and j != move.end_posn[1]):
 
                     moves_list = self.get_piece_moves(i, j)
 
-                    if(piece_array[i][j].piece_type == piece.piece_type):
+                    if(self.piece_array[i][j].type == piece.type):
 
-                        for m in move_list:
+                        for m in moves_list:
 
                             if(m.end_posn == move.end_posn):
 
@@ -822,6 +824,8 @@ class Board:
             clar_str += FILE_LABELS[move.start_posn[0]]
         if(need_rank):
             clar_str += str(move.start_posn[1])
+
+        return clar_str
 
     def get_pictorial(self):
         """Return a pictorial string representation of the board."""

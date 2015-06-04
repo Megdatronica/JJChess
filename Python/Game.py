@@ -7,7 +7,7 @@ import Gamestate
 import Player
 import Piece
 from Piece import PieceColour as colour
-from Gamestate import Status as status
+from Gamestate import Status
 from Images import Images
 
 # Size of the board canvas to render in pixels
@@ -154,7 +154,7 @@ class Game:
 
             else:
                 self.listen = False
-                status = self.take_turn()
+                status = self.take_ai_turn()
 
             if status not in (
                     status.normal, status.white_check, status.black_check):
@@ -179,7 +179,7 @@ class Game:
 
         move = current_player.get_move(game_state)
         move_SAN = self.game_state.get_san(move)
-        self.game_state.make_move(move)
+        self.game_state.make_move(move, self.board_canvas)
 
         promote_piece = self.ai_promote_pawn()
 
@@ -192,21 +192,21 @@ class Game:
 
     def turn_taken(self, move):
 
-       # move_SAN = self.game_state.get_san(move)
-        self.game_state.make_move(move)
+        move_SAN = self.game_state.get_san(move)
+        self.game_state.make_move(move, self.board_canvas)
 
         promote_piece = self.human_promote_pawn()
 
-        #status = self.game_state.get_status()
-        #self.log_move(move_SAN, status, promote_piece)
+        status = self.game_state.get_status()
+        self.log_move(move_SAN, status, promote_piece)
 
         self.game_state.swap_turn()
 
-        #if status not in (
-        #            status.normal, status.white_check, status.black_check):
-        #        return status
-        #else:
-        self.play()
+        if status not in (
+                    Status.normal, Status.white_check, Status.black_check):
+                return status
+        else:
+            self.play()
 
     def human_promote_pawn(self):
         pass
