@@ -272,8 +272,9 @@ class Board:
             move = Move.Move((x, y), (new_x, new_y))
             piece_at_move = self.get_piece(new_x, new_y)
 
-            if (not no_legal) and self.is_possible_valid_move(move):
-                move_list.append(move)
+            if not no_legal:
+                if self.is_possible_valid_move(move):
+                    move_list.append(move)
 
             if piece_at_move.type != p_type.blank:
                 found_piece = piece_at_move

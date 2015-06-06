@@ -7,7 +7,8 @@ import Gamestate
 import Player
 import Piece
 from Piece import PieceColour as colour
-from Gamestate import Status as status
+from Piece import PieceType as p_type
+from Gamestate import Status as g_status
 from Images import Images
 
 # Size of the board canvas to render in pixels
@@ -21,16 +22,16 @@ class Game:
     Attributes:
         -master: see ui elements
         -frame: see ui elements
-        -player1: AI type string of player 1 (either filename in 
+        -player1: AI type string of player 1 (either filename in
                   ../Scripts or "Human")
         -player2: see above
 
     UI elements:
         - master: Master instance of tkinter
-        - frame: The main window self.frame configured with 
+        - frame: The main window self.frame configured with
                  grid geometry
         - board_canvas: A canvas element on which to draw the board
-        - cur_player_label: A label to indicate which colour's turn 
+        - cur_player_label: A label to indicate which colour's turn
                             it is
         - players_label: A label to indicate what type of players
                          are playing
@@ -74,6 +75,9 @@ class Game:
 
         self.master.mainloop()
 
+        f = open("game.pgn", 'w')
+        f.close()
+
     def build_ui(self):
         """ Build the UI window for the game.
         """
@@ -115,12 +119,8 @@ class Game:
     def mouse_press(self, event):
 
         square = Game.get_square_from_click(event)
-
-<<<<<<< HEAD
         self.game_state.select_square(square, self.board_canvas)
 
-=======
->>>>>>> 64da11d6974bf2f263c1f43bc2496f775e387d3c
     def get_square_from_click(event):
 
         print(event.x)
@@ -136,8 +136,8 @@ class Game:
         while(true):
             status = self.take_turn()
 
-            if status not in (
-                    status.normal, status.white_check, status.black_check):
+            if status not in (g_status.normal, g_status.white_check,
+                              g_status.black_check):
                 return status
 
     def get_current_player(self):
@@ -152,7 +152,7 @@ class Game:
 
         Get a valid move from the current player, changes game_state
         to reflect the move being made (handling any pawn promotion), and
-        finally changes whose turn it is. Returns the result of 
+        finally changes whose turn it is. Returns the result of
         game_state.get_status() after making the move and also calls log_move.
 
         """
@@ -163,7 +163,7 @@ class Game:
             raise NotImplementedError("JOE THIS BIT IS YOURS")
         else:
             move = current_player.get_move(game_state)
-            move_SAN = state.get_san(move)
+            move_SAN = game_state.get_san(move)
             state.make_move(move)
 
             promote_piece = promotePawn()
@@ -173,7 +173,7 @@ class Game:
 
         state.swapTurn()
 
-        return statusInt
+        return status
 
     def promote_pawn(self):
         """Handles any pawn promotion and returns the chosen promotion.
@@ -193,4 +193,53 @@ class Game:
 
         return None
 
-    def log_move(self, move_SAN, status, promote_val):
+    def log_move(self, move_SAN, status, promote_piece):
+        """Write a move into game.pgn.
+
+        Note that this function should be called BEFORE
+        state.swapTurn().
+
+        Inputs:
+            move_SAN:  a string representing the move made in SAN format,
+                       without check/checkmate or promotion appended
+            status:  the result of state.getStatus() after the move has
+                     been made.
+            promote_piece:  the piece which a pawn has been promoted to (the
+                            result of calling self.promote_pawn())
+
+        """
+
+        f = open("game.pgn", 'a')
+
+        # Note that state.moveCount is the number of HALF moves that have been
+        # made, INCLUDING this one.
+        move_number = int((state.moveCount + 1) / 2)
+
+        if game_state.is_white_turn:
+            f.write(str(move_number) + ". " + move_SAN)
+        else:
+            f.write(move_SAN)
+
+        if promote_piece is not None:
+            if promote_piece.type == p_type.queen:
+                f.write("=Q")
+            elif promote_piece.type == p_type.knight:
+                f.write("=K")
+            elif promote_piece.type == p_type.bishop:
+                f.write("=B")
+            elif promote_piece.type == p_type.rook:
+                f.write("=R")
+
+        if status in (g_status.white_check, g_status.black_check):
+            f.write("+ ")
+        elif status == g_status.white_win:
+            f.write("# 1-0")
+        elif status == g_status.black_win:
+            f.write("# 0-1")
+        elif status in (g_status.king_draw, g_status.stalemate,
+                        g_status.agreement_draw, g_status.fifty_move_draw):
+            f.write(" 1/2-1/2")
+        else:
+            f.write(" ")
+
+        f.close()
