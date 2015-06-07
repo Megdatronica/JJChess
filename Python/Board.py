@@ -774,10 +774,6 @@ class Board:
                 san += piece.get_san()
                 san += self.get_clar_str(move, piece)
 
-            else:
-                # If pawn we only give the file (no clarification needed)
-                san += Board.FILE_LABELS[move.start_posn[0]]
-
             if(self.is_take_move(move)):
 
                 san += "x"
@@ -798,14 +794,14 @@ class Board:
         """
 
         clar_str = ""
-        tmp_pieces = []
         need_file = False
         need_rank = False
 
         for i in range(Board.SIZE):
             for j in range(Board.SIZE):
 
-                if(i != move.start_posn[0] and j != move.end_posn[1]):
+                if(i != move.start_posn[0] and j != move.end_posn[1]
+                    and self.get_piece(i,j).colour == piece.colour):
 
                     moves_list = self.get_piece_moves(i, j)
 

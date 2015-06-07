@@ -349,7 +349,7 @@ class Gamestate:
                 - move: move to get SAN of
         """
 
-        san = self.board.get_san(move)
+        return self.board.get_san(move)
 
     def legal_move_exists(self, colour):
 
