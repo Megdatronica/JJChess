@@ -3,6 +3,7 @@ from Chess import Board
 from Chess import Move
 from Chess import Piece
 from Chess.Piece import PieceColour as p_colour
+import random
 
 
 def get_move(game_state, colour):
