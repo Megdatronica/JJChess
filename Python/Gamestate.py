@@ -310,9 +310,9 @@ class Gamestate:
                             (j - self.en_passant_sq[1]) == 0):
 
                         pawn_square = (self.en_passant_sq[0], j)
-                        b_moves.append(Move((i, j), self.en_passant_sq,
-                                            en_passant=True,
-                                            en_passant_posn=pawn_square))
+                        b_moves.append(Move.Move((i, j), self.en_passant_sq,
+                                                 en_passant=True,
+                                                 en_passant_posn=pawn_square))
 
                 else:
                     b_moves.extend(self.board.get_piece_moves(i, j))
@@ -349,7 +349,7 @@ class Gamestate:
                 - move: move to get SAN of
         """
 
-        san = self.board.get_san(move)
+        return self.board.get_san(move)
 
     def legal_move_exists(self, colour):
 

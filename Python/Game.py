@@ -254,9 +254,9 @@ class Game:
 
         # Note that state.moveCount is the number of HALF moves that have been
         # made, INCLUDING this one.
-        move_number = int((state.moveCount + 1) / 2)
+        move_number = int((self.game_state.count + 1) / 2)
 
-        if game_state.is_white_turn:
+        if self.game_state.is_white_turn:
             f.write(str(move_number) + ". " + move_SAN)
         else:
             f.write(move_SAN)

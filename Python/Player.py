@@ -116,7 +116,8 @@ class AIPlayer(Player):
 
         super(AIPlayer, self).__init__(colour, location=location)
 
-        AI = importlib.import_module("Scripts." + location)
+#        AI = importlib.import_module("Scripts." + location)
+        AI = importlib.import_module("Scripts")
 
     def get_move(self, game_state):
         """Return the move chosen by the AI module
