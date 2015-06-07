@@ -339,12 +339,12 @@ class Gamestate:
 
                     b_moves.extend(self.board.get_piece_moves(i, j))
 
-                    if(abs(square[0] - self.en_passant_sq[0]) == 1 and
-                            abs(square[1] - self.en_passant_sq[1]) == 1):
+                    if(abs(i - self.en_passant_sq[0]) == 1 and
+                            abs(j - self.en_passant_sq[1]) == 1):
 
-                        pawn_square = (self.en_passant_sq[0], square[1])
+                        pawn_square = (self.en_passant_sq[0], j)
 
-                        p_moves.append(Move.Move((square[0], square[1]),
+                        b_moves.append(Move.Move((i, j),
                                          self.en_passant_sq,
                                          en_passant=True,
                                          en_passant_posn=pawn_square,
