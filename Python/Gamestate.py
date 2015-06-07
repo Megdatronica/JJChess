@@ -68,6 +68,7 @@ class Gamestate:
         self.selected_piece = None
         self.selected_piece_moves = []
 
+        self.king_in_check = False
         self.is_white_turn = True
 
     def draw(self, canvas):
@@ -77,7 +78,15 @@ class Gamestate:
                 -canvas: the Tkinter canvas element
         """
 
-        self.board.draw(canvas)
+        # Clear the canvas
+        canvas.delete("all")
+
+        self.board.draw_board(canvas)
+
+        # highlights king red if in check
+        if(self.king_in_check):
+            # TODO: Draw code for king in check
+            pass
 
         # Creates a move from the piece to itself to draw
         if(self.selected_piece != None):
@@ -86,24 +95,35 @@ class Gamestate:
 
         for move in self.selected_piece_moves:
 
+            if(self.board.is_take_move(move)):
+
+                move.set_taking_move()
+
             move.draw(canvas)
+
+        self.board.draw_pieces(canvas)
 
     def select_square(self, square, canvas):
 
-        if selected_piece is not None:
+        for move in self.selected_piece_moves:
 
-            for move in selected_piece_moves:
+            if move.end_posn == square:
 
-                if move.end_posn == square:
+                self.selected_piece = None
+                self.selected_piece_moves = []
 
-                    self.make_move(move)
-                    
+                return move
 
+        piece = self.board.get_piece(*square)
 
-        if self.board.get_piece(*square).type != PieceType.blank:
-            self.selected_piece = square
-            self.selected_piece_moves = self.board.get_piece_moves(*square)
+        if piece.type != PieceType.blank and self.is_turn(piece.colour):
 
+            if(self.selected_piece == square):
+                self.selected_piece = None
+                self.selected_piece_moves = []
+            else:
+                self.selected_piece = square
+                self.selected_piece_moves = self.board.get_piece_moves(*square)
         else:
             self.selected_piece = None
             self.selected_piece_moves = []
@@ -112,15 +132,33 @@ class Gamestate:
 
         self.draw(canvas)
 
-    def make_move(self, move):
+        return None
+
+    def is_turn(self, colour):
+
+        if self.is_white_turn and colour is PieceColour.white:
+
+            return True
+
+        if not self.is_white_turn and colour is PieceColour.black:
+
+            return True
+
+        else:
+            return False
+
+    def make_move(self, move, canvas):
         """ Make a given move.
 
             Args:
                 - move: move to be made
+                - canvas: JOE WHEN YOU CHANGE A FUNCTION YOU CHANGE ITS DOC
         """
 
-        update_counts(move)
-        board.make_move(move)
+        self.update_counts(move)
+        self.board.make_move(move)
+
+        self.draw(canvas)
 
     def update_counts(self, move):
         """ Update counters and set en passant square if appropriate.
@@ -264,15 +302,15 @@ class Gamestate:
             for j in range(8):
 
                 if(self.board.get_piece(i, j).type == PieceType.pawn and
-                        en_passant_sq != None):
+                        self.en_passant_sq != None):
 
                     b_moves.extend(self.board.get_piece_moves(i, j))
 
-                    if(abs(i - en_passant_sq[0]) == 1 and
-                            (j - en_passant_sq[1]) == 0):
+                    if(abs(i - self.en_passant_sq[0]) == 1 and
+                            (j - self.en_passant_sq[1]) == 0):
 
-                        pawn_square = (en_passant_sq[0], j)
-                        b_moves.append(Move((i, j), en_passant_sq,
+                        pawn_square = (self.en_passant_sq[0], j)
+                        b_moves.append(Move((i, j), self.en_passant_sq,
                                             en_passant=True,
                                             en_passant_posn=pawn_square))
 
@@ -292,7 +330,7 @@ class Gamestate:
         """ Swap which player has the current turn.
         """
 
-        self.is_white_turn = not is_white_turn
+        self.is_white_turn = not self.is_white_turn
 
     def is_piece_selected(self):
 
@@ -311,7 +349,15 @@ class Gamestate:
                 - move: move to get SAN of
         """
 
-        san = board.get_san(move)
+        san = self.board.get_san(move)
+
+    def legal_move_exists(self, colour):
+
+        # if statement returns true if list of moves is empty
+        if(not self.get_player_moves(colour)):
+            return False
+        else:
+            return True
 
     def get_status(self):
         """Return a member of the Status enum."""
@@ -327,7 +373,7 @@ class Gamestate:
 
         # Note that fiftyMoveRuleCount is effectively incremented twice for
         # each full move(once per player)
-        if fiftyMoveRuleCount == 100:
+        if self.fifty_move_count == 100:
             return Status.fifty_move_draw
         if self.board.is_king_draw():
             return Status.king_draw
@@ -337,9 +383,12 @@ class Gamestate:
 
         if (not legal_move_exists) and in_check:
             return win
-        if not legalMoveExists:
+        if not legal_move_exists:
             return Status.stalemate
         if in_check:
+            self.king_in_check = check
             return check
+        else:
+            self.king_in_check = Status.normal
 
         return Status.normal

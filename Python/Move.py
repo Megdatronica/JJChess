@@ -12,6 +12,7 @@ class Move:
         - en_passant:  true if the move is an enPassant move
         - start_posn:  an integer tuple containing the x and y values of the
                       piece (king if castling move) making the move
+        - take_move: true if the move is a taking move
         - end_posn:  an integer tuple containing the x and y values of the
                     square the piece (king if castling move) is moving to
         - en_passant_posn:  if en_passant, this is a tuple containing the x and
@@ -19,8 +20,8 @@ class Move:
 
     """
 
-    def __init__(self, start_posn, end_posn, castle=False, en_passant=False,
-                 en_passant_posn=None):
+    def __init__(self, start_posn, end_posn, take_move=False, castle=False,
+                 en_passant=False, en_passant_posn=None):
         """Initialise a move according to passed parameters.
 
         Raises:
@@ -38,24 +39,36 @@ class Move:
         self.start_posn = start_posn
         self.end_posn = end_posn
         self.castle = castle
+        self.take_move = take_move
         self.en_passant = en_passant
         self.en_passant_posn = en_passant_posn
 
     def __eq__(self, other):
         return (self.start_posn == other.start_posn
                 and self.end_posn == other.colour
-                 and self.castle == other.castle
-                  and self.en_passant == other.en_passant
-                   and self.en_passant_posn == other.en_passant_posn)
-        
+                and self.castle == other.castle
+                and self.en_passant == other.en_passant
+                and self.en_passant_posn == other.en_passant_posn)
+
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def set_taking_move(self):
+
+        self.take_move = True
 
     def draw(self, canvas):
 
         sq_width = int(canvas["width"])/8
-        canvas.create_rectangle(self.end_posn[0]*sq_width, 
-                                self.end_posn[1]*sq_width, 
-                                (self.end_posn[0]+1)*sq_width, 
-                                (self.end_posn[1]+1)*sq_width, 
-                                stipple = "gray50", fill="green")
+        if(self.take_move):
+            canvas.create_rectangle(self.end_posn[0]*sq_width,
+                                    self.end_posn[1]*sq_width,
+                                    (self.end_posn[0]+1)*sq_width,
+                                    (self.end_posn[1]+1)*sq_width,
+                                    stipple="gray75", fill="red")
+        else:
+            canvas.create_rectangle(self.end_posn[0]*sq_width,
+                                    self.end_posn[1]*sq_width,
+                                    (self.end_posn[0]+1)*sq_width,
+                                    (self.end_posn[1]+1)*sq_width,
+                                    stipple="gray75", fill="green")

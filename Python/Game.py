@@ -25,6 +25,8 @@ class Game:
         -player1: AI type string of player 1 (either filename in
                   ../Scripts or "Human")
         -player2: see above
+        -listen: boolean for whether the UI should listen for user
+                 click events.
 
     UI elements:
         - master: Master instance of tkinter
@@ -50,8 +52,10 @@ class Game:
 
         if (player1 == "Human"):
             self.white_player = Player.HumanPlayer(colour.white)
+            self.listen = True
         else:
             self.white_player = Player.AIPlayer(colour.white, player1)
+            self.listen = False
 
         if (player2 == "Human"):
             self.black_player = Player.HumanPlayer(colour.black)
@@ -118,13 +122,24 @@ class Game:
 
     def mouse_press(self, event):
 
-        square = Game.get_square_from_click(event)
-        self.game_state.select_square(square, self.board_canvas)
+        if(self.listen):
+
+            square = Game.get_square_from_click(event)
+
+            move = self.game_state.select_square(square, self.board_canvas)
+
+            if(move is not None):
+
+                self.turn_taken(move)
 
     def get_square_from_click(event):
 
-        print(event.x)
-        print(event.y)
+        i = int(event.x*8/BOARD_SIZE)
+        j = int(event.y*8/BOARD_SIZE)
+
+        print((i, j))
+
+        return (i, j)
 
     def play(self):
         """Play through a whole game, and return an enum indicating the result.
@@ -133,8 +148,17 @@ class Game:
 
         """
 
-        while(true):
-            status = self.take_turn()
+        while(True):
+
+            current_player = self.get_current_player()
+
+            if current_player.is_human:
+                self.listen = True
+                break
+
+            else:
+                self.listen = False
+                status = self.take_ai_turn()
 
             if status not in (g_status.normal, g_status.white_check,
                               g_status.black_check):
@@ -147,7 +171,7 @@ class Game:
         else:
             return self.black_player
 
-    def take_turn(self):
+    def take_ai_turn(self):
         """Take one turn of the game and change state.is_white_turn.
 
         Get a valid move from the current player, changes game_state
@@ -159,24 +183,41 @@ class Game:
 
         current_player = self.get_current_player()
 
-        if current_player.is_human:
-            raise NotImplementedError("JOE THIS BIT IS YOURS")
-        else:
-            move = current_player.get_move(game_state)
-            move_SAN = game_state.get_san(move)
-            state.make_move(move)
+        move = current_player.get_move(game_state)
+        move_SAN = self.game_state.get_san(move)
+        self.game_state.make_move(move, self.board_canvas)
+        promote_piece = self.ai_promote_pawn()
 
-            promote_piece = promotePawn()
+        status = game_state.get_status()
+        self.log_move(move_SAN, status, promote_piece)
 
-        status = state.get_status()
-        self.logMove(move_SAN, status, promote_piece)
-
-        state.swapTurn()
+        self.game_state.swap_turn()
 
         return status
 
-    def promote_pawn(self):
-        """Handles any pawn promotion and returns the chosen promotion.
+    def turn_taken(self, move):
+
+        move_SAN = self.game_state.get_san(move)
+        self.game_state.make_move(move, self.board_canvas)
+
+        promote_piece = self.human_promote_pawn()
+
+        status = self.game_state.get_status()
+        self.log_move(move_SAN, status, promote_piece)
+
+        self.game_state.swap_turn()
+
+        if status not in (g_status.normal, g_status.white_check,
+                          g_status.black_check):
+            return status
+        else:
+            self.play()
+
+    def human_promote_pawn(self):
+        pass
+
+    def ai_promote_pawn(self):
+        """Handles any pawn promotion and returns the ai's chosen promotion.
 
         Returns:
             - a Piece object, the piece which was chosen by the player to
