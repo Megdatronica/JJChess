@@ -104,7 +104,7 @@ class Board:
             self.castle(move)
 
         if move.en_passant:
-            self.remove_piece(*move.start_posn)
+            self.remove_piece(*move.en_passant_posn)
 
         piece = self.get_piece(*move.start_posn)
 
@@ -120,6 +120,9 @@ class Board:
         Args:
             - move: a move object which is a castling move.
         """
+
+        piece = self.get_piece(*move.start_posn)
+        col = piece.colour
 
         # If king is moving to the right
         if move.end_posn[0] - move.start_posn[0] > 0:
@@ -138,7 +141,7 @@ class Board:
 
         # Move the rook
         self.remove_piece(rook_from_x, rook_y)
-        self.place_piece(rook_to_x, rook_y)
+        self.place_piece(rook_to_x, rook_y, p_type.rook, col)
 
     def promote_pawn(self, piece_colour, piece_type):
         """Promote a pawn of a given colour to the given piece type.
@@ -360,7 +363,7 @@ class Board:
         if not move.castle:
             return False
 
-        king = board.get_piece(*move.start_posn)
+        king = self.get_piece(*move.start_posn)
 
         if king.type != p_type.king:
             return False
@@ -378,7 +381,8 @@ class Board:
 
         if (move.end_posn[0] > move.start_posn[0]):
             # Castling King's side
-            search_results = search_direction(
+
+            search_results = self.search_direction(
                 move.start_posn[0], move.start_posn[1], 0, 1, no_legal=True)
             if search_results[0] != 2:
                 return False
@@ -386,7 +390,7 @@ class Board:
                 return False
         else:
             # Castling Queen's side
-            search_results = search_direction(
+            search_results = self.search_direction(
                 move.start_posn[0], move.start_posn[1], 0, -1, no_legal=True)
             if search_results[0] != 3:
                 return False
@@ -411,20 +415,22 @@ class Board:
         if not move.castle:
             return False
 
-        king = board.get_piece(*move.start_posn)
+        king = self.get_piece(*move.start_posn)
 
         if self.is_in_check(king.colour):
             return False
 
         if (move.end_posn[0] > move.start_posn[0]):
             # Castling King's side
-            search_results = search_direction(
+
+            search_results = self.search_direction(
                 move.start_posn[0], move.start_posn[1], 0, 1)
             if len(search_results[2]) != 2:
                 return False
         else:
             # Castling Queen's side
-            search_results = search_direction(
+
+            search_results = self.search_direction(
                 move.start_posn[0], move.start_posn[1], 0, -1)
             if len(search_results[2]) != 3:
                 return False
@@ -601,6 +607,7 @@ class Board:
             if (self.is_possible_valid_move(two_forward)
                     and can_double
                     and not self.is_take_move(two_forward)):
+
                 move_list.append(two_forward)
 
         if (self.is_possible_valid_move(left_take)):
@@ -776,14 +783,19 @@ class Board:
             piece = self.get_piece(*move.start_posn)
 
             if(piece.type != p_type.pawn):
-                san += piece.get_san()
+                san += piece.get_san().upper()
                 san += self.get_clar_str(move, piece)
 
-            if(self.is_take_move(move)):
+            if self.is_take_move(move):
+
+                if piece.type == p_type.pawn:
+                    # If pawn we only give the file (no clarification needed)
+                    san += Board.FILE_LABELS[move.start_posn[0]]
 
                 san += "x"
 
-            san += Board.FILE_LABELS[move.end_posn[0]] + str(move.end_posn[1])
+            san += Board.FILE_LABELS[move.end_posn[0]] + \
+                str(8-move.end_posn[1])
 
         return san
 

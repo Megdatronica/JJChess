@@ -19,29 +19,31 @@ class PieceColour(Enum):
     black = -1
     white = 1
 
+
 def make_piece(piece_type, colour):
-        """Return a piece of the correct subclass given the passed attributes.
+    """Return a piece of the correct subclass given the passed attributes.
 
-        Args:
-            - piece_type:  a member of the PieceType enum
-            - colour:  a member of the PieceColour enum
+    Args:
+        - piece_type:  a member of the PieceType enum
+        - colour:  a member of the PieceColour enum
 
-        """
+    """
 
-        if (piece_type == PieceType.king):
-            return King(colour)
-        elif (piece_type == PieceType.queen):
-            return Queen(colour)
-        elif (piece_type == PieceType.bishop):
-            return Bishop(colour)
-        elif (piece_type == PieceType.knight):
-            return Knight(colour)
-        elif (piece_type == PieceType.rook):
-            return Rook(colour)
-        elif (piece_type == PieceType.pawn):
-            return Pawn(colour)
-        else:
-            return Piece()
+    if (piece_type == PieceType.king):
+        return King(colour)
+    elif (piece_type == PieceType.queen):
+        return Queen(colour)
+    elif (piece_type == PieceType.bishop):
+        return Bishop(colour)
+    elif (piece_type == PieceType.knight):
+        return Knight(colour)
+    elif (piece_type == PieceType.rook):
+        return Rook(colour)
+    elif (piece_type == PieceType.pawn):
+        return Pawn(colour)
+    else:
+        return Piece()
+
 
 class Piece:
 
@@ -74,7 +76,6 @@ class Piece:
 
     def __ne__(self, other):
         return not self.__eq__(other)
-
 
     def get_san(self):
         return "_"

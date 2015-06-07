@@ -5,6 +5,7 @@ import Board
 import Move
 from Piece import *
 from Piece import PieceColour as colour
+from Piece import PieceType as p_type
 # Tkinter graphics package
 from tkinter import *
 
@@ -123,7 +124,8 @@ class Gamestate:
                 self.selected_piece_moves = []
             else:
                 self.selected_piece = square
-                self.selected_piece_moves = self.board.get_piece_moves(*square)
+                self.selected_piece_moves = \
+                    self.get_piece_moves(square)
         else:
             self.selected_piece = None
             self.selected_piece_moves = []
@@ -152,7 +154,7 @@ class Gamestate:
 
             Args:
                 - move: move to be made
-                - canvas: JOE WHEN YOU CHANGE A FUNCTION YOU CHANGE ITS DOC
+                - canvas: canvas to be drawn onto
         """
 
         self.update_counts(move)
@@ -214,8 +216,6 @@ class Gamestate:
         if(piece.type == PieceType.pawn):
             # check if double move
             if(abs(move.start_posn[1] - move.end_posn[1]) == 2):
-                print("En passant here!\n")
-
                 if(piece.colour == PieceColour.white):
 
                     self.en_passant_sq = (move.start_posn[0],
@@ -235,24 +235,62 @@ class Gamestate:
 
             self.fifty_move_count += 1
 
-    def is_legal_move(self, move, colour):
-        """ Check if a given move is legal
+    def get_piece_moves(self, square):
 
-            Args:
-                - move: move to be checked
-                - colour: colour of player making move
-        """
+        p_moves = []
+        piece = self.board.get_piece(*square)
 
-        moves = get_all_moves(colour)
+        p_moves.extend(self.board.get_piece_moves(*square))
 
-        if move in moves:
-            return True
-        else:
-            return False
+        print(self.en_passant_sq)
+
+        if piece.type == p_type.pawn and self.en_passant_sq is not None:
+
+            if(abs(square[0] - self.en_passant_sq[0]) == 1 and
+               abs(square[1] - self.en_passant_sq[1]) == 1):
+
+                pawn_square = (self.en_passant_sq[0], square[1])
+
+                p_moves.append(Move.Move((square[0], square[1]),
+                                         self.en_passant_sq,
+                                         en_passant=True,
+                                         en_passant_posn=pawn_square,
+                                         take_move=True))
+
+        if(piece.type == p_type.king):
+
+            if(self.w_castle_K == True):
+
+                castle = Move.Move((4, 7), (6, 7), castle=True)
+                if(self.board.is_possible_valid_move(castle)):
+
+                    p_moves.append(castle)
+
+            if(self.w_castle_Q == True):
+
+                castle = Move.Move((4, 7), (2, 7), castle=True)
+                if(self.board.is_possible_valid_move(castle)):
+
+                    p_moves.append(castle)
+
+            if(self.b_castle_K == True):
+
+                castle = Move.Move((4, 0), (6, 0), castle=True)
+                if(self.board.is_possible_valid_move(castle)):
+
+                    p_moves.append(castle)
+
+            if(self.b_castle_Q == True):
+
+                castle = Move.Move((4, 0), (2, 0), castle=True)
+                if(self.board.is_possible_valid_move(castle)):
+
+                    p_moves.append(castle)
+
+        return p_moves
 
     def get_all_moves(self, colour):
-        """ Return all the legal moves for the player with passed colour.
-
+        """ Return all the legal moves that the coloured player can make.
             (includes castling and en passant moves)
 
             Args:
@@ -262,31 +300,23 @@ class Gamestate:
         moves = self.get_player_moves(colour)
 
         if(self.w_castle_K == True):
-
-            castle = Move((4, 7), (6, 7), castle=True)
-            if(self.board.is_possible_legal_move(castle)):
-
+            castle = Move.Move((4, 7), (6, 7), castle=True)
+            if(self.board.is_possible_valid_move(castle)):
                 moves.append(castle)
 
         if(self.w_castle_Q == True):
-
-            castle = Move((4, 7), (2, 7), castle=True)
-            if(self.board.is_possible_legal_move(castle)):
-
+            castle = Move.Move((4, 7), (2, 7), castle=True)
+            if(self.board.is_possible_valid_move(castle)):
                 moves.append(castle)
 
         if(self.b_castle_K == True):
-
-            castle = Move((4, 0), (6, 0), castle=True)
-            if(self.board.is_possible_legal_move(castle)):
-
+            castle = Move.Move((4, 0), (6, 0), castle=True)
+            if(self.board.is_possible_valid_move(castle)):
                 moves.append(castle)
 
         if(self.b_castle_Q == True):
-
-            castle = Move((4, 0), (2, 0), castle=True)
-            if(self.board.is_possible_legal_move(castle)):
-
+            castle = Move.Move((4, 0), (2, 0), castle=True)
+            if(self.board.is_possible_valid_move(castle)):
                 moves.append(castle)
 
         return moves
@@ -318,6 +348,8 @@ class Gamestate:
 
                 else:
                     b_moves.extend(self.board.get_piece_moves(i, j))
+
+        return b_moves
 
     def can_promote_pawn(self, colour):
         """ Check if a pawn can be promoted.

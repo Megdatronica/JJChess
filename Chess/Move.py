@@ -60,12 +60,13 @@ class Move:
     def draw(self, canvas):
 
         sq_width = int(canvas["width"])/8
+
         if(self.take_move):
             canvas.create_rectangle(self.end_posn[0]*sq_width,
                                     self.end_posn[1]*sq_width,
                                     (self.end_posn[0]+1)*sq_width,
                                     (self.end_posn[1]+1)*sq_width,
-                                    stipple="gray75", fill="red")
+                                    fill="red")
         else:
             canvas.create_rectangle(self.end_posn[0]*sq_width,
                                     self.end_posn[1]*sq_width,
