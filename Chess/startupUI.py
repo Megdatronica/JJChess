@@ -113,6 +113,3 @@ class startupUI:
         self.master.destroy()
 
         Game.Game(player1, player2)
-
-
-startupUI()
