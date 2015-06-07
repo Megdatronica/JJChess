@@ -112,4 +112,6 @@ class startupUI:
 
         self.master.destroy()
 
-        Game.Game(player1, player2)
+        game = Game.Game(player1, player2)
+
+        game.play()

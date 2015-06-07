@@ -157,10 +157,11 @@ class Gamestate:
                 - canvas: canvas to be drawn onto
         """
 
+
+        print("move made")
+
         self.update_counts(move)
         self.board.make_move(move)
-
-        self.draw(canvas)
 
     def update_counts(self, move):
         """ Update counters and set en passant square if appropriate.
@@ -338,13 +339,16 @@ class Gamestate:
 
                     b_moves.extend(self.board.get_piece_moves(i, j))
 
-                    if(abs(i - self.en_passant_sq[0]) == 1 and
-                            (j - self.en_passant_sq[1]) == 0):
+                    if(abs(square[0] - self.en_passant_sq[0]) == 1 and
+                            abs(square[1] - self.en_passant_sq[1]) == 1):
 
-                        pawn_square = (self.en_passant_sq[0], j)
-                        b_moves.append(Move.Move((i, j), self.en_passant_sq,
-                                                 en_passant=True,
-                                                 en_passant_posn=pawn_square))
+                        pawn_square = (self.en_passant_sq[0], square[1])
+
+                        p_moves.append(Move.Move((square[0], square[1]),
+                                         self.en_passant_sq,
+                                         en_passant=True,
+                                         en_passant_posn=pawn_square,
+                                         take_move=True))
 
                 else:
                     b_moves.extend(self.board.get_piece_moves(i, j))
