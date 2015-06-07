@@ -29,6 +29,7 @@ class Game:
         -listen: boolean for whether the UI should listen for user
                  click events.
         -ui_draw: true if we are drawing to the ui
+        -game_state: current state of the game
 
     UI elements:
         - master: Master instance of tkinter
@@ -67,6 +68,8 @@ class Game:
         else:
             self.black_player = Player.AIPlayer(colour.black, player2)
 
+        self.game_state = Gamestate.Gamestate()
+
         if(self.ui_draw):
             self.master = Tk()
             self.frame = Frame(self.master)
@@ -83,8 +86,6 @@ class Game:
 
             self.master.mainloop()
 
-
-        self.game_state = Gamestate.Gamestate()
         f = open("game.pgn", 'w')
         f.close()
 
