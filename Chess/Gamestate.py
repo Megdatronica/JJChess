@@ -157,10 +157,11 @@ class Gamestate:
                 - canvas: canvas to be drawn onto
         """
 
+
+        print("move made")
+
         self.update_counts(move)
         self.board.make_move(move)
-
-        self.draw(canvas)
 
     def update_counts(self, move):
         """ Update counters and set en passant square if appropriate.

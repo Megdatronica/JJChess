@@ -116,7 +116,7 @@ class AIPlayer(Player):
 
         super(AIPlayer, self).__init__(colour, location=location)
 
-        AI = importlib.import_module("Scripts." + location)
+        self.AI = importlib.import_module("Scripts." + location)
 
     def get_move(self, game_state):
         """Return the move chosen by the AI module
@@ -127,7 +127,7 @@ class AIPlayer(Player):
 
         """
 
-        return AI.get_move(game_state, self.colour)
+        return self.AI.get_move(game_state, self.colour)
 
     def get_promotion(self, game_state):
         """Return the piece the user chooses to promote their pawn to.
@@ -138,4 +138,4 @@ class AIPlayer(Player):
 
         """
 
-        return AI.get_promotion(game_state, self.colour)
+        return self.AI.get_promotion(game_state, self.colour)

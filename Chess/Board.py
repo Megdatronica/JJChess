@@ -747,13 +747,13 @@ class Board:
     def can_promote_pawn(self, piece_colour):
         """Return true if the player of passed colour can promote a pawn."""
 
-        if (piece_colour == colour.white):
+        if (piece_colour == Colour.white):
             y = 0
         else:
             y = 7
 
         for i in range(Board.SIZE):
-            if self.get_piece(i, y) == Pawn(colour):
+            if self.get_piece(i, y) == Piece.Pawn(piece_colour):
                 return True
 
         return False
@@ -835,7 +835,7 @@ class Board:
                                     need_file = True
 
         if(need_file):
-            clar_str += FILE_LABELS[move.start_posn[0]]
+            clar_str += Board.FILE_LABELS[move.start_posn[0]]
         if(need_rank):
             clar_str += str(move.start_posn[1])
 

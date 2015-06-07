@@ -10,6 +10,7 @@ from Piece import PieceColour as colour
 from Piece import PieceType as p_type
 from Gamestate import Status as g_status
 from Images import Images
+import time
 
 # Size of the board canvas to render in pixels
 BOARD_SIZE = 900
@@ -27,6 +28,7 @@ class Game:
         -player2: see above
         -listen: boolean for whether the UI should listen for user
                  click events.
+        -ui_draw: true if we are drawing to the ui
 
     UI elements:
         - master: Master instance of tkinter
@@ -50,6 +52,9 @@ class Game:
         self.player1 = player1
         self.player2 = player2
 
+        self.ui_draw = False
+        self.board_canvas = None
+
         if (player1 == "Human"):
             self.white_player = Player.HumanPlayer(colour.white)
             self.listen = True
@@ -62,23 +67,24 @@ class Game:
         else:
             self.black_player = Player.AIPlayer(colour.black, player2)
 
-        self.master = Tk()
-        self.frame = Frame(self.master)
-        self.board_canvas = Canvas(self.frame, width=BOARD_SIZE,
-                                   height=BOARD_SIZE)
-        # bind mouse event listener to board canvas
-        self.board_canvas.bind("<Button-1>", self.mouse_press)
+        if(self.ui_draw):
+            self.master = Tk()
+            self.frame = Frame(self.master)
+            self.board_canvas = Canvas(self.frame, width=BOARD_SIZE,
+                                       height=BOARD_SIZE)
+            # bind mouse event listener to board canvas
+            self.board_canvas.bind("<Button-1>", self.mouse_press)
+
+            Images.load_images(self.board_canvas)
+
+            self.build_ui()
+
+            self.frame.pack()
+
+            self.master.mainloop()
+
 
         self.game_state = Gamestate.Gamestate()
-
-        Images.load_images(self.board_canvas)
-
-        self.build_ui()
-
-        self.frame.pack()
-
-        self.master.mainloop()
-
         f = open("game.pgn", 'w')
         f.close()
 
@@ -150,6 +156,10 @@ class Game:
 
         while(True):
 
+            if(self.ui_draw):
+
+                self.game_state.draw(self.board_canvas)
+
             current_player = self.get_current_player()
 
             if current_player.is_human:
@@ -183,12 +193,12 @@ class Game:
 
         current_player = self.get_current_player()
 
-        move = current_player.get_move(game_state)
+        move = current_player.get_move(self.game_state)
         move_SAN = self.game_state.get_san(move)
         self.game_state.make_move(move, self.board_canvas)
-        promote_piece = self.ai_promote_pawn()
+        promote_piece = self.ai_promote_pawn(current_player.colour)
 
-        status = game_state.get_status()
+        status = self.game_state.get_status()
         self.log_move(move_SAN, status, promote_piece)
 
         self.game_state.swap_turn()
@@ -216,8 +226,11 @@ class Game:
     def human_promote_pawn(self):
         pass
 
-    def ai_promote_pawn(self):
+    def ai_promote_pawn(self, col):
         """Handles any pawn promotion and returns the ai's chosen promotion.
+
+        Arguments:
+                -col: the colour of the player to check promotions for
 
         Returns:
             - a Piece object, the piece which was chosen by the player to
@@ -226,7 +239,7 @@ class Game:
 
         """
 
-        if self.game_state.can_promote_pawn():
+        if self.game_state.can_promote_pawn(col):
             current_player = self.get_current_player()
             piece = current_player.get_promotion(game_state)
             game_state.promote_pawn(piece)
