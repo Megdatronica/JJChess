@@ -29,6 +29,8 @@ def make_piece(piece_type, colour):
 
     """
 
+    print("make_piece gets ", piece_type, colour)
+
     if (piece_type == PieceType.king):
         return King(colour)
     elif (piece_type == PieceType.queen):
@@ -42,6 +44,7 @@ def make_piece(piece_type, colour):
     elif (piece_type == PieceType.pawn):
         return Pawn(colour)
     else:
+        print("make_piece returning blank piece\n")
         return Piece()
 
 

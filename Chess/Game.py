@@ -29,6 +29,7 @@ class Game:
         -listen: boolean for whether the UI should listen for user
                  click events.
         -ui_draw: true if we are drawing to the ui
+        -game_state: current state of the game
 
     UI elements:
         - master: Master instance of tkinter
@@ -59,13 +60,17 @@ class Game:
             self.white_player = Player.HumanPlayer(colour.white)
             self.listen = True
         else:
-            self.white_player = Player.AIPlayer(colour.white, player1)
+            self.white_player = Player.AIPlayer(
+                Piece.PieceColour.white, player1)
             self.listen = False
 
         if (player2 == "Human"):
             self.black_player = Player.HumanPlayer(colour.black)
         else:
-            self.black_player = Player.AIPlayer(colour.black, player2)
+            self.black_player = Player.AIPlayer(
+                Piece.PieceColour.black, player2)
+
+        self.game_state = Gamestate.Gamestate()
 
         if(self.ui_draw):
             self.master = Tk()
@@ -83,8 +88,6 @@ class Game:
 
             self.master.mainloop()
 
-
-        self.game_state = Gamestate.Gamestate()
         f = open("game.pgn", 'w')
         f.close()
 
@@ -230,7 +233,7 @@ class Game:
         """Handles any pawn promotion and returns the ai's chosen promotion.
 
         Arguments:
-                -col: the colour of the player to check promotions for
+            - col: the colour of the player to check promotions for
 
         Returns:
             - a Piece object, the piece which was chosen by the player to
@@ -241,8 +244,15 @@ class Game:
 
         if self.game_state.can_promote_pawn(col):
             current_player = self.get_current_player()
-            piece = current_player.get_promotion(game_state)
-            game_state.promote_pawn(piece)
+            piece = current_player.get_promotion(self.game_state)
+            self.game_state.board.promote_pawn(col, piece.type)
+
+            print("Pawn promoted!\n")
+            print("Piece.type = ", piece.type)
+            print(self.game_state.board.get_pictorial())
+
+            raise KeyError("Stop")
+
             return piece
 
         return None
@@ -297,3 +307,7 @@ class Game:
             f.write(" ")
 
         f.close()
+
+        g = open("boards.txt", 'a')
+        g.write(self.game_state.board.get_pictorial())
+        g.close()

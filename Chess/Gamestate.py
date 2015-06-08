@@ -157,9 +157,6 @@ class Gamestate:
                 - canvas: canvas to be drawn onto
         """
 
-
-        print("move made")
-
         self.update_counts(move)
         self.board.make_move(move)
 
@@ -243,8 +240,6 @@ class Gamestate:
 
         p_moves.extend(self.board.get_piece_moves(*square))
 
-        print(self.en_passant_sq)
-
         if piece.type == p_type.pawn and self.en_passant_sq is not None:
 
             if(abs(square[0] - self.en_passant_sq[0]) == 1 and
@@ -298,62 +293,15 @@ class Gamestate:
                 - colour: colour of the player
         """
 
-        moves = self.get_player_moves(colour)
+        moves = []
 
-        if(self.w_castle_K == True):
-            castle = Move.Move((4, 7), (6, 7), castle=True)
-            if(self.board.is_possible_valid_move(castle)):
-                moves.append(castle)
+        for i in range(Board.Board.SIZE):
+            for j in range(Board.Board.SIZE):
 
-        if(self.w_castle_Q == True):
-            castle = Move.Move((4, 7), (2, 7), castle=True)
-            if(self.board.is_possible_valid_move(castle)):
-                moves.append(castle)
-
-        if(self.b_castle_K == True):
-            castle = Move.Move((4, 0), (6, 0), castle=True)
-            if(self.board.is_possible_valid_move(castle)):
-                moves.append(castle)
-
-        if(self.b_castle_Q == True):
-            castle = Move.Move((4, 0), (2, 0), castle=True)
-            if(self.board.is_possible_valid_move(castle)):
-                moves.append(castle)
+                if(self.board.get_piece(i, j).colour == colour):
+                    moves.extend(self.get_piece_moves((i, j)))
 
         return moves
-
-    def get_player_moves(self, colour):
-        """ Helper function to get_all_moves - returns all but castling.
-
-            Args:
-                - colour: colour of the player making the move
-        """
-
-        b_moves = []
-
-        for i in range(8):
-            for j in range(8):
-
-                if(self.board.get_piece(i, j).type == PieceType.pawn and
-                        self.en_passant_sq != None):
-
-                    b_moves.extend(self.board.get_piece_moves(i, j))
-
-                    if(abs(i - self.en_passant_sq[0]) == 1 and
-                            abs(j - self.en_passant_sq[1]) == 1):
-
-                        pawn_square = (self.en_passant_sq[0], j)
-
-                        b_moves.append(Move.Move((i, j),
-                                         self.en_passant_sq,
-                                         en_passant=True,
-                                         en_passant_posn=pawn_square,
-                                         take_move=True))
-
-                else:
-                    b_moves.extend(self.board.get_piece_moves(i, j))
-
-        return b_moves
 
     def can_promote_pawn(self, colour):
         """ Check if a pawn can be promoted.
@@ -362,7 +310,7 @@ class Gamestate:
                 - colour: colour of player to check for
         """
 
-        self.board.can_promote_pawn(colour)
+        return self.board.can_promote_pawn(colour)
 
     def swap_turn(self):
         """ Swap which player has the current turn.
@@ -392,7 +340,7 @@ class Gamestate:
     def legal_move_exists(self, colour):
 
         # if statement returns true if list of moves is empty
-        if(not self.get_player_moves(colour)):
+        if(not self.get_all_moves(colour)):
             return False
         else:
             return True

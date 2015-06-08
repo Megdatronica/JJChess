@@ -17,12 +17,6 @@ def get_move(game_state, colour):
 
     """
 
-    move_list = game_state.get_all_moves(colour)
-
-    for move in move_list:
-        print (move.start_posn[0], move.start_posn[1],
-               move.end_posn[0], move.end_posn[1], "\n")
-
     return random.choice(game_state.get_all_moves(colour))
 
 
@@ -36,5 +30,7 @@ def get_promotion(game_state, colour):
                    the player for which a promotion is to be chosen.
 
     """
+
+    print("AI.get_promotion called")
 
     return Piece.Queen(colour)

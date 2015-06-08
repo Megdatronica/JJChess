@@ -102,6 +102,7 @@ class Board:
         """
         if move.castle:
             self.castle(move)
+            return
 
         if move.en_passant:
             self.remove_piece(*move.en_passant_posn)
@@ -155,13 +156,19 @@ class Board:
 
         """
 
+        print("board.promote_pawn called with piece_type = ", piece_type, "\n")
+
         if (piece_colour == Colour.white):
             y = 0
         else:
             y = 7
 
         for i in range(Board.SIZE):
-            if self.get_piece(i, y) == Pawn(piece_colour):
+            if self.get_piece(i, y) == Piece.Pawn(piece_colour):
+                print("Piece about to be placed:\n")
+                print(
+                    "Piece.colour: ", piece_colour, "Piece.type: ", piece_type)
+                print(self.get_pictorial())
                 self.place_piece(i, y, piece_type, piece_colour)
                 break
         else:
@@ -196,6 +203,10 @@ class Board:
 
         Will raise IndexError if the indices are not valid.
         """
+
+        p = Piece.make_piece(piece_type, piece_colour)
+
+        print("place_piece makes ", p.type, p.colour)
 
         self.piece_array[x][y] = Piece.make_piece(piece_type, piece_colour)
 
@@ -478,8 +489,6 @@ class Board:
         if piece_to_move.type == p_type.pawn:
             return self.get_pawn_moves(x, y)
 
-        return count
-
     def get_king_moves(self, x, y):
         """Return a list of available moves for a king at (x, y).
 
@@ -747,13 +756,17 @@ class Board:
     def can_promote_pawn(self, piece_colour):
         """Return true if the player of passed colour can promote a pawn."""
 
+        print("board.can_promote_pawn called\n")
+
         if (piece_colour == Colour.white):
             y = 0
         else:
             y = 7
 
         for i in range(Board.SIZE):
-            if self.get_piece(i, y) == Piece.Pawn(piece_colour):
+            # if self.get_piece(i, y) == Piece.Pawn(piece_colour):
+            if self.get_piece(i, y).type == p_type.pawn:
+                print("Returning true...\n")
                 return True
 
         return False
