@@ -130,8 +130,6 @@ class Gamestate:
             self.selected_piece = None
             self.selected_piece_moves = []
 
-        print(self.selected_piece_moves)
-
         self.draw(canvas)
 
         return None
@@ -173,7 +171,7 @@ class Gamestate:
         self.count += 1
 
         # reset en passant square
-        en_passant_sq = None
+        self.en_passant_sq = None
 
         # Check whether the king has moved
         if(piece.type == PieceType.king):
@@ -242,8 +240,10 @@ class Gamestate:
 
         if piece.type == p_type.pawn and self.en_passant_sq is not None:
 
+
             if(abs(square[0] - self.en_passant_sq[0]) == 1 and
                abs(square[1] - self.en_passant_sq[1]) == 1):
+
 
                 pawn_square = (self.en_passant_sq[0], square[1])
 
@@ -255,28 +255,28 @@ class Gamestate:
 
         if(piece.type == p_type.king):
 
-            if(self.w_castle_K == True):
+            if(self.w_castle_K == True and square[1] == 7):
 
                 castle = Move.Move((4, 7), (6, 7), castle=True)
                 if(self.board.is_possible_valid_move(castle)):
 
                     p_moves.append(castle)
 
-            if(self.w_castle_Q == True):
+            if(self.w_castle_Q == True and square[1] == 7):
 
                 castle = Move.Move((4, 7), (2, 7), castle=True)
                 if(self.board.is_possible_valid_move(castle)):
 
                     p_moves.append(castle)
 
-            if(self.b_castle_K == True):
+            if(self.b_castle_K == True and square[1] == 0):
 
                 castle = Move.Move((4, 0), (6, 0), castle=True)
                 if(self.board.is_possible_valid_move(castle)):
 
                     p_moves.append(castle)
 
-            if(self.b_castle_Q == True):
+            if(self.b_castle_Q == True and square[1] == 0):
 
                 castle = Move.Move((4, 0), (2, 0), castle=True)
                 if(self.board.is_possible_valid_move(castle)):

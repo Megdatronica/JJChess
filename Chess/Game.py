@@ -211,6 +211,7 @@ class Game:
     def turn_taken(self, move):
 
         move_SAN = self.game_state.get_san(move)
+
         self.game_state.make_move(move, self.board_canvas)
 
         promote_piece = self.human_promote_pawn()
@@ -308,6 +309,6 @@ class Game:
 
         f.close()
 
-        g = open("boards.txt", 'a')
+        g = open("pict.txt", 'a')
         g.write(self.game_state.board.get_pictorial())
         g.close()
