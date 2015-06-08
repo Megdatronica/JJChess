@@ -102,6 +102,7 @@ class Board:
         """
         if move.castle:
             self.castle(move)
+            return
 
         if move.en_passant:
             self.remove_piece(*move.en_passant_posn)
@@ -601,13 +602,11 @@ class Board:
 
         if (self.is_possible_valid_move(one_forward)
                 and not self.is_take_move(one_forward)):
-
             move_list.append(one_forward)
 
             if (self.is_possible_valid_move(two_forward)
                     and can_double
                     and not self.is_take_move(two_forward)):
-
                 move_list.append(two_forward)
 
         if (self.is_possible_valid_move(left_take)):
@@ -817,27 +816,28 @@ class Board:
         for i in range(Board.SIZE):
             for j in range(Board.SIZE):
 
-                if(i != move.start_posn[0] and j != move.end_posn[1]
-                        and self.get_piece(i, j).colour == piece.colour):
+                if not (i == move.start_posn[0] and j == move.start_posn[1]):
 
-                    moves_list = self.get_piece_moves(i, j)
+                    if self.get_piece(i, j).colour == piece.colour:
 
-                    if(self.piece_array[i][j].type == piece.type):
+                        if(self.piece_array[i][j].type == piece.type):
 
-                        for m in moves_list:
+                            moves_list = self.get_piece_moves(i, j)
 
-                            if(m.end_posn == move.end_posn):
+                            for m in moves_list:
 
-                                if(i == move.start_posn[0]):
-                                    need_rank = True
+                                if(m.end_posn == move.end_posn):
 
-                                if(j == move.start_posn[1]):
-                                    need_file = True
+                                    if(i == move.start_posn[0]):
+                                        need_rank = True
+
+                                    else:
+                                        need_file = True
 
         if(need_file):
             clar_str += Board.FILE_LABELS[move.start_posn[0]]
         if(need_rank):
-            clar_str += str(move.start_posn[1])
+            clar_str += str(8-move.start_posn[1])
 
         return clar_str
 

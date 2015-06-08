@@ -209,9 +209,11 @@ class Game:
     def turn_taken(self, move):
 
         move_SAN = self.game_state.get_san(move)
+
         self.game_state.make_move(move, self.board_canvas)
 
         promote_piece = self.human_promote_pawn()
+
 
         status = self.game_state.get_status()
         self.log_move(move_SAN, status, promote_piece)
@@ -275,6 +277,10 @@ class Game:
         else:
             f.write(move_SAN)
 
+        g = open("pict.txt", 'a')
+
+        g.write(self.game_state.board.get_pictorial())
+
         if promote_piece is not None:
             if promote_piece.type == p_type.queen:
                 f.write("=Q")
@@ -298,3 +304,4 @@ class Game:
             f.write(" ")
 
         f.close()
+        g.close()
