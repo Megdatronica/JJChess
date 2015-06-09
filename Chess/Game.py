@@ -248,12 +248,6 @@ class Game:
             piece = current_player.get_promotion(self.game_state)
             self.game_state.board.promote_pawn(col, piece.type)
 
-            print("Pawn promoted!\n")
-            print("Piece.type = ", piece.type)
-            print(self.game_state.board.get_pictorial())
-
-            raise KeyError("Stop")
-
             return piece
 
         return None
@@ -286,13 +280,13 @@ class Game:
             f.write(move_SAN)
 
         if promote_piece is not None:
-            if promote_piece.type == p_type.queen:
+            if promote_piece.type.value == p_type.queen.value:
                 f.write("=Q")
-            elif promote_piece.type == p_type.knight:
+            elif promote_piece.type.value == p_type.knight.value:
                 f.write("=K")
-            elif promote_piece.type == p_type.bishop:
+            elif promote_piece.type.value == p_type.bishop.value:
                 f.write("=B")
-            elif promote_piece.type == p_type.rook:
+            elif promote_piece.type.value == p_type.rook.value:
                 f.write("=R")
 
         if status in (g_status.white_check, g_status.black_check):
