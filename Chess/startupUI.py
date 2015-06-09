@@ -111,6 +111,7 @@ class startupUI:
         player2 = self.lb2.get(ACTIVE)
 
         self.master.destroy()
+        self.master = None
 
         game = Game.Game(player1, player2)
 

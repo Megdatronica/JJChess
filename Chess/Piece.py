@@ -29,22 +29,19 @@ def make_piece(piece_type, colour):
 
     """
 
-    print("make_piece gets ", piece_type, colour)
-
-    if (piece_type == PieceType.king):
+    if (piece_type.value == PieceType.king.value):
         return King(colour)
-    elif (piece_type == PieceType.queen):
+    elif (piece_type.value == PieceType.queen.value):
         return Queen(colour)
-    elif (piece_type == PieceType.bishop):
+    elif (piece_type.value == PieceType.bishop.value):
         return Bishop(colour)
-    elif (piece_type == PieceType.knight):
+    elif (piece_type.value == PieceType.knight.value):
         return Knight(colour)
-    elif (piece_type == PieceType.rook):
+    elif (piece_type.value == PieceType.rook.value):
         return Rook(colour)
-    elif (piece_type == PieceType.pawn):
+    elif (piece_type.value == PieceType.pawn.value):
         return Pawn(colour)
     else:
-        print("make_piece returning blank piece\n")
         return Piece()
 
 
