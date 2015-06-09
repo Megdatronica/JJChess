@@ -118,6 +118,26 @@ class Board:
         self.place_piece(move.end_posn[0], move.end_posn[1],
                          piece.type, piece.colour)
 
+    def takeback_move(self, move, taken_piece):
+
+        if move.castle:
+            self.takeback_castle(move)
+            return
+
+        if move.en_passant:
+            self.place_piece(*move.en_passant_posn)
+
+        piece = self.get_piece(*move.end_posn)
+
+        self.remove_piece(*move.end_posn)
+        self.place_piece(move.start_posn[0], move.start_posn[1],
+                         piece.type, piece.colour)
+
+        if taken_piece is not None:
+
+            self.place_piece(move.end_posn[0], move.end_posn[1],
+                             taken_piece.type, taken_piece.colour)
+
     def castle(self, move):
         """Adjust the state of the board to reflect the passed castling move.
 
@@ -148,6 +168,30 @@ class Board:
         # Move the rook
         self.remove_piece(rook_from_x, rook_y)
         self.place_piece(rook_to_x, rook_y, p_type.rook, col)
+
+    def takeback_castle(self, move):
+
+        piece = self.get_piece(*move.start_posn)
+        col = piece.colour
+
+        # If king is moving to the right
+        if move.end_posn[0] - move.start_posn[0] > 0:
+            # Castling King's side
+            rook_from_x = 7
+            rook_to_x = 5
+        else:
+            # Castling Queen's side
+            rook_from_x = 0
+            rook_to_x = 3
+
+        rook_y = move.start_posn[1]
+
+        # Move the king
+        self.takeback_move(Move.Move(move.start_posn, move.end_posn))
+
+        # Move the rook
+        self.remove_piece(rook_to_x, rook_y)
+        self.place_piece(rook_from_x, rook_y, p_type.rook, col)
 
     def promote_pawn(self, piece_colour, piece_type):
         """Promote a pawn of a given colour to the given piece type.
@@ -346,12 +390,25 @@ class Board:
             return self.is_valid_castle_move(move)
 
         piece_moving = self.get_piece(*move.start_posn)
+        taken_piece = self.get_piece(*move.end_posn)
 
-        new_board = self.copy()
-        new_board.make_move(move)
+        #SLOW
+        #new_board = self.copy()
+        #new_board.make_move(move)
 
-        if new_board.is_in_check(piece_moving.colour):
+        #if new_board.is_in_check(piece_moving.colour):
+        #    return False
+
+        #FAST
+        self.make_move(move)
+
+        if self.is_in_check(piece_moving.colour):
+
+            self.takeback_move(move, taken_piece)
+
             return False
+
+        self.takeback_move(move, taken_piece)
 
         return True
 
