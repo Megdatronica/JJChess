@@ -20,9 +20,7 @@ def get_move(game_state, colour):
     moves = game_state.get_all_moves(colour)
 
     for m in moves:
-
         if game_state.board.is_take_move(m):
-
             return m
     else:
         return random.choice(moves)
