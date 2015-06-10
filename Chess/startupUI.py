@@ -3,6 +3,7 @@
 from tkinter import *
 from os import listdir
 import Game
+from Gamestate import Status
 
 class startupUI:
 
@@ -113,6 +114,23 @@ class startupUI:
         self.master.destroy()
         self.master = None
 
-        game = Game.Game(player1, player2)
+        win = 0
+        draw = 0
+        loss = 0
 
-        game.play()
+        for i in range (1):
+            print(str(i) + "%")
+
+            game = Game.Game(player1, player2)
+
+            status = game.play()
+
+            if status == Status.white_win:
+                win += 1
+            elif status == Status.black_win:
+                loss += 1
+            else:
+                draw += 1
+
+        print("wins: " + str(win) + "\ndraws: " + str(draw) + "\nlosses: "
+               + str(loss))

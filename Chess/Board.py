@@ -124,10 +124,19 @@ class Board:
             self.takeback_castle(move)
             return
 
-        if move.en_passant:
-            self.place_piece(*move.en_passant_posn)
-
         piece = self.get_piece(*move.end_posn)
+
+        if move.en_passant:
+            if piece.colour == Colour.white:
+                self.place_piece(move.en_passant_posn[0], 
+                                 move.en_passant_posn[1],
+                                 p_type.pawn, Colour.black)
+            else:
+                self.place_piece(move.en_passant_posn[0], 
+                                 move.en_passant_posn[1],
+                                 p_type.pawn, Colour.white)
+
+        
 
         self.remove_piece(*move.end_posn)
         self.place_piece(move.start_posn[0], move.start_posn[1],
@@ -187,7 +196,7 @@ class Board:
         rook_y = move.start_posn[1]
 
         # Move the king
-        self.takeback_move(Move.Move(move.start_posn, move.end_posn))
+        self.takeback_move(Move.Move(move.start_posn, move.end_posn), None)
 
         # Move the rook
         self.remove_piece(rook_to_x, rook_y)
@@ -224,7 +233,7 @@ class Board:
 
     def is_square(self, x, y):
         """Return true if (x, y) represents a valid square."""
-        return (x < Board.SIZE and y < Board.SIZE and x >= 0 and y >= 0)
+        return (x < 8 and y < 8 and x >= 0 and y >= 0)
 
     def get_piece(self, x, y):
         """Return the piece at position x, y on the board.

@@ -53,7 +53,7 @@ class Game:
         self.player1 = player1
         self.player2 = player2
 
-        self.ui_draw = False
+        self.ui_draw = True
         self.board_canvas = None
 
         if (player1 == "Human"):
@@ -85,6 +85,8 @@ class Game:
             self.build_ui()
 
             self.frame.pack()
+
+            self.master.after(1, self.play)
 
             self.master.mainloop()
 
@@ -157,11 +159,27 @@ class Game:
 
         """
 
-        while(True):
+        current_player = self.get_current_player()
 
-            if(self.ui_draw):
+        if current_player.is_human:
+            self.listen = True
 
-                self.game_state.draw(self.board_canvas)
+        else:
+            self.listen = False
+            status = self.take_ai_turn()
+
+        if status not in (g_status.normal, g_status.white_check,
+                              g_status.black_check):
+            return status
+
+        if(self.ui_draw):
+
+            self.game_state.draw(self.board_canvas)
+
+            if not self.listen:
+                self.master.after(1, self.play)
+
+        while(not self.ui_draw and not self.listen):
 
             current_player = self.get_current_player()
 
@@ -303,6 +321,6 @@ class Game:
 
         f.close()
 
-        g = open("pict.txt", 'a')
-        g.write(self.game_state.board.get_pictorial())
-        g.close()
+        #g = open("pict.txt", 'a')
+        #g.write(self.game_state.board.get_pictorial())
+        #g.close()

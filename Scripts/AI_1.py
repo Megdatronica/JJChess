@@ -31,6 +31,4 @@ def get_promotion(game_state, colour):
 
     """
 
-    print("AI.get_promotion called")
-
     return Piece.Queen(colour)
