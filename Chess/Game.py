@@ -53,7 +53,7 @@ class Game:
         self.player1 = player1
         self.player2 = player2
 
-        self.ui_draw = True
+        self.ui_draw = False
         self.board_canvas = None
 
         if (player1 == "Human"):
@@ -163,6 +163,7 @@ class Game:
 
         if current_player.is_human:
             self.listen = True
+            return
 
         else:
             self.listen = False
@@ -241,8 +242,10 @@ class Game:
 
         if status not in (g_status.normal, g_status.white_check,
                           g_status.black_check):
+            self.game_state.draw(self.board_canvas)
             return status
         else:
+            self.game_state.draw(self.board_canvas)
             self.play()
 
     def human_promote_pawn(self):
@@ -298,13 +301,13 @@ class Game:
             f.write(move_SAN)
 
         if promote_piece is not None:
-            if promote_piece.type.value == p_type.queen.value:
+            if promote_piece.type == p_type.queen:
                 f.write("=Q")
-            elif promote_piece.type.value == p_type.knight.value:
+            elif promote_piece.type == p_type.knight:
                 f.write("=K")
-            elif promote_piece.type.value == p_type.bishop.value:
+            elif promote_piece.type == p_type.bishop:
                 f.write("=B")
-            elif promote_piece.type.value == p_type.rook.value:
+            elif promote_piece.type == p_type.rook:
                 f.write("=R")
 
         if status in (g_status.white_check, g_status.black_check):

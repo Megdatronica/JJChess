@@ -4,7 +4,7 @@ from enum import Enum
 from tkinter import *
 
 
-class PieceType(Enum):
+class PieceType():
     blank = 0
     king = 1
     queen = 2
@@ -14,7 +14,7 @@ class PieceType(Enum):
     pawn = 6
 
 
-class PieceColour(Enum):
+class PieceColour():
     blank = 0
     black = -1
     white = 1
@@ -29,17 +29,17 @@ def make_piece(piece_type, colour):
 
     """
 
-    if (piece_type.value == PieceType.king.value):
+    if (piece_type == PieceType.king):
         return King(colour)
-    elif (piece_type.value == PieceType.queen.value):
+    elif (piece_type == PieceType.queen):
         return Queen(colour)
-    elif (piece_type.value == PieceType.bishop.value):
+    elif (piece_type == PieceType.bishop):
         return Bishop(colour)
-    elif (piece_type.value == PieceType.knight.value):
+    elif (piece_type == PieceType.knight):
         return Knight(colour)
-    elif (piece_type.value == PieceType.rook.value):
+    elif (piece_type == PieceType.rook):
         return Rook(colour)
-    elif (piece_type.value == PieceType.pawn.value):
+    elif (piece_type == PieceType.pawn):
         return Pawn(colour)
     else:
         return Piece()

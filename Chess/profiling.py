@@ -14,7 +14,7 @@ colour = Piece.PieceColour.white
 
 def check_loop():
 
-    for i in range(100):
+    for i in range(10):
         g = Game.Game("AI_1", "AI_1")
         g.play()
 
