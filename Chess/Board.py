@@ -26,6 +26,10 @@ class Board:
         """Create clear board."""
         self.clear()
 
+        self.ver_hor_list = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        self.diag_list = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
+
     def draw_board(self, canvas):
         """Draw the current state of the board on a canvas.
 
@@ -94,7 +98,27 @@ class Board:
 
     def test_setup(self):
 
-        self.piece_array[0][0] = Piece.Pawn(Colour.white)
+        for x in range(Board.SIZE):
+            self.piece_array[x][1] = Piece.Pawn(Colour.black)
+            self.piece_array[x][6] = Piece.Pawn(Colour.white)
+
+        self.piece_array[0][0] = Piece.Rook(Colour.black)
+        self.piece_array[7][3] = Piece.Rook(Colour.black)
+        self.piece_array[1][4] = Piece.Knight(Colour.black)
+        self.piece_array[6][7] = Piece.Knight(Colour.black)
+        self.piece_array[2][1] = Piece.Bishop(Colour.black)
+        self.piece_array[5][0] = Piece.Bishop(Colour.black)
+        self.piece_array[3][2] = Piece.Queen(Colour.black)
+        self.piece_array[4][0] = Piece.King(Colour.black)
+
+        self.piece_array[0][4] = Piece.Rook(Colour.white)
+        self.piece_array[7][7] = Piece.Rook(Colour.white)
+        self.piece_array[1][7] = Piece.Knight(Colour.white)
+        self.piece_array[6][5] = Piece.Knight(Colour.white)
+        self.piece_array[2][7] = Piece.Bishop(Colour.white)
+        self.piece_array[5][5] = Piece.Bishop(Colour.white)
+        self.piece_array[3][6] = Piece.Queen(Colour.white)
+        self.piece_array[4][2] = Piece.King(Colour.white)
 
 
     def make_move(self, move):
@@ -112,7 +136,7 @@ class Board:
         if move.en_passant:
             self.remove_piece(*move.en_passant_posn)
 
-        piece = self.get_piece(*move.start_posn)
+        piece = self.piece_array[move.start_posn[0]][move.start_posn[1]]
 
         self.remove_piece(*move.start_posn)
         self.place_piece(move.end_posn[0], move.end_posn[1],
@@ -124,7 +148,7 @@ class Board:
             self.takeback_castle(move)
             return
 
-        piece = self.get_piece(*move.end_posn)
+        piece = self.piece_array[move.end_posn[0]][move.end_posn[1]]
 
         if move.en_passant:
             if piece.colour == Colour.white:
@@ -156,7 +180,7 @@ class Board:
             - move: a move object which is a castling move.
         """
 
-        piece = self.get_piece(*move.start_posn)
+        piece = self.piece_array[move.start_posn[0]][move.start_posn[1]]
         col = piece.colour
 
         # If king is moving to the right
@@ -180,7 +204,7 @@ class Board:
 
     def takeback_castle(self, move):
 
-        piece = self.get_piece(*move.start_posn)
+        piece = self.piece_array[move.start_posn[0]][move.start_posn[1]]
         col = piece.colour
 
         # If king is moving to the right
@@ -220,7 +244,7 @@ class Board:
             y = 7
 
         for i in range(Board.SIZE):
-            if self.get_piece(i, y) == Piece.Pawn(piece_colour):
+            if self.piece_array[i][y] == Piece.Pawn(piece_colour):
                 self.place_piece(i, y, piece_type, piece_colour)
                 break
         else:
@@ -240,10 +264,16 @@ class Board:
 
         Returns None if indeices out of bounds
         """
+        
+        try:
+            piece = self.piece_array[x][y]
+        except IndexError:
+            return None
+
         if(not self.is_square(x, y)):
             return None
 
-        return self.piece_array[x][y]
+        return piece
 
     def place_piece(self, x, y, piece_type, piece_colour):
         """Place a piece of the passed type at the passed location.
@@ -309,17 +339,20 @@ class Board:
 
         """
 
-        if(up_down != 0):
-            up_down = int(up_down/abs(up_down))
+        #John, Not sure what these functions are doing. Commented them out
+        #for now as quite slow especially as this function is called a lot.
 
-        if(left_right != 0):
-            left_right = int(left_right/abs(left_right))
+        #if(up_down != 0):
+        #    up_down = int(up_down/abs(up_down))
 
-        if up_down == 0 and left_right == 0:
-            raise ValueError
+        #if(left_right != 0):
+        #    left_right = int(left_right/abs(left_right))
 
-        if not self.is_square(x, y):
-            raise IndexError
+        #if up_down == 0 and left_right == 0:
+        #    raise ValueError
+
+        #if not self.is_square(x, y):
+        #    raise IndexError
 
         num_squares = 0
         found_piece = None
@@ -333,10 +366,11 @@ class Board:
 
         while(self.is_square(new_x, new_y)):
 
-            move = Move.Move((x, y), (new_x, new_y))
-            piece_at_move = self.get_piece(new_x, new_y)
+            piece_at_move = self.piece_array[new_x][new_y]
 
             if not no_legal:
+                move = Move.Move((x, y), (new_x, new_y))
+
                 if self.is_possible_valid_move(move):
                     move_list.append(move)
 
@@ -372,7 +406,7 @@ class Board:
         if move.castle:
             return self.is_possible_castle_move(move)
 
-        piece_moving = self.get_piece(*move.start_posn)
+        piece_moving = self.piece_array[move.start_posn[0]][move.start_posn[1]]
 
         piece_at_move = self.get_piece(*move.end_posn)
 
@@ -398,7 +432,7 @@ class Board:
         if move.castle:
             return self.is_valid_castle_move(move)
 
-        piece_moving = self.get_piece(*move.start_posn)
+        piece_moving = self.piece_array[move.start_posn[0]][move.start_posn[1]]
         taken_piece = self.get_piece(*move.end_posn)
 
         #SLOW
@@ -435,7 +469,7 @@ class Board:
         if not move.castle:
             return False
 
-        king = self.get_piece(*move.start_posn)
+        king = self.piece_array[move.start_posn[0]][move.start_posn[1]]
 
         if king.type != p_type.king:
             return False
@@ -487,7 +521,7 @@ class Board:
         if not move.castle:
             return False
 
-        king = self.get_piece(*move.start_posn)
+        king = self.piece_array[move.start_posn[0]][move.start_posn[1]]
 
         if self.is_in_check(king.colour):
             return False
@@ -515,7 +549,7 @@ class Board:
 
     def is_take_move(self, move):
         """Return true if the passed move is a taking move."""
-        piece_at_move = self.get_piece(*move.end_posn)
+        piece_at_move = self.piece_array[move.end_posn[0]][move.end_posn[1]]
 
         return piece_at_move.type != p_type.blank
 
@@ -533,10 +567,8 @@ class Board:
 
         """
 
-        piece_to_move = self.get_piece(x, y)
+        piece_to_move = self.piece_array[x][y]
 
-        if piece_to_move.type == p_type.blank:
-            return []
         if piece_to_move.type == p_type.king:
             return self.get_king_moves(x, y)
         if piece_to_move.type == p_type.queen:
@@ -549,6 +581,8 @@ class Board:
             return self.get_rook_moves(x, y)
         if piece_to_move.type == p_type.pawn:
             return self.get_pawn_moves(x, y)
+
+        return []
 
     def get_king_moves(self, x, y):
         """Return a list of available moves for a king at (x, y).
@@ -650,7 +684,7 @@ class Board:
 
         move_list = []
         can_double = False   # True if the pawn can move two squares forward.
-        pawn = self.get_piece(x, y)
+        pawn = self.piece_array[x][y]
 
         if pawn.colour == Colour.white:
             m = -1  # m is a multiplier which ensures white pieces move up the
@@ -705,7 +739,7 @@ class Board:
 
         # Find King
         for i, j in itertools.product(range(Board.SIZE), range(Board.SIZE)):
-            piece = self.get_piece(i, j)
+            piece = self.piece_array[i][j]
             if piece.type == p_type.king and piece.colour == piece_colour:
                 x = i
                 y = j
@@ -715,24 +749,15 @@ class Board:
 
         # Radiate outwards and check for enemy rooks, bishops and queens:
 
-        # Vertically/Horizontally
-        for dirn in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
-            piece = self.search_direction(
-                x, y, dirn[0], dirn[1], no_legal=True)[1]
+        # Look for pawns
+        
+        square_list = [(x+1, y-piece_colour), (x-1, y-piece_colour)]
 
+        for square in square_list:
+            piece = self.get_piece(*square)
             if piece is not None:
-                if piece.colour != piece_colour:
-                    if piece.type in (p_type.rook, p_type.queen):
-                        return True
-
-        # Diagonally
-        for dirn in [(1, 1), (1, -1), (-1, 1), (-1, -1)]:
-            piece = self.search_direction(
-                x, y, dirn[0], dirn[1], no_legal=True)[1]
-
-            if piece is not None:
-                if piece.colour != piece_colour:
-                    if piece.type in (p_type.bishop, p_type.queen):
+                if piece.type == p_type.pawn:
+                    if piece.colour != piece_colour:
                         return True
 
         # Look for knights
@@ -742,32 +767,39 @@ class Board:
         for square in square_list:
             piece = self.get_piece(*square)
             if piece is not None:
-                if piece.colour != piece_colour:
-                    if piece.type == p_type.knight:
+                if piece.type == p_type.knight:
+                    if piece.colour != piece_colour:
                         return True
 
-        # Look for pawns
-        if piece_colour == Colour.white:
-            square_list = [(x+1, y-1), (x-1, y-1)]
-        else:
-            square_list = [(x+1, y+1), (x-1, y+1)]
-
-        for square in square_list:
-            piece = self.get_piece(*square)
-            if piece is not None:
-                if piece.colour != piece_colour:
-                    if piece.type == p_type.pawn:
-                        return True
-
-        # And finally, the enemy king
+        # The enemy king
         square_list = [(x+1, y+1), (x+1, y),   (x+1, y-1), (x, y+1),
                        (x, y-1),   (x-1, y+1), (x-1, y),   (x-1, y-1)]
 
         for square in square_list:
             piece = self.get_piece(*square)
             if piece is not None:
-                if piece.colour != piece_colour:
-                    if piece.type == p_type.king:
+                if piece.type == p_type.king:
+                    if piece.colour != piece_colour:
+                        return True
+
+        # Vertically/Horizontally
+        for dirn in self.ver_hor_list:
+            piece = self.search_direction(
+                x, y, dirn[0], dirn[1], no_legal=True)[1]
+
+            if piece is not None:
+                if piece.type in (p_type.rook, p_type.queen):
+                    if piece.colour != piece_colour:
+                        return True
+
+        # And Finally, Diagonally
+        for dirn in self.diag_list:
+            piece = self.search_direction(
+                x, y, dirn[0], dirn[1], no_legal=True)[1]
+
+            if piece is not None:
+                if piece.type in (p_type.bishop, p_type.queen):
+                    if piece.colour != piece_colour:
                         return True
 
         return False
@@ -806,7 +838,7 @@ class Board:
     def is_king_draw(self):
         """Return true if the Kings are the only pieces left on the board."""
         for i, j in itertools.product(range(Board.SIZE), range(Board.SIZE)):
-            piece = self.get_piece(i, j)
+            piece = self.piece_array[i][j]
             if not piece.type in (p_type.king, p_type.blank):
                 return False
 
@@ -822,7 +854,7 @@ class Board:
 
         for i in range(Board.SIZE):
             # if self.get_piece(i, y) == Piece.Pawn(piece_colour):
-            if self.get_piece(i, y).type == p_type.pawn:
+            if self.piece_array[i][y].type == p_type.pawn:
                 return True
 
         return False
@@ -849,7 +881,7 @@ class Board:
                 san += "-O"
 
         else:
-            piece = self.get_piece(*move.start_posn)
+            piece = self.piece_array[move.start_posn[0]][move.start_posn[1]]
 
             if(piece.type != p_type.pawn):
                 san += piece.get_san().upper()
@@ -888,7 +920,7 @@ class Board:
 
                 if not (i == move.start_posn[0] and j == move.start_posn[1]):
 
-                    if self.get_piece(i, j).colour == piece.colour:
+                    if self.piece_array[i][j].colour == piece.colour:
 
                         if(self.piece_array[i][j].type == piece.type):
 
@@ -920,7 +952,7 @@ class Board:
             board_str += "|"
 
             for j in range(Board.SIZE):
-                board_str += self.get_piece(j, i).get_san() + " "
+                board_str += self.piece_array[j][i].get_san() + " "
 
             board_str += "|\n"
 
@@ -941,7 +973,7 @@ class Board:
             column = 0
 
             while column < BOARD_SIZE:
-                piece = self.get_piece(column, row)
+                piece = self.piece_array[column][row]
 
                 if piece.type == p_type.blank:
                     gap = self.search_direction(

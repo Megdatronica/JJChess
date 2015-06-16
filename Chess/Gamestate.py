@@ -234,7 +234,7 @@ class Gamestate:
     def get_piece_moves(self, square):
 
         p_moves = []
-        piece = self.board.get_piece(*square)
+        piece = self.board.piece_array[square[0]][square[1]]
 
         p_moves.extend(self.board.get_piece_moves(*square))
 
@@ -253,7 +253,7 @@ class Gamestate:
                                          en_passant_posn=pawn_square,
                                          take_move=True))
 
-        if(piece.type == p_type.king):
+        elif(piece.type == p_type.king):
 
             if(self.w_castle_K == True and square[1] == 7):
 
@@ -298,7 +298,9 @@ class Gamestate:
         for i in range(Board.Board.SIZE):
             for j in range(Board.Board.SIZE):
 
-                if(self.board.get_piece(i, j).colour == colour):
+                piece = self.board.piece_array[i][j]
+
+                if(piece.type != p_type.blank and piece.colour == colour):
                     moves.extend(self.get_piece_moves((i, j)))
 
         return moves

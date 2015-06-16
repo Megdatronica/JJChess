@@ -30,11 +30,11 @@ class Move:
 
         """
 
-        if castle and en_passant:
-            raise ValueError("Castle and en_passant cannot both be true")
+        #if castle and en_passant:
+        #    raise ValueError("Castle and en_passant cannot both be true")
 
-        if (en_passant and en_passant_posn is None):
-            raise ValueError("Must provide en_passant_posn")
+        #if (en_passant and en_passant_posn is None):
+        #    raise ValueError("Must provide en_passant_posn")
 
         self.start_posn = start_posn
         self.end_posn = end_posn

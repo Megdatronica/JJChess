@@ -1,0 +1,281 @@
+Mon Jun 15 21:52:35 2015    profile_stats
+
+         18972246 function calls (18208864 primitive calls) in 24.220 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   215763    7.276    0.000   15.527    0.000 Board.py:729(is_in_check)
+1736650/973894    4.108    0.000   12.615    0.000 Board.py:302(search_direction)
+  4035582    2.543    0.000    3.702    0.000 Board.py:262(get_piece)
+  7990109    2.509    0.000    2.509    0.000 Board.py:258(is_square)
+     3392    1.002    0.000    1.024    0.000 {built-in method open}
+   640255    0.752    0.000    1.067    0.000 Piece.py:23(make_piece)
+     3392    0.688    0.000    0.688    0.000 {method 'close' of '_io.TextIOWrapper' objects}
+   212283    0.562    0.000    1.944    0.000 Board.py:145(takeback_move)
+212389/212165    0.555    0.000   19.159    0.000 Board.py:421(is_valid_move)
+   640255    0.484    0.000    1.551    0.000 Board.py:278(place_piece)
+   215665    0.387    0.000    1.199    0.000 Board.py:124(make_move)
+   427949    0.381    0.000    0.643    0.000 Board.py:291(remove_piece)
+   618526    0.361    0.000    0.361    0.000 Piece.py:57(__init__)
+   286889    0.360    0.000    0.659    0.000 Board.py:391(is_possible_move)
+     6756    0.293    0.000   21.280    0.003 Gamestate.py:288(get_all_moves)
+   295992    0.252    0.000    0.252    0.000 Move.py:23(__init__)
+286889/286565    0.238    0.000   20.055    0.000 Board.py:546(is_possible_valid_move)
+    20911    0.142    0.000    5.796    0.000 Board.py:677(get_pawn_moves)
+     2983    0.118    0.000    0.518    0.000 Board.py:903(get_clar_str)
+    46847    0.100    0.000   20.976    0.000 Gamestate.py:234(get_piece_moves)
+    47558    0.092    0.000   21.228    0.000 Board.py:560(get_piece_moves)
+     6756    0.090    0.000    3.638    0.001 Board.py:587(get_king_moves)
+     3382    0.064    0.000    1.839    0.001 Game.py:276(log_move)
+   133663    0.064    0.000    0.064    0.000 Piece.py:265(__init__)
+    48862    0.058    0.000    0.095    0.000 enum.py:241(__getattr__)
+     4553    0.057    0.000    1.656    0.000 Board.py:640(get_knight_moves)
+     9978    0.053    0.000    6.394    0.001 Board.py:659(get_rook_moves)
+    96926    0.046    0.000    0.046    0.000 Piece.py:229(__init__)
+     3382    0.041    0.000   24.177    0.007 Game.py:206(take_ai_turn)
+    56616    0.040    0.000    0.040    0.000 Board.py:550(is_take_move)
+     7718    0.040    0.000    3.644    0.000 Board.py:622(get_bishop_moves)
+     3382    0.038    0.000   10.942    0.003 Gamestate.py:350(get_status)
+    48873    0.037    0.000    0.037    0.000 enum.py:16(_is_dunder)
+    78090    0.037    0.000    0.037    0.000 Piece.py:86(__init__)
+   169200    0.035    0.000    0.035    0.000 {method 'extend' of 'list' objects}
+       10    0.030    0.003   24.232    2.423 Game.py:155(play)
+   153275    0.026    0.000    0.026    0.000 {method 'append' of 'list' objects}
+     3378    0.025    0.000    0.025    0.000 Board.py:838(is_king_draw)
+    50101    0.024    0.000    0.024    0.000 Piece.py:157(__init__)
+     3382    0.020    0.000   10.738    0.003 AI_1.py:11(get_move)
+     3382    0.020    0.000    0.543    0.000 Board.py:866(get_san)
+    36100    0.018    0.000    0.018    0.000 Piece.py:193(__init__)
+     3374    0.017    0.000   10.596    0.003 Gamestate.py:342(legal_move_exists)
+     3392    0.014    0.000    0.014    0.000 {built-in method _getdefaultlocale}
+     3382    0.013    0.000    0.013    0.000 Board.py:847(can_promote_pawn)
+     3382    0.012    0.000    0.018    0.000 Gamestate.py:161(update_counts)
+     6788    0.010    0.000    0.023    0.000 {method 'write' of '_io.TextIOWrapper' objects}
+     3382    0.007    0.000    0.011    0.000 random.py:220(_randbelow)
+     6788    0.007    0.000    0.007    0.000 {built-in method charmap_encode}
+     6788    0.006    0.000    0.013    0.000 cp1252.py:18(encode)
+     3382    0.005    0.000    0.017    0.000 random.py:250(choice)
+     2358    0.005    0.000    2.871    0.001 Board.py:609(get_queen_moves)
+     3392    0.005    0.000    0.019    0.000 _bootlocale.py:11(getpreferredencoding)
+     3382    0.005    0.000   10.743    0.003 Player.py:121(get_move)
+     3382    0.004    0.000    0.043    0.000 Gamestate.py:150(make_move)
+     5183    0.004    0.000    0.004    0.000 {method 'getrandbits' of '_random.Random' objects}
+     1034    0.003    0.000    0.006    0.000 Board.py:458(is_possible_castle_move)
+     6788    0.003    0.000    0.003    0.000 Game.py:199(get_current_player)
+     3382    0.003    0.000    0.016    0.000 Gamestate.py:308(can_promote_pawn)
+       41    0.003    0.000    0.003    0.000 {built-in method stat}
+     3382    0.003    0.000    0.019    0.000 Game.py:254(ai_promote_pawn)
+     3382    0.003    0.000    0.003    0.000 Gamestate.py:317(swap_turn)
+     3382    0.003    0.000    0.546    0.000 Gamestate.py:333(get_san)
+     3392    0.003    0.000    0.003    0.000 codecs.py:177(__init__)
+        1    0.002    0.002    0.002    0.002 {built-in method load_dynamic}
+     2983    0.001    0.000    0.001    0.000 {method 'upper' of 'str' objects}
+     3525    0.001    0.000    0.001    0.000 {built-in method len}
+        9    0.001    0.000    0.001    0.000 <frozen importlib._bootstrap>:1621(get_data)
+     3372    0.001    0.000    0.001    0.000 codecs.py:205(setstate)
+     3382    0.001    0.000    0.001    0.000 {method 'bit_length' of 'int' objects}
+     1130    0.001    0.000    0.001    0.000 Piece.py:113(get_san)
+        9    0.000    0.000    0.000    0.000 {built-in method loads}
+       20    0.000    0.000    0.000    0.000 {built-in method OpenKey}
+      764    0.000    0.000    0.000    0.000 Piece.py:256(get_san)
+       10    0.000    0.000    0.001    0.000 Board.py:73(setup)
+     1617    0.000    0.000    0.000    0.000 {built-in method abs}
+        1    0.000    0.000   24.249   24.249 profiling.py:15(check_loop)
+      106    0.000    0.000    0.028    0.000 Board.py:508(is_valid_castle_move)
+       15    0.000    0.000    0.001    0.000 {built-in method __build_class__}
+       20    0.000    0.000    0.002    0.000 Board.py:70(<listcomp>)
+        9    0.000    0.000    0.000    0.000 {method 'read' of '_io.FileIO' objects}
+       18    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap>:2016(find_spec)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1853(_path_hooks)
+       24    0.000    0.000    0.000    0.000 Board.py:229(promote_pawn)
+      396    0.000    0.000    0.000    0.000 Piece.py:148(get_san)
+      361    0.000    0.000    0.000    0.000 Piece.py:184(get_san)
+      332    0.000    0.000    0.000    0.000 Piece.py:220(get_san)
+       30    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:274(_get_module_lock)
+        2    0.000    0.000    0.000    0.000 {built-in method listdir}
+       10    0.000    0.000    0.017    0.002 Game.py:49(__init__)
+       20    0.000    0.000    0.002    0.000 Board.py:68(clear)
+        1    0.000    0.000    0.000    0.000 Piece.py:155(Bishop)
+    21/20    0.000    0.000    0.011    0.001 <frozen importlib._bootstrap>:2240(_gcd_import)
+       11    0.000    0.000    0.004    0.000 <frozen importlib._bootstrap>:2147(_find_spec)
+       20    0.000    0.000    0.011    0.001 Player.py:106(__init__)
+       30    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:192(acquire)
+       71    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:52(<listcomp>)
+        1    0.000    0.000    0.000    0.000 enum.py:88(__new__)
+       60    0.000    0.000    0.000    0.000 {built-in method allocate_lock}
+      199    0.000    0.000    0.000    0.000 Piece.py:73(__eq__)
+      109    0.000    0.000    0.000    0.000 {built-in method hasattr}
+        9    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap>:1534(get_code)
+       10    0.000    0.000    0.002    0.000 Gamestate.py:51(__init__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:599(_validate_bytecode_header)
+       71    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:50(_path_join)
+     11/1    0.000    0.000    0.011    0.011 <frozen importlib._bootstrap>:2234(_find_and_load)
+       30    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:217(release)
+       19    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:56(_path_split)
+       70    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+      106    0.000    0.000    0.000    0.000 Piece.py:77(__ne__)
+        1    0.000    0.000    0.000    0.000 Gamestate.py:1(<module>)
+       30    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:172(__init__)
+       24    0.000    0.000    0.000    0.000 AI_1.py:25(get_promotion)
+     11/1    0.000    0.000    0.010    0.010 <frozen importlib._bootstrap>:2207(_find_and_load_unlocked)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1019(init_module_attrs)
+     11/2    0.000    0.000    0.009    0.005 <frozen importlib._bootstrap>:1186(_load_unlocked)
+       18    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:437(cache_from_source)
+     10/1    0.000    0.000   24.249   24.249 {built-in method exec}
+       20    0.000    0.000    0.011    0.001 __init__.py:91(import_module)
+       19    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:293(_lock_unlock_module)
+       10    0.000    0.000    0.004    0.000 <frozen importlib._bootstrap>:1902(_get_spec)
+        1    0.000    0.000    0.003    0.003 random.py:37(<module>)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1408(_search_registry)
+        1    0.000    0.000    0.000    0.000 Board.py:1(<module>)
+       73    0.000    0.000    0.000    0.000 {built-in method getattr}
+      160    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 Piece.py:1(<module>)
+       19    0.000    0.000    0.000    0.000 {method 'rsplit' of 'str' objects}
+       75    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:518(_verbose_message)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:2061(_fill_cache)
+       41    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap>:68(_path_stat)
+       11    0.000    0.000    0.000    0.000 enum.py:51(__setitem__)
+       10    0.000    0.000    0.001    0.000 Board.py:25(__init__)
+    24/13    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap>:2264(_handle_fromlist)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:129(_new_module)
+        1    0.000    0.000    0.000    0.000 {built-in method urandom}
+        1    0.000    0.000    0.000    0.000 Move.py:1(<module>)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1401(_open_registry)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:884(spec_from_file_location)
+       45    0.000    0.000    0.000    0.000 _collections_abc.py:502(__iter__)
+       18    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:824(cached)
+      9/2    0.000    0.000    0.009    0.005 <frozen importlib._bootstrap>:1465(exec_module)
+       14    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:78(_path_is_mode_type)
+       24    0.000    0.000    0.000    0.000 Player.py:132(get_promotion)
+       89    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+       24    0.000    0.000    0.000    0.000 Piece.py:122(__init__)
+        1    0.000    0.000    0.002    0.002 hashlib.py:53(<module>)
+        9    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:654(_compile_bytecode)
+        2    0.000    0.000    0.000    0.000 {function Random.seed at 0x02340DB0}
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:2011(_get_spec)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:739(__exit__)
+       11    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:261(__enter__)
+       21    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:2187(_sanity_check)
+        1    0.000    0.000    0.000    0.000 {built-in method init_builtin}
+       21    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1870(_path_importer_cache)
+       20    0.000    0.000    0.000    0.000 Player.py:21(__init__)
+       63    0.000    0.000    0.000    0.000 {built-in method isinstance}
+       10    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x5E214CB8}
+        9    0.000    0.000    0.000    0.000 __init__.py:58(__setitem__)
+       41    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:2124(__exit__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1099(create)
+       24    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:790(__init__)
+        6    0.000    0.000    0.000    0.000 {built-in method is_builtin}
+       41    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:2120(__enter__)
+        9    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:1631(path_stats)
+       12    0.000    0.000    0.000    0.000 {built-in method any}
+        1    0.000    0.000    0.009    0.009 AI_1.py:1(<module>)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1979(__init__)
+       62    0.000    0.000    0.000    0.000 {built-in method acquire_lock}
+       42    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+     16/2    0.000    0.000    0.010    0.005 <frozen importlib._bootstrap>:313(_call_with_frames_removed)
+        1    0.000    0.000   24.249   24.249 <string>:1(<module>)
+       45    0.000    0.000    0.000    0.000 __init__.py:83(__iter__)
+       19    0.000    0.000    0.000    0.000 {built-in method from_bytes}
+        4    0.000    0.000    0.003    0.001 {built-in method __import__}
+        5    0.000    0.000    0.000    0.000 enum.py:282(__setattr__)
+        1    0.000    0.000    0.002    0.002 <frozen importlib._bootstrap>:1708(load_module)
+        6    0.000    0.000    0.000    0.000 hashlib.py:98(__get_openssl_constructor)
+       32    0.000    0.000    0.000    0.000 {method 'partition' of 'str' objects}
+       11    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:268(__exit__)
+       10    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap>:534(_check_name_wrapper)
+       10    0.000    0.000    0.004    0.000 <frozen importlib._bootstrap>:1934(find_spec)
+       18    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:45(_r_long)
+       71    0.000    0.000    0.000    0.000 {built-in method release_lock}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1591(__init__)
+       60    0.000    0.000    0.000    0.000 {built-in method get_ident}
+        2    0.000    0.000    0.000    0.000 random.py:93(seed)
+        1    0.000    0.000    0.000    0.000 random.py:68(Random)
+        1    0.000    0.000    0.000    0.000 enum.py:387(_find_new_)
+        1    0.000    0.000    0.000    0.000 Gamestate.py:13(Status)
+       12    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:87(_path_isfile)
+       18    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:30(_relax_case)
+       11    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:257(__init__)
+       11    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1266(find_spec)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1423(find_spec)
+        1    0.000    0.000    0.000    0.000 __init__.py:41(__init__)
+       30    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:288(cb)
+        1    0.000    0.000    0.000    0.000 Board.py:13(Board)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:842(parent)
+       36    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:742(<genexpr>)
+      9/2    0.000    0.000    0.009    0.005 <frozen importlib._bootstrap>:1122(_exec)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:732(__enter__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:2102(path_hook_for_FileFinder)
+        9    0.000    0.000    0.000    0.000 enum.py:8(_is_descriptor)
+        9    0.000    0.000    0.000    0.000 _collections_abc.py:441(items)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1336(find_spec)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:728(__init__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:2090(<setcomp>)
+        2    0.000    0.000    0.002    0.001 <frozen importlib._bootstrap>:1156(_load_backward_compatible)
+       10    0.000    0.000    0.000    0.000 {built-in method is_frozen}
+       11    0.000    0.000    0.000    0.000 enum.py:24(_is_sunder)
+        9    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+        9    0.000    0.000    0.000    0.000 {built-in method _fix_co_filename}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:546(_requires_builtin_wrapper)
+        1    0.000    0.000    0.000    0.000 abc.py:178(__instancecheck__)
+       11    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1000(__init__)
+        1    0.000    0.000    0.000    0.000 _collections_abc.py:581(update)
+        9    0.000    0.000    0.000    0.000 _collections_abc.py:462(__init__)
+        1    0.000    0.000    0.000    0.000 {built-in method exp}
+        1    0.000    0.000    0.000    0.000 enum.py:342(_get_mixins_)
+       14    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1287(load_module)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1726(is_package)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:859(spec_from_loader)
+        1    0.000    0.000    0.000    0.000 enum.py:99(<dictcomp>)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:147(__exit__)
+       23    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1985(<genexpr>)
+        5    0.000    0.000    0.000    0.000 {method 'get' of 'mappingproxy' objects}
+        5    0.000    0.000    0.000    0.000 {built-in method setattr}
+        1    0.000    0.000    0.000    0.000 Gamestate.py:28(Gamestate)
+        1    0.000    0.000    0.000    0.000 {method 'union' of 'set' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:92(_path_isdir)
+        2    0.000    0.000    0.000    0.000 {built-in method log}
+       10    0.000    0.000    0.000    0.000 {built-in method proxy}
+        1    0.000    0.000    0.000    0.000 enum.py:47(__init__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:850(has_location)
+        1    0.000    0.000    0.000    0.000 enum.py:84(__prepare__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1616(get_filename)
+        8    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:148(<genexpr>)
+        4    0.000    0.000    0.000    0.000 {built-in method issubclass}
+        1    0.000    0.000    0.000    0.000 Move.py:6(Move)
+        2    0.000    0.000    0.000    0.000 _weakrefset.py:70(__contains__)
+        1    0.000    0.000    0.000    0.000 random.py:639(SystemRandom)
+        1    0.000    0.000    0.000    0.000 random.py:84(__init__)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1697(__init__)
+        1    0.000    0.000    0.000    0.000 Piece.py:48(Piece)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1729(<genexpr>)
+        1    0.000    0.000    0.000    0.000 Piece.py:7(PieceType)
+        1    0.000    0.000    0.000    0.000 {built-in method openssl_md5}
+        4    0.000    0.000    0.000    0.000 {method 'remove' of 'list' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:144(__enter__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:141(__init__)
+        6    0.000    0.000    0.000    0.000 {built-in method globals}
+        1    0.000    0.000    0.000    0.000 {built-in method openssl_sha512}
+        1    0.000    0.000    0.000    0.000 Piece.py:17(PieceColour)
+        1    0.000    0.000    0.000    0.000 Piece.py:84(King)
+        1    0.000    0.000    0.000    0.000 Piece.py:191(Knight)
+        1    0.000    0.000    0.000    0.000 {built-in method openssl_sha384}
+        1    0.000    0.000    0.000    0.000 {built-in method openssl_sha224}
+        1    0.000    0.000    0.000    0.000 Piece.py:227(Rook)
+        2    0.000    0.000    0.000    0.000 __init__.py:1(<module>)
+        1    0.000    0.000    0.000    0.000 {built-in method sqrt}
+        1    0.000    0.000    0.000    0.000 Piece.py:120(Queen)
+        1    0.000    0.000    0.000    0.000 Piece.py:263(Pawn)
+        1    0.000    0.000    0.000    0.000 {built-in method openssl_sha1}
+        1    0.000    0.000    0.000    0.000 {built-in method openssl_sha256}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1311(is_package)
+
+
