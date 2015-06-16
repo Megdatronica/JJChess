@@ -46,14 +46,14 @@ class Game:
 
     """
 
-    def __init__(self, player1, player2):
+    def __init__(self, player1, player2, ui_draw=False):
         """ Start a game against the two selected types of player and build UI.
         """
 
         self.player1 = player1
         self.player2 = player2
 
-        self.ui_draw = False
+        self.ui_draw = ui_draw
         self.board_canvas = None
 
         if (player1 == "Human"):

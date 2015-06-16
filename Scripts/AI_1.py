@@ -5,8 +5,6 @@ from Chess import Piece
 from Chess.Piece import PieceColour as p_colour
 import random
 
-random.seed(100)
-
 
 def get_move(game_state, colour):
     """Return the move chosen by the AI module

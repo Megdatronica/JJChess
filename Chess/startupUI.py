@@ -38,6 +38,7 @@ class startupUI:
 
         self.ai_list = []
         self.master = Tk()
+        self.ui_draw = IntVar()
 
         self.populate_ai_list(self.ai_list)
         self.frame = Frame(self.master)
@@ -85,7 +86,10 @@ class startupUI:
         start_game_button = Button(self.frame)
         start_game_button["text"] = "Start Game"
         start_game_button["command"] = self.start_game
-        start_game_button.grid(row=2, column=0, columnspan=2)
+        start_game_button.grid(row=2, column=0)
+
+        self.check_box = Checkbutton(self.frame, text="Draw UI",variable=self.ui_draw)
+        self.check_box.grid(row=2,column=1)
 
         self.frame.pack()
 
@@ -119,9 +123,10 @@ class startupUI:
         loss = 0
 
         for i in range (1):
-            print(str(i) + "%")
 
-            game = Game.Game(player1, player2)
+            print("Game "+str(i+1) + "\n")
+
+            game = Game.Game(player1, player2, self.ui_draw.get())
 
             status = game.play()
 
@@ -132,5 +137,5 @@ class startupUI:
             else:
                 draw += 1
 
-        print("wins: " + str(win) + "\ndraws: " + str(draw) + "\nlosses: "
+        print("White wins: " + str(win) + "\nDraws: " + str(draw) + "\nBlack Wins: "
                + str(loss))
