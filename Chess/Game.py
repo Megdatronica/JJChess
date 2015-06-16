@@ -171,6 +171,8 @@ class Game:
 
         if status not in (g_status.normal, g_status.white_check,
                               g_status.black_check):
+            if self.ui_draw:
+                self.game_state.draw(self.board_canvas)
             return status
 
         if(self.ui_draw):
